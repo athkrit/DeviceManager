@@ -104,7 +104,7 @@ public class RecyclerListDetailAdapter extends RecyclerView.Adapter<RecyclerList
             tvOwner.setText(owner.get(position));
             tvAddedDate.setText(addedDate.get(position));
             tvStatus.setText(status.get(position));
-            if (status.get(position).matches("Active")) {
+            if (status.get(position).matches("InUse")) {
                 tvStatus.setTextColor(context.getResources().getColor(R.color.red));
             } else {
                 tvStatus.setTextColor(context.getResources().getColor(R.color.green));
