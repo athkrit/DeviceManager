@@ -88,6 +88,7 @@ public class SummaryListDetailFragment extends Fragment {
         spFilter = rootView.findViewById(R.id.spinnerFilter);
         spSortBy = rootView.findViewById(R.id.spinnerSortBy);
 
+//        ArrayAdapter<String> adapter=new ArrayAdapter<String>(this,R.layout.spinner_item_list_detail,R.id.text, countries);
         ArrayAdapter<CharSequence> spinnerFilterAdapter = ArrayAdapter.createFromResource(
                 Contextor.getInstance().getContext(),
                 R.array.filter,
