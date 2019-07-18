@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -69,6 +70,7 @@ public class AddDeviceFragment extends Fragment {
             etOwnerId, etBrand, etDeviceModel, etDevicePrice, etNote, etQuantity,
             etPurchasePrice, etForwardDepreciation, etDepreciationRate, etDepreciationinYear,
             etAccumulateDepreciation, etForwardedBudget, etWarranty;
+    private Button btnShowMore;
     private Calendar calendar;
     private DatePickerDialog.OnDateSetListener date;
     private String selected, lastKey, itemId, serial, serialState, abbreviation, type, unnamed2, YY;
@@ -120,7 +122,7 @@ public class AddDeviceFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_check) {
-            hideKeyboardFrom(Contextor.getInstance().getContext(), getView());
+            hideKeyboardFrom(getContext(), getView());
             getUpdateKey();
             showAlertDialog("save");
         }
@@ -167,8 +169,7 @@ public class AddDeviceFragment extends Fragment {
         etNote = view.findViewById(R.id.etNote);
         etPurchasePrice = view.findViewById(R.id.etDevicePurchasePrice);
         etQuantity = view.findViewById(R.id.etQuantity);
-        tvQuantity = view.findViewById(R.id.tvQuantity);
-        tvClickToShow = view.findViewById(R.id.tvClickToShow);
+        btnShowMore = view.findViewById(R.id.btnShowMore);
         moreData = view.findViewById(R.id.hidedLayout);
         etForwardDepreciation = view.findViewById(R.id.etForwardDepreciation);
         etDepreciationRate = view.findViewById(R.id.etDepreciationRate);
@@ -177,7 +178,9 @@ public class AddDeviceFragment extends Fragment {
         etForwardedBudget = view.findViewById(R.id.etForwardedBudget);
         etWarranty = view.findViewById(R.id.etWarranty);
 
-        tvClickToShow.setOnClickListener(clickListener);
+        btnShowMore.setOnClickListener(clickListener);
+        etPurchasePrice.setOnFocusChangeListener(onFocusChangeListener);
+        etDevicePrice.setOnFocusChangeListener(onFocusChangeListener);
 
         calendar = Calendar.getInstance(TimeZone.getDefault());
         this.date = onDateSet;
@@ -195,7 +198,7 @@ public class AddDeviceFragment extends Fragment {
             if (itemId.length() < 14) {
                 Toast.makeText(getContext(), "Something went wrong.", Toast.LENGTH_SHORT).show();
             } else {
-                tvQuantity.setText(getResources().getString(R.string.quantity) + ":1");
+                //tvQuantity.setText(getResources().getString(R.string.quantity) + ":1");
                 etQuantity.setVisibility(View.INVISIBLE);
                 lastKey = "" + loadData.selectData(itemId).get(0).getAutoId();
                 setData();
@@ -340,9 +343,7 @@ public class AddDeviceFragment extends Fragment {
                     getActivity().finish();*/
                 }
             }
-        }).
-
-                setNegativeButton("No", new DialogInterface.OnClickListener() {
+        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Toast.makeText(getActivity(), "Cancel", Toast.LENGTH_SHORT).show();
@@ -350,6 +351,10 @@ public class AddDeviceFragment extends Fragment {
                 });
         AlertDialog dialog = builder.create();
         dialog.show();
+
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.white);
+        dialog.getButton(DialogInterface.BUTTON_POSITIVE).setBackgroundColor(getResources().getColor(R.color.white));
+        dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setBackgroundColor(getResources().getColor(R.color.white));
     }
 
     private void updateData() {
@@ -711,7 +716,8 @@ public class AddDeviceFragment extends Fragment {
     private View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            if (view == tvClickToShow) {
+            hideKeyboardFrom(getContext(), getView());
+            if (view == btnShowMore) {
                 if (!clickMore) {
                     clickMore = true;
                     moreData.setVisibility(View.VISIBLE);
@@ -726,8 +732,9 @@ public class AddDeviceFragment extends Fragment {
     private View.OnClickListener onClickDate = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+            hideKeyboardFrom(getContext(), getView());
             if (itemId != null) {
-                String[] d = etDatePicker.getText().toString().split("-");
+                String[] d = etDatePicker.getText().toString().split("/");
                 new DatePickerDialog(getContext(),
                         date, Integer.parseInt(d[0]),
                         Integer.parseInt(d[1]) - 1,
@@ -813,6 +820,26 @@ public class AddDeviceFragment extends Fragment {
         @Override
         public void onNothingSelected(AdapterView<?> adapterView) {
             selected = "none";
+        }
+    };
+
+    private View.OnFocusChangeListener onFocusChangeListener = new View.OnFocusChangeListener() {
+        @Override
+        public void onFocusChange(View view, boolean b) {
+            if (view == etDevicePrice){
+                if (b) {
+                    etDevicePrice.setHint("1000.00");
+                } else {
+                    etDevicePrice.setHint("");
+                }
+            }
+            else if (view == etPurchasePrice){
+                if (b) {
+                    etPurchasePrice.setHint("1000.00");
+                } else {
+                    etPurchasePrice.setHint("");
+                }
+            }
         }
     };
 

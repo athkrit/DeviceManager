@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -10,7 +10,31 @@
         <item name="android:splitMotionEvents">false</item>
     </style>
 
-    <style name="AppTheme.noActionbar" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme.Material" parent="Theme.MaterialComponents.Light">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColor">@color/grey</item>
+        <item name="android:windowEnableSplitTouch">false</item>
+        <item name="android:splitMotionEvents">false</item>
+        <item name="android:label">@string/add_device</item>
+        <item name="homeAsUpIndicator">@drawable/ic_back</item><!--
+        <item name="alertDialogTheme">@style/AlertDialogTheme</item>-->
+    </style>
+
+    <!--<style name="AlertDialogTheme" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+        <item name="buttonBarNegativeButtonStyle">@style/MaterialButtonStyle</item>
+        <item name="buttonBarPositiveButtonStyle">@style/MaterialButtonStyle</item>
+    </style>
+
+    <style name="MaterialButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:background">@color/float_transparent</item>
+        <item name="backgroundTint">@color/float_transparent</item>
+        <item name="background">@color/float_transparent</item>
+    </style>-->
+
+    <style name="AppTheme.noActionbar" parent="Theme.AppCompat.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -88,6 +112,12 @@
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="LayoutEditDetail">
+        <item name="android:layout_marginTop">3dp</item>
+        <item name="android:layout_marginLeft">40dp</item>
+        <item name="android:layout_marginStart">40dp</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

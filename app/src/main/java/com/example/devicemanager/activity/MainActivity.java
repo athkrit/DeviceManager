@@ -133,8 +133,7 @@ public class MainActivity extends AppCompatActivity {
             if (loadData.deleteTable() == 1) {
                 loadData();
             }
-        }
-        else {
+        } else {
             hideLoadingView();
             setStartFragment();
         }
@@ -163,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
 
-                if (insertStatus == 1){
+                if (insertStatus == 1) {
                     setStartFragment();
                     hideLoadingView();
                 }
@@ -191,14 +190,12 @@ public class MainActivity extends AppCompatActivity {
         btnDetail.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
     }
 
-    private void showLoadingView(){
-        Log.d("test1707", "show loading");
+    private void showLoadingView() {
         view.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.VISIBLE);
     }
 
-    private void hideLoadingView(){
-        Log.d("test1707", "hide loading");
+    private void hideLoadingView() {
         view.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.INVISIBLE);
     }
@@ -237,25 +234,39 @@ public class MainActivity extends AppCompatActivity {
             SummaryFragment secondFragment = (SummaryFragment)
                     getSupportFragmentManager().findFragmentByTag("SummaryFragment");
 
-            if (view == btnDetail && mainFragment != null) {
-                if (secondFragment != null) {
+            if (view == btnDetail) {
+                if (mainFragment == null && secondFragment == null) {
+                    setStartFragment();
+                } else if (mainFragment == null) {
+                    getSupportFragmentManager().beginTransaction()
+                            .add(R.id.contentContainer
+                                    , MainFragment.newInstance()
+                                    , "MainFragment")
+                            .detach(secondFragment)
+                            .commit();
+                } else if (secondFragment != null) {
                     getSupportFragmentManager().beginTransaction()
                             .attach(mainFragment)
                             .detach(secondFragment)
                             .commit();
-                    btnDetail.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-                    btnSummary.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                 }
-            } else if (view == btnSummary && mainFragment != null) {
-                showLoadingView();
-                if (secondFragment == null) {
+                btnDetail.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                btnSummary.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            } else if (view == btnSummary) {
+                if (mainFragment == null && secondFragment == null) {
                     getSupportFragmentManager().beginTransaction()
-                            .add(R.id.contentContainer,
-                                    SummaryFragment.newInstance(),
-                                    "SummaryFragment")
+                            .replace(R.id.contentContainer
+                                    , SummaryFragment.newInstance()
+                                    , "SummaryFragment")
+                            .commit();
+                } else if (secondFragment == null) {
+                    getSupportFragmentManager().beginTransaction()
+                            .add(R.id.contentContainer
+                                    , SummaryFragment.newInstance()
+                                    , "SummaryFragment")
                             .detach(mainFragment)
                             .commit();
-                } else {
+                } else if (mainFragment != null) {
                     getSupportFragmentManager().beginTransaction()
                             .attach(secondFragment)
                             .detach(mainFragment)
@@ -263,9 +274,6 @@ public class MainActivity extends AppCompatActivity {
                 }
                 btnSummary.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
                 btnDetail.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                hideLoadingView();
-            } else {
-                setStartFragment();
             }
         }
     };

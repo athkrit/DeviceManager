@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
@@ -58,236 +59,301 @@
                 android:padding="8dp"
                 android:textSize="20sp" />
 
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:layout_marginTop="10dp"
-                android:text="@string/owner" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:baselineAligned="true"
                 android:orientation="horizontal">
 
-                <EditText
-                    android:id="@+id/etOwnerId"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="14dp"
-                    android:layout_marginRight="14dp"
-                    android:layout_weight="2"
-                    android:hint="@string/id" />
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="22dp"
+                    android:layout_marginRight="22dp"
+                    android:src="@drawable/ic_person" />
 
-                <EditText
-                    android:id="@+id/etOwnerName"
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="5"
-                    android:freezesText="true"
-                    android:hint="@string/name"
-                    android:inputType="text" />
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_weight="2">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etOwnerId"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/id"
+                        android:inputType="text" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="5">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etOwnerName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/name"
+                        android:inputType="text" />
+
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:layout_marginTop="14dp"
-                android:text="@string/item_details" />
+                android:layout_marginTop="25dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="22dp"
+                    android:layout_marginRight="22dp"
+                    android:src="@drawable/ic_detail" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etDeviceDetail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/item_detail"
+                        android:inputType="text" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:paddingStart="52dp"
+                android:paddingLeft="52dp"
+                tools:ignore="RtlSymmetry">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etQuantity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/quantity"
+                    android:inputType="number" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:baselineAligned="false"
                 android:orientation="horizontal">
 
-                <EditText
-                    android:id="@+id/etDeviceBrand"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="14dp"
-                    android:layout_marginRight="14dp"
-                    android:layout_weight="2"
-                    android:freezesText="true"
-                    android:hint="@string/brand"
-                    android:inputType="text" />
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="22dp"
+                    android:layout_marginRight="22dp"
+                    android:src="@drawable/ic_tag"
+                    android:tint="#A2A2A2" />
 
-                <EditText
-                    android:id="@+id/etSerialNumber"
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_weight="5">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etDeviceBrand"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/brand"
+                        android:inputType="text" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="5"
+                    android:layout_weight="3">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etWarranty"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/warranty"
+                        android:inputType="text" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:paddingStart="52dp"
+                android:paddingLeft="52dp"
+                tools:ignore="RtlSymmetry">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etSerialNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:drawableEnd="@drawable/ic_photo"
                     android:drawableRight="@drawable/ic_photo"
-                    android:freezesText="true"
                     android:hint="@string/serial_number"
                     android:inputType="text" />
 
-            </LinearLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <EditText
-                android:id="@+id/etDeviceDetail"
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:freezesText="true"
-                android:hint="@string/item_detail"
-                android:inputType="text" />
+                android:layout_marginTop="5dp"
+                android:paddingStart="52dp"
+                android:paddingLeft="52dp"
+                tools:ignore="RtlSymmetry">
 
-            <TextView
-                android:id="@+id/tvWarranty"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="end"
-                android:text="Warranty (Years)" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <EditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etDeviceModel"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_weight="5"
-                    android:freezesText="true"
                     android:hint="@string/model"
                     android:inputType="text" />
-
-                <EditText
-                    android:id="@+id/etWarranty"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="2"
-                    android:gravity="center"
-                    android:hint="1"
-                    android:inputType="number" />
-
-            </LinearLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
+                android:layout_marginTop="25dp"
+                android:baselineAligned="false"
                 android:orientation="horizontal">
 
-                <LinearLayout
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="22dp"
+                    android:layout_marginRight="22dp"
+                    android:src="@drawable/ic_calendar"
+                    android:tint="#A2A2A2" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_weight="4"
-                    android:orientation="vertical">
+                    android:layout_weight="1">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/purchase_price" />
-
-                    <EditText
-                        android:id="@+id/etDevicePurchasePrice"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:freezesText="true"
-                        android:hint="10000.00"
-                        android:inputType="numberDecimal" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="5"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/purchase_date" />
-
-                    <EditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etPurchaseDate"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:focusable="false"
-                        android:freezesText="true"
-                        android:hint="28/06/2019"
+                        android:hint="@string/purchase_date"
                         android:inputType="date" />
-                </LinearLayout>
+                </com.google.android.material.textfield.TextInputLayout>
+
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
-                android:orientation="horizontal">
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                android:paddingStart="52dp"
+                android:paddingLeft="52dp"
+                tools:ignore="RtlSymmetry">
 
-                <LinearLayout
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_weight="3"
-                    android:orientation="vertical">
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_weight="1"
+                    android:hint="@string/price">
 
-                    <TextView
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etDevicePurchasePrice"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/price" />
+                        android:layout_height="match_parent"
+                        android:inputType="numberDecimal" />
 
-                    <EditText
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etPrice"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:freezesText="true"
-                        android:hint="100.00"
+                        android:hint="@string/price_unit"
                         android:inputType="numberDecimal" />
-                </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/tvQuantity"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="left"
-                        android:text="@string/quantity" />
-
-                    <EditText
-                        android:id="@+id/etQuantity"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:inputType="number"
-                        android:text="@string/number_1" />
-                </LinearLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
 
-            <EditText
-                android:id="@+id/etNote"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/note"
-                android:inputType="textMultiLine" />
+                android:layout_marginTop="25dp"
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/tvClickToShow"
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="22dp"
+                    android:layout_marginRight="22dp"
+                    android:src="@drawable/ic_note" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etNote"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/note"
+                        android:inputType="textMultiLine" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnShowMore"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
                 android:text="@string/more" />
 
             <!-- TODO: Change "hidedLayout" to Fragment-->
@@ -295,7 +361,6 @@
                 android:id="@+id/hidedLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
                 android:orientation="vertical"
                 android:visibility="invisible">
 
@@ -304,65 +369,94 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <EditText
-                        android:id="@+id/etForwardDepreciation"
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginRight="16dp"
-                        android:layout_weight="1"
-                        android:hint="@string/forward_depreciation"
-                        android:inputType="numberDecimal" />
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="1">
 
-                    <EditText
-                        android:id="@+id/etDepreciationRate"
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etForwardDepreciation"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/forward_depreciation"
+                            android:inputType="numberDecimal" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:hint="@string/accumulated_depreciation"
-                        android:inputType="numberDecimal" />
+                        android:layout_weight="1">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etDepreciationRate"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/accumulated_depreciation"
+                            android:inputType="numberDecimal" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:orientation="horizontal">
 
-                    <EditText
-                        android:id="@+id/etDepreciationinYear"
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_weight="1"
-                        android:hint="@string/depreciation_inYear"
-                        android:inputType="numberDecimal" />
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="1">
 
-                    <EditText
-                        android:id="@+id/etAccumulateDepreciation"
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etDepreciationinYear"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/depreciation_inYear"
+                            android:inputType="numberDecimal" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_weight="1"
-                        android:hint="@string/accumulate_depreciation"
-                        android:inputType="numberDecimal" />
+                        android:layout_weight="1">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etAccumulateDepreciation"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/accumulate_depreciation"
+                            android:inputType="numberDecimal" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
 
-                <LinearLayout
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="20dp">
 
-                    <EditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etForwardedBudget"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:hint="@string/forwarded_budget"
                         android:inputType="numberDecimal" />
-                </LinearLayout>
+
+                </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
         </LinearLayout>

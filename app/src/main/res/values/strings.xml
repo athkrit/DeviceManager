@@ -249,15 +249,15 @@
     <string name="digio_email">digio.co.th</string>
     <string name="added_date">Added Date</string>
     <string name="last_check">Last Check</string>
-    <string name="price">Price per pieces</string>
+    <string name="price">Price</string>
     <string name="model">Model</string>
     <string name="brand">Brand</string>
     <string name="details">Details</string>
     <string name="device_details">Device Details</string>
     <string name="serial_number">Serial Number</string>
     <string name="owner_name">Owner Name</string>
-    <string name="purchase_date">PurchaseDate</string>
-    <string name="purchase_price">PurchasePrice</string>
+    <string name="purchase_date">Purchase Date</string>
+    <string name="purchase_price">Purchase Price</string>
     <string name="choose_item_type">Choose item type</string>
     <string name="id">ID</string>
     <string name="name">Name</string>
@@ -287,4 +287,7 @@
     <string name="accumulate_depreciation">ค่าเสื่อมสะสมรวมปีนี้</string>
     <string name="forwarded_budget">มูลค่ายกไป</string>
     <string name="detail">detail</string>
+    <string name="warranty_years">Warranty(Years)</string>
+    <string name="warranty">Warranty</string>
+    <string name="price_unit">Price/Unit</string>
 </resources>
