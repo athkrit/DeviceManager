@@ -98,7 +98,7 @@ public class DeviceDetailFragment extends Fragment {
         tvAddedDate = view.findViewById(R.id.tvAddedDate);
         tvLastUpdate = view.findViewById(R.id.tvLastUpdate);
         tvType = view.findViewById(R.id.tvType);
-        tvItemId = view.findViewById(R.id.tvItemId);
+        //tvItemId = view.findViewById(R.id.tvItemId);
         tvBrand = view.findViewById(R.id.tvBrand);
         tvModel = view.findViewById(R.id.tvModel);
 
@@ -128,16 +128,16 @@ public class DeviceDetailFragment extends Fragment {
         if (itemEntity != null) {
             lastKey = itemEntity.get(0).getAutoId() + "";
 
-            tvItemId.setText("Item ID : " + itemEntity.get(0).getUnnamed2());
+            //tvItemId.setText(itemEntity.get(0).getUnnamed2());
             tvOwnerName.setText(checkNoneData(itemEntity.get(0).getPlaceName(), "No Owner"));
             tvDeviceDetail.setText(checkNoneData(itemEntity.get(0).getDetail(), "N/A"));
             tvBrand.setText(checkNoneData(itemEntity.get(0).getBrand(), "N/A"));
             tvType.setText(itemEntity.get(0).getType());
-            tvModel.setText("Model : " + checkNoneData(itemEntity.get(0).getModel(), "N/A"));
-            tvSerialNumber.setText("S/N : " + checkNoneData(itemEntity.get(0).getSerialNo(), "No Serial"));
+            tvModel.setText(checkNoneData(itemEntity.get(0).getModel(), "N/A"));
+            tvSerialNumber.setText(checkNoneData(itemEntity.get(0).getSerialNo(), "No Serial"));
 
-            tvLastUpdate.setText(getResources().getString(R.string.last_check) + " : " + itemEntity.get(0).getLastUpdated());
-            tvAddedDate.setText(getResources().getString(R.string.added_date) + " : " + setDate(itemEntity.get(0).getPurchasedDate()));
+            tvLastUpdate.setText(itemEntity.get(0).getLastUpdated());
+            tvAddedDate.setText(setDate(itemEntity.get(0).getPurchasedDate()));
             hideDialog();
         } else {
             getActivity().finish();
@@ -150,7 +150,7 @@ public class DeviceDetailFragment extends Fragment {
         if (data.trim().matches("-")) {
             return text;
         } else {
-            return data;
+            return data.trim();
         }
 
     }
@@ -207,7 +207,7 @@ public class DeviceDetailFragment extends Fragment {
                             int autoId = itemEntity.get(0).getAutoId();
                             hideDialog();
                             loadData.updateLastUpdate(dateFormat.format(date),autoId);
-                            tvLastUpdate.setText("Last Check : " + loadData.getItem().get(autoId).getLastUpdated());
+                            tvLastUpdate.setText(loadData.getItem().get(autoId).getLastUpdated());
                             Toast.makeText(getActivity(), "Success", Toast.LENGTH_SHORT).show();
                         }
                     }

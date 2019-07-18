@@ -18,21 +18,8 @@
         <item name="android:windowEnableSplitTouch">false</item>
         <item name="android:splitMotionEvents">false</item>
         <item name="android:label">@string/add_device</item>
-        <item name="homeAsUpIndicator">@drawable/ic_back</item><!--
-        <item name="alertDialogTheme">@style/AlertDialogTheme</item>-->
+        <item name="homeAsUpIndicator">@drawable/ic_back</item>
     </style>
-
-    <!--<style name="AlertDialogTheme" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
-        <item name="buttonBarNegativeButtonStyle">@style/MaterialButtonStyle</item>
-        <item name="buttonBarPositiveButtonStyle">@style/MaterialButtonStyle</item>
-    </style>
-
-    <style name="MaterialButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
-        <item name="android:textColor">@color/colorPrimary</item>
-        <item name="android:background">@color/float_transparent</item>
-        <item name="backgroundTint">@color/float_transparent</item>
-        <item name="background">@color/float_transparent</item>
-    </style>-->
 
     <style name="AppTheme.noActionbar" parent="Theme.AppCompat.NoActionBar">
         <!-- Customize your theme here. -->
@@ -79,10 +66,8 @@
     </style>
 
     <style name="TextViewForDetailDevice">
-        <item name="android:padding">10dp</item>
-        <item name="android:paddingLeft">30dp</item>
-        <item name="android:paddingStart">30dp</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:padding">2dp</item>
+        <item name="android:textSize">18sp</item>
     </style>
 
     <style name="RelativeLayoutForFab">
@@ -118,6 +103,14 @@
         <item name="android:layout_marginTop">3dp</item>
         <item name="android:layout_marginLeft">40dp</item>
         <item name="android:layout_marginStart">40dp</item>
+    </style>
+
+    <style name="CardViewDetailDevice" parent="CardView.Light">
+        <!--<item name="cardCornerRadius">10dp</item>-->
+        <item name="android:outlineAmbientShadowColor" tools:targetApi="p" />
+        <item name="cardElevation">2dp</item>
+        <item name="cardPreventCornerOverlap">false</item>
+        <item name="contentPadding">0dp</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

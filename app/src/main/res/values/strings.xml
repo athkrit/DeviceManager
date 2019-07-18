@@ -290,4 +290,6 @@
     <string name="warranty_years">Warranty(Years)</string>
     <string name="warranty">Warranty</string>
     <string name="price_unit">Price/Unit</string>
+    <string name="type">Type</string>
+    <string name="last_updated">Last Updated</string>
 </resources>

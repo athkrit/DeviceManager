@@ -14,9 +14,47 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="10dp">
 
-            <TextView
+            <androidx.cardview.widget.CardView
+                style="@style/CardViewDetailDevice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/tvDeviceDetail"
+                        style="@style/TextViewForDetailDevice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/ic_detail"
+                        android:drawableLeft="@drawable/ic_detail"
+                        android:drawablePadding="10dp"
+                        android:text="@string/details"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/tvOwnerName"
+                        style="@style/TextViewForDetailDevice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:drawableStart="@drawable/ic_person"
+                        android:drawableLeft="@drawable/ic_person"
+                        android:drawablePadding="10dp"
+                        android:text="@string/name"
+                        android:textSize="18sp" />
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!--<TextView
                 android:id="@+id/tvItemId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -24,32 +62,9 @@
                 android:layout_marginEnd="20dp"
                 android:layout_marginRight="20dp"
                 android:text="@string/serial_number"
-                android:textSize="12sp" />
+                android:textSize="12sp" />-->
 
-            <TextView
-                android:id="@+id/tvDeviceDetail"
-                style="@style/TextViewForDetailDevice"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawableStart="@drawable/ic_detail"
-                android:drawableLeft="@drawable/ic_detail"
-                android:drawablePadding="10dp"
-                android:text="@string/details"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/tvOwnerName"
-                style="@style/TextViewForDetailDevice"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:drawableStart="@drawable/ic_person"
-                android:drawableLeft="@drawable/ic_person"
-                android:drawablePadding="10dp"
-                android:text="@string/name"
-                android:textSize="18sp" />
-
-            <View style="@style/Divider" />
+            <!--<View style="@style/Divider" />-->
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -57,80 +72,231 @@
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/tvType"
-                    style="@style/TextViewForDetailDevice"
+                <androidx.cardview.widget.CardView
+                    style="@style/CardViewDetailDevice"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1">
 
-                <TextView
-                    android:id="@+id/tvBrand"
-                    style="@style/TextViewForDetailDevice"
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:orientation="vertical"
+                        android:padding="14dp">
+
+                        <TextView
+                            style="@style/TextViewForDetailDevice"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="start"
+                            android:text="@string/type"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/tvType"
+                            style="@style/TextViewForDetailDevice"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="end" />
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    style="@style/CardViewDetailDevice"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:paddingEnd="30dp"
-                    android:paddingRight="30dp" />
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:orientation="vertical"
+                        android:padding="14dp">
+
+                        <TextView
+                            style="@style/TextViewForDetailDevice"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="start"
+                            android:text="@string/brand"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/tvBrand"
+                            style="@style/TextViewForDetailDevice"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="end" />
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/tvModel"
-                style="@style/TextViewForDetailDevice"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/tvSerialNumber"
-                style="@style/TextViewForDetailDevice"
+            <androidx.cardview.widget.CardView
+                style="@style/CardViewDetailDevice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp" />
+                android:layout_marginTop="10dp">
 
-            <View style="@style/Divider" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginRight="20dp"
+                    android:orientation="vertical"
+                    android:padding="14dp">
 
-            <TextView
-                android:id="@+id/tvLastUpdate"
-                style="@style/TextViewForDetailDevice"
+                    <TextView
+                        style="@style/TextViewForDetailDevice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text="@string/model"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tvModel"
+                        style="@style/TextViewForDetailDevice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="end" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                style="@style/CardViewDetailDevice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:text="@string/last_check" />
+                android:layout_marginTop="10dp">
 
-            <TextView
-                android:id="@+id/tvAddedDate"
-                style="@style/TextViewForDetailDevice"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginRight="20dp"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <TextView
+                        style="@style/TextViewForDetailDevice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text="@string/serial_number"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tvSerialNumber"
+                        style="@style/TextViewForDetailDevice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="end" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!--<View style="@style/Divider" />-->
+
+            <androidx.cardview.widget.CardView
+                style="@style/CardViewDetailDevice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/added_date" />
+                android:layout_marginTop="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginRight="20dp"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <TextView
+                        style="@style/TextViewForDetailDevice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/last_updated"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tvLastUpdate"
+                        style="@style/TextViewForDetailDevice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="end" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                style="@style/CardViewDetailDevice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginRight="20dp"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <TextView
+                        style="@style/TextViewForDetailDevice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/added_date"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tvAddedDate"
+                        style="@style/TextViewForDetailDevice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="end" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1" />
-        </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:orientation="horizontal">
+                <Button
+                    android:id="@+id/btnEdit"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:layout_weight="1"
+                    android:text="@string/edit" />
 
-            <Button
-                android:id="@+id/btnEdit"
-                android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:layout_weight="1"
-                android:text="@string/edit" />
+                <Button
+                    android:id="@+id/btnCheck"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:layout_weight="1"
+                    android:text="@string/check" />
+            </LinearLayout>
 
-            <Button
-                android:id="@+id/btnCheck"
-                android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:layout_weight="1"
-                android:text="@string/check" />
         </LinearLayout>
 
         <View
