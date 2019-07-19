@@ -34,6 +34,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.example.devicemanager.R;
 import com.example.devicemanager.activity.ScanBarCodeAddDeviceActivity;
@@ -41,6 +44,7 @@ import com.example.devicemanager.activity.ScanBarcodeActivity;
 import com.example.devicemanager.manager.Contextor;
 import com.example.devicemanager.manager.LoadData;
 import com.example.devicemanager.model.DataItem;
+import com.example.devicemanager.model.ItemEntityViewModel;
 import com.example.devicemanager.room.ItemEntity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -54,6 +58,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -89,6 +94,8 @@ public class AddDeviceFragment extends Fragment {
     private ItemEntity itemSave;
     private SimpleDateFormat dateFormat;
     private Date dateCheck;
+    private ItemEntityViewModel itemEntityViewModel;
+    private ArrayList<ItemEntity> getItemEntity;
 
     public static AddDeviceFragment newInstances() {
         AddDeviceFragment fragment = new AddDeviceFragment();
@@ -157,6 +164,8 @@ public class AddDeviceFragment extends Fragment {
         setSpinner(R.array.branch, spBranch);
         setSpinner(R.array.device_types, spType);
 
+
+        itemEntityViewModel = ViewModelProviders.of(this).get(ItemEntityViewModel.class);
         tvItemId = view.findViewById(R.id.tvItemId);
         etOwnerName = view.findViewById(R.id.etOwnerName);
         etSerialNumber = view.findViewById(R.id.etSerialNumber);
@@ -204,6 +213,12 @@ public class AddDeviceFragment extends Fragment {
                 setData();
             }
         }
+        itemEntityViewModel.getAll().observe(this, new Observer<List<ItemEntity>>() {
+            @Override
+            public void onChanged(@Nullable final List<ItemEntity> itemEntities) {
+                getItemEntity= new ArrayList<>(itemEntities);
+            }
+        });
     }
 
     private void setData() {
@@ -308,9 +323,8 @@ public class AddDeviceFragment extends Fragment {
                         order = 1;
                         String form = "DGO" + YY + branch + category;
 
-                        List<ItemEntity> itemEntity = loadData.getItem();
-                        for (int i = 0; i < itemEntity.size(); i++) {
-                            if (itemEntity.get(i).getUnnamed2().toString().contains(form))
+                        for (int i = 0; i < getItemEntity.size(); i++) {
+                            if (getItemEntity.get(i).getUnnamed2().toString().contains(form))
                                 order++;
                         }
                         int count = 0;
@@ -376,7 +390,7 @@ public class AddDeviceFragment extends Fragment {
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
                     setUpdatedId(lastKey);
-                    loadData.updateItem(dateFormat.format(dateCheck), etOwnerName.getText().toString(), etOwnerId.getText().toString(),
+                    itemEntityViewModel.update(dateFormat.format(dateCheck), etOwnerName.getText().toString(), etOwnerId.getText().toString(),
                             etBrand.getText().toString(), etSerialNumber.getText().toString(), etDeviceDetail.getText().toString(),
                             etDeviceModel.getText().toString(), etWarranty.getText().toString(), etPurchasePrice.getText().toString(),
                             saveDateToDB(etDatePicker.getText().toString()), etDevicePrice.getText().toString(), etNote.getText().toString(),
@@ -412,14 +426,14 @@ public class AddDeviceFragment extends Fragment {
                 "-", "" + dateFormat.format(dateCheck).toString(), "" + order,
                 "" + abbreviation, "-", "DGO", etWarranty.getText().toString());
 
-        itemSave = new ItemEntity(loadData.getItem().size(), getUnnamed2(), type, etDeviceDetail.getText().toString(),
+        itemSave = new ItemEntity(getItemEntity.size(), getUnnamed2(), type, etDeviceDetail.getText().toString(),
                 etSerialNumber.getText().toString(), etOwnerName.getText().toString(),  saveDateToDB(date),etNote.getText().toString(),
                 "-", etOwnerId.getText().toString(), getUnnamed2().substring(3), etDevicePrice.getText().toString(),
                 etDeviceModel.getText().toString(), etDepreciationRate.getText().toString(), "ID", etBrand.getText().toString(),
                 abbreviation, order + "", "-", YY + "", "DGO", "-",
                 etForwardedBudget.getText().toString(), etAccumulateDepreciation.getText().toString(),
                 etWarranty.getText().toString(), etDepreciationinYear.getText().toString(), branch + "",
-                "" + category, etPurchasePrice.getText().toString(), etForwardedBudget.getText().toString(),
+                "" + category, etPurchasePrice.getText().toString(),
                 etForwardDepreciation.getText().toString(), dateFormat.format(dateCheck));
         if (lastKey != null) {
             databaseReference.child(lastKey).setValue(item).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -428,12 +442,13 @@ public class AddDeviceFragment extends Fragment {
                     if (task.isSuccessful()) {
 
                         if (countDevice == quntity) {
-                            loadData.insert(itemSave);
+                            itemEntityViewModel.insert(itemSave);
                             Toast.makeText(getActivity(), "Complete!", Toast.LENGTH_SHORT).show();
                             progressDialogBackground.setVisibility(View.INVISIBLE);
                             progressBar.setVisibility(View.INVISIBLE);
                             Intent intent = new Intent();
                             intent.putExtra("itemId", itemSave.getUnnamed2());
+                            getActivity().setResult(RESULT_OK, intent);
                             getActivity().finish();
                         }
                         countDevice++;
@@ -611,9 +626,8 @@ public class AddDeviceFragment extends Fragment {
     }
 
     private void checkSerial() {
-        List<ItemEntity> itemEntities = loadData.getItem();
-        for (int i = 0; i < itemEntities.size(); i++) {
-            if (itemEntities.get(i).getSerialNo().matches(serial)) {
+        for (int i = 0; i < getItemEntity.size(); i++) {
+            if (getItemEntity.get(i).getSerialNo().matches(serial)) {
                 showAlertDialog("serial");
             }
         }
@@ -628,10 +642,6 @@ public class AddDeviceFragment extends Fragment {
 
         if (type == null || type.length() == 0) {
             type = spTypeList.getSelectedItem().toString();
-        }
-
-        if (YY == null || YY.length() == 0) {
-            YY = etDatePicker.getText().toString().substring(8, 10);
         }
 
         if (branch == 0) {
@@ -710,6 +720,10 @@ public class AddDeviceFragment extends Fragment {
             etDeviceModel.setText("1");
             Toast.makeText(getContext(), "1 piece", Toast.LENGTH_SHORT).show();
         }
+        if (YY == null || YY.length() == 0) {
+            YY = etDatePicker.getText().toString().substring(8, 10);
+        }
+
         return true;
     }
 

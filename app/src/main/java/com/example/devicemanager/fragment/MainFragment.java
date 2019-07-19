@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,8 +15,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -30,6 +32,7 @@ import com.example.devicemanager.activity.ScanBarcodeActivity;
 import com.example.devicemanager.adapter.ItemListAdapter;
 import com.example.devicemanager.manager.DataManager;
 import com.example.devicemanager.manager.LoadData;
+import com.example.devicemanager.model.ItemEntityViewModel;
 import com.example.devicemanager.room.AppDatabase;
 import com.example.devicemanager.room.ItemEntity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -43,7 +46,12 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
+import static android.app.Activity.RESULT_OK;
 
 
 /**
@@ -52,7 +60,7 @@ import java.util.Locale;
 @SuppressWarnings("unused")
 public class MainFragment extends Fragment implements ItemListAdapter.Holder.ItemClickListener {
 
-    private Button btnAdd, btnCheck, btnSummary;
+    private Button btnAdd, btnCheck, btnSummary,downloadStatus;
     private FloatingActionButton floatingButton;
     private android.widget.SearchView searchView;
     private boolean isFABOpen = false;
@@ -63,13 +71,13 @@ public class MainFragment extends Fragment implements ItemListAdapter.Holder.Ite
     private ItemListAdapter adapter,adapterNew;
     private LinearLayoutManager layoutManager;
     private LoadData loadData;
-    private Boolean downloadStatus;
     SharedPreferences sp;
     SharedPreferences.Editor editor;
     private View view;
     private ProgressBar progressBar;
     AppDatabase database;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private ItemEntityViewModel itemEntityViewModel;
 
     public MainFragment() {
         super();
@@ -125,12 +133,31 @@ public class MainFragment extends Fragment implements ItemListAdapter.Holder.Ite
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                if(adapter == null){
+                    return true;
+                }
                 adapter.getFilter().filter(newText);
                 return true;
             }
         });
 
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 11111) {
+            if (resultCode == RESULT_OK) {
+                ItemEntity itemEntity = new ItemEntity();
+                loadData = new LoadData(getActivity());
+                SuccessDialog();
+//                if (loadData.deleteTable() == 1) {
+//                    swipeRefreshLayout.setRefreshing(true);
+//                    loadData();
+//                }
+            }
+        }
     }
 
     @Override
@@ -167,12 +194,27 @@ public class MainFragment extends Fragment implements ItemListAdapter.Holder.Ite
         dataManager = new DataManager();
         loadData = new LoadData(getContext());
 
+        itemEntityViewModel = ViewModelProviders.of(this).get(ItemEntityViewModel.class);
+
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new ItemListAdapter(getContext());
-        adapter.setClickListener(this);
+        if(loadData == null){
+            loadData();
+        }
+        itemEntityViewModel.getOrder().observe(this, new Observer<List<ItemEntity>>() {
+            @Override
+            public void onChanged(@Nullable final List<ItemEntity> itemEntities) {
+                if(itemEntities.size() == 0){
+                    view.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.VISIBLE);
+                    loadData();
+                }
+                adapter = new ItemListAdapter(getContext(),itemEntities);
+                recyclerView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+            }
+        });
         recyclerView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
         swipeRefreshLayout =  rootView.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(pullToRefresh);
 
@@ -182,19 +224,15 @@ public class MainFragment extends Fragment implements ItemListAdapter.Holder.Ite
         @Override
         public void onClick(View view) {
             Intent intent = new Intent(getActivity(), AddDeviceActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, 11111);
         }
     };
 
     androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener pullToRefresh = new androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener() {
         @Override
         public void onRefresh() {
-            progressBar.setVisibility(View.VISIBLE);
-            view.setVisibility(View.VISIBLE);
-            swipeRefreshLayout.setRefreshing(false);
             if (loadData.deleteTable() == 1) {
                 loadData();
-                Log.d("test1607", "swipe");
             }
         }
     };
@@ -212,15 +250,12 @@ public class MainFragment extends Fragment implements ItemListAdapter.Holder.Ite
                             item.setPurchasedDate(setDate(item.getPurchasedDate()));
                         }
                         item.setAutoId(Integer.parseInt(s.getKey()));
-                        loadData.insert(item);
+                        itemEntityViewModel.insert(item);
                     }
                 }
-                new ItemListAdapter(getContext());
-                recyclerView.setAdapter(adapter);
-
+                swipeRefreshLayout.setRefreshing(false);
                 view.setVisibility(View.INVISIBLE);
                 progressBar.setVisibility(View.INVISIBLE);
-                swipeRefreshLayout.setRefreshing(false);
             }
 
             @Override
@@ -253,5 +288,17 @@ public class MainFragment extends Fragment implements ItemListAdapter.Holder.Ite
 
         return str;
 
+    }
+
+    private void SuccessDialog() {
+        new SweetAlertDialog(getContext(), SweetAlertDialog.SUCCESS_TYPE)
+                .setTitleText("Success")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        sDialog.dismissWithAnimation();
+                    }
+                })
+                .show();
     }
 }

@@ -2,7 +2,6 @@ package com.example.devicemanager.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,10 +18,10 @@ import com.example.devicemanager.manager.Contextor;
 public class SummaryAdapter extends RecyclerView.Adapter<SummaryAdapter.Holder> {
     private Context context;
     private int[] available,count,total;
-    private Context contector = Contextor.getInstance().getContext();
+    private Context contextor = Contextor.getInstance().getContext();
     private String[] brand,type,
-            funiture = contector.getResources().getStringArray(R.array.furniture),
-            other = contector.getResources().getStringArray(R.array.other_summary);
+            furniture = contextor.getResources().getStringArray(R.array.furniture),
+            other = contextor.getResources().getStringArray(R.array.other_summary);
 
     public SummaryAdapter(Context context) {
         this.context = context;
@@ -31,22 +30,27 @@ public class SummaryAdapter extends RecyclerView.Adapter<SummaryAdapter.Holder> 
 
     public void setBrand(String[] brand) {
         this.brand = brand;
+        notifyDataSetChanged();
     }
 
     public void setTotal(int[] total) {
         this.total = total;
+        notifyDataSetChanged();
     }
 
     public void setCount(int[] count) {
         this.count = count;
+        notifyDataSetChanged();
     }
 
     public void setAvailable(int[] available) {
         this.available = available;
+        notifyDataSetChanged();
     }
 
     public void setType(String[] type) {
         this.type = type;
+        notifyDataSetChanged();
     }
 
 
@@ -157,8 +161,8 @@ public class SummaryAdapter extends RecyclerView.Adapter<SummaryAdapter.Holder> 
                     return;
                 }
             }
-            for (int i = 0; i < funiture.length; i++) {
-                if (funiture[i].toUpperCase().trim().matches(type[position].toUpperCase().trim())){
+            for (int i = 0; i < furniture.length; i++) {
+                if (furniture[i].toUpperCase().trim().matches(type[position].toUpperCase().trim())){
                     imgView.setImageResource(R.drawable.ic_summary_furniture_s);
                     return;
                 }

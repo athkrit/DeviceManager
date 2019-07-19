@@ -8,13 +8,18 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.devicemanager.R;
 import com.example.devicemanager.adapter.SummaryAdapter;
 import com.example.devicemanager.manager.LoadData;
+import com.example.devicemanager.model.ItemEntityViewModel;
 import com.example.devicemanager.room.ItemEntity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -24,11 +29,11 @@ public class SummaryFragment extends Fragment {
     private FloatingActionButton fabContainer;
     private boolean isFABOpen = false;
     private RecyclerView rvSummary;
-    private SummaryAdapter summaryAdapter,summaryAdapterLaptop;
+    private SummaryAdapter summaryAdapter, summaryAdapterLaptop;
     private RecyclerView.LayoutManager layoutManager;
     private RelativeLayout layoutAll, layoutDevice, layoutLaptop, layoutFurniture, layoutOther;
     private View hidedView;
-
+    private ItemEntityViewModel itemEntityViewModel;
     private LoadData loadData;
     String[] typeDevice, typeFurniture, typeOther, typeAll;
     int[] intDevice, intFurniture, intOther, intAll;
@@ -74,7 +79,7 @@ public class SummaryFragment extends Fragment {
 
         layoutManager = new LinearLayoutManager(getContext());
         rvSummary = rootView.findViewById(R.id.rvSummary);
-
+        itemEntityViewModel = ViewModelProviders.of(this).get(ItemEntityViewModel.class);
         typeAll = getResources().getStringArray(R.array.allType);
 //                new String[]{"ACCESS POINT", "ADAPTER", "AIR CONDITIONER", "APPLE CARE", "BARCODE READER", "BATTERY",
 //                "BICYCLE", "CABINET", "CAMERA", "CAR", "CARD READER", "CARPET", "CART", "CASH DRAWER", "CHAIR",
@@ -113,72 +118,78 @@ public class SummaryFragment extends Fragment {
 
     }
 
-    private void getDataByType(String[] type) {
-        if(type == null || type.length == 0){
+    private void getDataByType(final String[] type) {
+        if (type == null || type.length == 0) {
             Toast.makeText(getActivity(), "Error to get ", Toast.LENGTH_SHORT).show();
             return;
         }
         summaryAdapter = new SummaryAdapter(getContext());
-        int[] typeTotal = new int[type.length];
-        int[] typeAvailable = new int[type.length];
-        int[] typeInUse = new int[type.length];
-        List<ItemEntity> itemEntities = loadData.getItem();
-
-        for (int i = 0; i < itemEntities.size(); i++) {
-            for (int j = 0; j < type.length; j++)
-                if (itemEntities.get(i).getType().trim().matches(type[j])) {
-                    String place = itemEntities.get(i).getPlaceName();
-                    if (place.matches("-")) {
-                        typeAvailable[j] = typeAvailable[j] + 1;
-                    } else {
-                        typeInUse[j] = typeInUse[j] + 1;
-                    }
-                    typeTotal[j] = typeTotal[j] + 1;
-                    break;
+        final int[] typeTotal = new int[type.length];
+        final int[] typeAvailable = new int[type.length];
+        final int[] typeInUse = new int[type.length];
+        itemEntityViewModel.getAll().observe(this, new Observer<List<ItemEntity>>() {
+            @Override
+            public void onChanged(@Nullable final List<ItemEntity> itemEntities) {
+                for (int i = 0; i < itemEntities.size(); i++) {
+                    for (int j = 0; j < type.length; j++)
+                        if (itemEntities.get(i).getType().trim().matches(type[j])) {
+                            String place = itemEntities.get(i).getPlaceName();
+                            if (place.matches("-")) {
+                                typeAvailable[j] = typeAvailable[j] + 1;
+                            } else {
+                                typeInUse[j] = typeInUse[j] + 1;
+                            }
+                            typeTotal[j] = typeTotal[j] + 1;
+                            break;
+                        }
                 }
-        }
-        summaryAdapter.setAvailable(typeAvailable);
-        summaryAdapter.setBrand(null);
-        summaryAdapter.setType(type);
-        summaryAdapter.setCount(typeInUse);
-        summaryAdapter.setTotal(typeTotal);
-        summaryAdapter.notifyDataSetChanged();
-        rvSummary.setLayoutManager(layoutManager);
-        rvSummary.setAdapter(summaryAdapter);
+                summaryAdapter.setAvailable(typeAvailable);
+                summaryAdapter.setBrand(null);
+                summaryAdapter.setType(type);
+                summaryAdapter.setCount(typeInUse);
+                summaryAdapter.setTotal(typeTotal);
+                summaryAdapter.notifyDataSetChanged();
+                rvSummary.setLayoutManager(layoutManager);
+                rvSummary.setAdapter(summaryAdapter);
+            }
+        });
     }
 
     private void getLaptop() {
         summaryAdapterLaptop = new SummaryAdapter(getContext());
-        String[] type = {"LAPTOP"};
-        String[] brand = {"Apple", "Dell", "HP", "Lenovo", "True IDC Chromebook 11", "-"};
-        int[] brandTotal = new int[brand.length];
-        int[] brandAvailable = new int[brand.length];
-        int[] brandInUse = new int[brand.length];
-        List<ItemEntity> itemEntities = loadData.getItem();
-
-        for (int i = 0; i < itemEntities.size(); i++) {
-            for (int j = 0; j < brand.length; j++)
-                if (itemEntities.get(i).getType().trim().toLowerCase().matches(type[0].toLowerCase())) {
-                    if (itemEntities.get(i).getBrand().trim().toLowerCase().matches(brand[j].trim().toLowerCase())) {
-                        String place = itemEntities.get(i).getPlaceName();
-                        if (place.matches("-")) {
-                            brandAvailable[j] = brandAvailable[j] + 1;
-                        } else {
-                            brandInUse[j] = brandInUse[j] + 1;
+        final String[] type = {"LAPTOP"};
+        final String[] brand = {"Apple", "Dell", "HP", "Lenovo", "True IDC Chromebook 11", "-"};
+        final int[] brandTotal = new int[brand.length];
+        final int[] brandAvailable = new int[brand.length];
+        final int[] brandInUse = new int[brand.length];
+        itemEntityViewModel.getAll().observe(this, new Observer<List<ItemEntity>>() {
+            @Override
+            public void onChanged(@Nullable final List<ItemEntity> itemEntities) {
+                for (int i = 0; i < itemEntities.size(); i++) {
+                    for (int j = 0; j < brand.length; j++)
+                        if (itemEntities.get(i).getType().trim().toLowerCase().matches(type[0].toLowerCase())) {
+                            if (itemEntities.get(i).getBrand().trim().toLowerCase().matches(brand[j].trim().toLowerCase())) {
+                                String place = itemEntities.get(i).getPlaceName();
+                                if (place.matches("-")) {
+                                    brandAvailable[j] = brandAvailable[j] + 1;
+                                } else {
+                                    brandInUse[j] = brandInUse[j] + 1;
+                                }
+                                brandTotal[j] = brandTotal[j] + 1;
+                                break;
+                            }
                         }
-                        brandTotal[j] = brandTotal[j] + 1;
-                        break;
-                    }
                 }
-        }
-        summaryAdapterLaptop.setAvailable(brandAvailable);
-        summaryAdapterLaptop.setBrand(brand);
-        summaryAdapterLaptop.setType(type);
-        summaryAdapterLaptop.setCount(brandInUse);
-        summaryAdapterLaptop.setTotal(brandTotal);
-        summaryAdapterLaptop.notifyDataSetChanged();
-        rvSummary.setLayoutManager(layoutManager);
-        rvSummary.setAdapter(summaryAdapterLaptop);
+                summaryAdapterLaptop.setAvailable(brandAvailable);
+                summaryAdapterLaptop.setBrand(brand);
+                summaryAdapterLaptop.setType(type);
+                summaryAdapterLaptop.setCount(brandInUse);
+                summaryAdapterLaptop.setTotal(brandTotal);
+                summaryAdapterLaptop.notifyDataSetChanged();
+                rvSummary.setLayoutManager(layoutManager);
+                rvSummary.setAdapter(summaryAdapterLaptop);
+            }
+        });
     }
 
     private void closeFABMenu() {
@@ -204,7 +215,7 @@ public class SummaryFragment extends Fragment {
         layoutOther.animate().translationY(-getResources().getDimension(R.dimen.transition_floating_5));
     }
 
-    private void delayCloseFab(){
+    private void delayCloseFab() {
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -218,7 +229,7 @@ public class SummaryFragment extends Fragment {
         }, 200);
     }
 
-    private void delayOpenFab(){
+    private void delayOpenFab() {
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -241,24 +252,19 @@ public class SummaryFragment extends Fragment {
                 } else {
                     closeFABMenu();
                 }
-            }
-           else if(view == layoutAll){
+            } else if (view == layoutAll) {
                 getDataByType(typeAll);
                 closeFABMenu();
-            }
-            else if (view == layoutDevice){
+            } else if (view == layoutDevice) {
                 getDataByType(typeDevice);
                 closeFABMenu();
-            }
-            else if (view == layoutLaptop){
+            } else if (view == layoutLaptop) {
                 getLaptop();
                 closeFABMenu();
-            }
-            else if (view == layoutFurniture){
+            } else if (view == layoutFurniture) {
                 getDataByType(typeFurniture);
                 closeFABMenu();
-            }
-            else if (view == layoutOther){
+            } else if (view == layoutOther) {
                 getDataByType(typeOther);
                 closeFABMenu();
             }

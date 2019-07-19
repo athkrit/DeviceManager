@@ -16,10 +16,4 @@
         android:title="@string/barcode"
         app:showAsAction="always" />
 
-    <item
-        android:id="@+id/action"
-        android:icon="@drawable/ic_barcode"
-        android:title="@string/barcode"
-        app:showAsAction="always" />
-
 </menu>

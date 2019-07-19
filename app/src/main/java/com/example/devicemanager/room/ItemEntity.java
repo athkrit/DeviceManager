@@ -55,7 +55,6 @@ public class ItemEntity {
     private String assetTypeCode;
     private String purchasedPrice;
     private String forwardDepreciation;
-    private String forwardBudget;
     private String lastUpdated;
 
     public ItemEntity(){
@@ -68,7 +67,7 @@ public class ItemEntity {
                       String order, String groupByFIXGL, String ad, String unnamed1, String sticker,
                       String forwardedBudget, String accumulatedDepreciation, String warrantyDate,
                       String depreciationYear, String branchCode, String assetTypeCode,
-                      String purchasedPrice, String forwardBudget, String forwardDepreciation,
+                      String purchasedPrice, String forwardDepreciation,
                       String lastUpdated) {
         this.autoId = autoId;
         this.unnamed2 = unnamed2;
@@ -100,7 +99,6 @@ public class ItemEntity {
         this.assetTypeCode = assetTypeCode;
         this.purchasedPrice = purchasedPrice;
         this.lastUpdated = lastUpdated;
-        this.forwardBudget = forwardBudget;
         this.forwardDepreciation = forwardDepreciation;
     }
 
@@ -341,14 +339,6 @@ public class ItemEntity {
 
     public void setForwardDepreciation(String forwardDepreciation) {
         this.forwardDepreciation = forwardDepreciation;
-    }
-
-    public String getForwardBudget() {
-        return forwardBudget;
-    }
-
-    public void setForwardBudget(String forwardBudget) {
-        this.forwardBudget = forwardBudget;
     }
 
     public String getLastUpdated() {

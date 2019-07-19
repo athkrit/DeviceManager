@@ -1,5 +1,6 @@
 package com.example.devicemanager.room;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
@@ -12,10 +13,10 @@ import java.util.List;
 public interface ItemDao {
 
     @Query("SELECT * FROM ItemEntity")
-    List<ItemEntity> getAll();
+    LiveData<List<ItemEntity>> getAll();
 
     @Query("SELECT * FROM ItemEntity ORDER BY purchased_date ASC, item_detail DESC")
-    List<ItemEntity> getAllOrderByDate();
+    LiveData<List<ItemEntity>> getAllOrderByDate();
 
     @Query("SELECT * FROM ItemEntity WHERE item_id = :id ")
     List<ItemEntity> getProduct(String id);
@@ -32,7 +33,7 @@ public interface ItemDao {
     @Query("SELECT * FROM ItemEntity WHERE item_type = :type ORDER BY brand DESC")
     List<ItemEntity> getAllProductByTypeOrderBrandDesc(String type);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertAll(ItemEntity item);
 
     @Query("UPDATE itementity SET lastUpdated = :lastUpdate WHERE autoId = :id")
@@ -43,11 +44,11 @@ public interface ItemDao {
             "item_detail = :item_detail ,model = :model ,warrantyDate = :warrantyDate ,purchasedPrice = :purchasedPrice ,"+
             "purchased_date = :purchased_date ,price = :price ,note = :note ,forwardDepreciation = :forwardDepreciation ,"+
             "depreciationRate = :depreciationRate ,depreciationYear = :depreciationYear ," +
-            "accumulatedDepreciation = :accumulatedDepreciation ,forwardBudget = :forwardBudget WHERE autoId = :id")
+            "accumulatedDepreciation = :accumulatedDepreciation ,forwardedBudget = :forwardedBudget WHERE autoId = :id")
     void updateDataFromAdd(String lastUpdate, String ownedName, String ownerId, String brand, String serial_no, String item_detail,
                            String model, String warrantyDate, String purchasedPrice, String purchased_date, String price, String note,
                            String forwardDepreciation, String depreciationRate, String depreciationYear, String accumulatedDepreciation,
-                           String forwardBudget, int id);
+                           String forwardedBudget, int id);
 
     @Query("DELETE FROM ItemEntity")
     void delete();

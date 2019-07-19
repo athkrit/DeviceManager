@@ -2,7 +2,7 @@ package com.example.devicemanager.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.util.Log;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.devicemanager.R;
+import com.example.devicemanager.activity.DeviceDetailActivity;
 import com.example.devicemanager.manager.Contextor;
-import com.example.devicemanager.manager.LoadData;
 import com.example.devicemanager.room.ItemEntity;
 
 import java.text.ParseException;
@@ -30,12 +30,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.Holder
     private static List<ItemEntity> list;
     private Context context;
     private Holder.ItemClickListener mClickListener;
-    private LoadData loadData;
     private List<ItemEntity> filteredList = new ArrayList<>();
-
-    public String getItemId() {
-        return itemId;
-    }
 
     public void setItemId(String itemId) {
         this.itemId = itemId;
@@ -47,11 +42,11 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.Holder
 
     private String itemId;
 
-    public ItemListAdapter(Context context) {
+    public ItemListAdapter(Context context, List<ItemEntity> list) {
         this.context = context;
-        loadData = new LoadData(context);
-        list = loadData.getOrderedItem();
-        source = new ArrayList<>(list);
+        this.list = list;
+        this.source = new ArrayList<>(list);
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -70,15 +65,21 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.Holder
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mClickListener != null) {
-                    mClickListener.onItemClick(v, position, list.get(position).getUnnamed2());
-                }
+//                if (mClickListener != null) {
+//                    mClickListener.onItemClick(v, position, list.get(position).getUnnamed2());
+//                }
+                Intent intent = new Intent(context, DeviceDetailActivity.class);
+                intent.putExtra("serial", list.get(position).getUnnamed2());
+                context.startActivity(intent);
             }
         });
     }
 
     @Override
     public int getItemCount() {
+        if(list == null){
+            return 0;
+        }
         return list.size();
     }
 
@@ -92,7 +93,8 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.Holder
             filteredList.clear();
             boolean checkData = false;
             if (charSequence == null || charSequence.length() == 0) {
-                filteredList.addAll(loadData.getOrderedItem());
+                filteredList.addAll(source);
+
             } else {
                 String[] filterPattern = charSequence.toString().toLowerCase().trim().split("\\s+");
 
@@ -153,26 +155,26 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.Holder
             String brand = list.get(position).getBrand().trim();
             String detail = list.get(position).getDetail().trim();
 
-            if (!brand.matches("-") && !checkBrand(detail, brand)){
+            if (!brand.matches("-") && !checkBrand(detail, brand)) {
                 tvSearchDetail.setText("(" + brand + ") " + detail);
-            }
-            else {
+            } else {
                 tvSearchDetail.setText(detail);
             }
             tvSearchName.setText(list.get(position).getPlaceName().trim());
             tvSearchType.setText(list.get(position).getType().trim());
             tvSearchPurchasedDate.setText(setDate(list.get(position).getPurchasedDate().trim()));
+
         }
 
         public interface ItemClickListener {
             void onItemClick(View view, int position, String serial);
         }
 
-        private boolean checkBrand(String detail, String brand){
+        private boolean checkBrand(String detail, String brand) {
             return detail.toLowerCase().contains(brand.toLowerCase());
         }
 
-        private String setDate(String inputDate){
+        private String setDate(String inputDate) {
 
             String inputFormat = "yyyy-MM-dd";
             SimpleDateFormat inputDateFormat = new SimpleDateFormat(
@@ -194,5 +196,6 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.Holder
             return str;
 
         }
+
     }
 }

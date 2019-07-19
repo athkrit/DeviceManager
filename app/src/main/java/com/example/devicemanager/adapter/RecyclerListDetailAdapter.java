@@ -22,30 +22,37 @@ public class RecyclerListDetailAdapter extends RecyclerView.Adapter<RecyclerList
 
     public void setBrand(ArrayList<String> brand) {
         this.brand = brand;
+        notifyDataSetChanged();
     }
 
     public void setKey(ArrayList<String> key) {
         this.key = key;
+        notifyDataSetChanged();
     }
 
     public void setDetail(ArrayList<String> detail) {
         this.detail = detail;
+        notifyDataSetChanged();
     }
 
     public void setOwner(ArrayList<String> owner) {
         this.owner = owner;
+        notifyDataSetChanged();
     }
 
     public void setAddedDate(ArrayList<String> addedDate) {
         this.addedDate = addedDate;
+        notifyDataSetChanged();
     }
 
     public void setStatus(ArrayList<String> status) {
         this.status = status;
+        notifyDataSetChanged();
     }
 
     public RecyclerListDetailAdapter(Context context) {
         this.context = context;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -90,11 +97,11 @@ public class RecyclerListDetailAdapter extends RecyclerView.Adapter<RecyclerList
 
         public Holder(View itemView) {
             super(itemView);
-            tvBrand = (TextView) itemView.findViewById(R.id.tvBrand);
-            tvDetail = (TextView) itemView.findViewById(R.id.tvDetail);
-            tvOwner = (TextView) itemView.findViewById(R.id.tvOwner);
+            tvBrand     = (TextView) itemView.findViewById(R.id.tvBrand);
+            tvDetail    = (TextView) itemView.findViewById(R.id.tvDetail);
+            tvOwner     = (TextView) itemView.findViewById(R.id.tvOwner);
             tvAddedDate = (TextView) itemView.findViewById(R.id.tvAddedDate);
-            tvStatus = (TextView) itemView.findViewById(R.id.tvStatus);
+            tvStatus    = (TextView) itemView.findViewById(R.id.tvStatus);
         }
 
         @SuppressLint("ResourceAsColor")

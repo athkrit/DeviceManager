@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
 import androidx.room.Room;
 
 import com.example.devicemanager.room.AppDatabase;
@@ -18,11 +20,16 @@ import java.util.concurrent.Executors;
 
 public class LoadData {
     private ItemDao itemDao;
+    private LiveData<List<ItemEntity>> listLiveData;
     private AppDatabase db;
 
     public LoadData(Context context) {
         db = Room.databaseBuilder(context, AppDatabase.class, "app_database").build();
         itemDao = db.itemDao();
+        listLiveData = itemDao.getAll();
+    }
+    public LiveData<List<ItemEntity>> getAllItemEntity() {
+        return listLiveData;
     }
 
     public Integer insert(ItemEntity itemEntity) {
@@ -74,8 +81,8 @@ public class LoadData {
         return itemEntities;
     }
 
-    public List<ItemEntity> getItem() {
-        List<ItemEntity> itemEntities = new ArrayList<>();
+    public LiveData<List<ItemEntity>> getItem() {
+        LiveData<List<ItemEntity>> itemEntities = new MediatorLiveData<>();
         try {
             itemEntities = new GetItemAsyncTask(itemDao).execute().get();
         } catch (ExecutionException e) {
@@ -86,8 +93,8 @@ public class LoadData {
         return itemEntities;
     }
 
-    public List<ItemEntity> getOrderedItem() {
-        List<ItemEntity> itemEntities = new ArrayList<>();
+    public LiveData<List<ItemEntity>> getOrderedItem() {
+        LiveData<List<ItemEntity>> itemEntities = new MediatorLiveData<>();
         try {
             itemEntities = new GetOrderedItemAsyncTask(itemDao).execute().get();
         } catch (ExecutionException e) {
@@ -130,7 +137,7 @@ public class LoadData {
         }
     }
 
-    private static class GetItemAsyncTask extends AsyncTask<ItemEntity, Void, List<ItemEntity>> {
+    private static class GetItemAsyncTask extends AsyncTask<ItemEntity, Void, LiveData<List<ItemEntity>>> {
 
         private ItemDao itemDao;
 
@@ -139,12 +146,12 @@ public class LoadData {
         }
 
         @Override
-        protected List<ItemEntity> doInBackground(ItemEntity... itemEntities) {
+        protected LiveData<List<ItemEntity>> doInBackground(ItemEntity... itemEntities) {
             return itemDao.getAll();
         }
     }
 
-    private static class GetOrderedItemAsyncTask extends AsyncTask<ItemEntity, Void, List<ItemEntity>> {
+    private static class GetOrderedItemAsyncTask extends AsyncTask<ItemEntity, Void, LiveData<List<ItemEntity>>> {
 
         private ItemDao itemDao;
 
@@ -153,7 +160,7 @@ public class LoadData {
         }
 
         @Override
-        protected List<ItemEntity> doInBackground(ItemEntity... itemEntities) {
+        protected LiveData<List<ItemEntity>> doInBackground(ItemEntity... itemEntities) {
             return itemDao.getAllOrderByDate();
         }
     }

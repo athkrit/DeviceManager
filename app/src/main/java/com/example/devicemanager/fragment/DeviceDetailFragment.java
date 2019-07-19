@@ -7,6 +7,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -17,10 +20,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.example.devicemanager.R;
 import com.example.devicemanager.activity.AddDeviceActivity;
 import com.example.devicemanager.manager.LoadData;
+import com.example.devicemanager.model.ItemEntityViewModel;
 import com.example.devicemanager.room.ItemEntity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -54,6 +59,7 @@ public class DeviceDetailFragment extends Fragment {
     private int updatedKey;
     private String lastKey;
     List<ItemEntity> itemEntity;
+    private ItemEntityViewModel itemEntityViewModel;
 
     public static DeviceDetailFragment newInstances(String barcode) {
         DeviceDetailFragment fragment = new DeviceDetailFragment();
@@ -66,6 +72,7 @@ public class DeviceDetailFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Nullable
@@ -74,6 +81,24 @@ public class DeviceDetailFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_detail_device, container, false);
         initInstances(view);
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_list_detail, menu);
+        MenuItem menuEdit = menu.findItem(R.id.action_edit);
+        menuEdit.expandActionView();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_edit) {
+            Intent intent = new Intent(getActivity(), AddDeviceActivity.class);
+            intent.putExtra("Serial", serial);
+            startActivityForResult(intent, 11111);
+        }
+        return true;
     }
 
     @Override
@@ -92,6 +117,8 @@ public class DeviceDetailFragment extends Fragment {
 
         loadData = new LoadData(getContext());
 
+        itemEntityViewModel = ViewModelProviders.of(this).get(ItemEntityViewModel.class);
+
         tvSerialNumber = view.findViewById(R.id.tvSerialNumber);
         tvOwnerName = view.findViewById(R.id.tvOwnerName);
         tvDeviceDetail = view.findViewById(R.id.tvDeviceDetail);
@@ -101,10 +128,8 @@ public class DeviceDetailFragment extends Fragment {
         //tvItemId = view.findViewById(R.id.tvItemId);
         tvBrand = view.findViewById(R.id.tvBrand);
         tvModel = view.findViewById(R.id.tvModel);
-
-        btnEdit = view.findViewById(R.id.btnEdit);
         btnCheck = view.findViewById(R.id.btnCheck);
-        btnEdit.setOnClickListener(clickListener);
+
         btnCheck.setOnClickListener(clickListener);
 
         progressBar = (ProgressBar) view.findViewById(R.id.spin_kit);
@@ -206,8 +231,8 @@ public class DeviceDetailFragment extends Fragment {
                         if (task.isSuccessful()) {
                             int autoId = itemEntity.get(0).getAutoId();
                             hideDialog();
-                            loadData.updateLastUpdate(dateFormat.format(date),autoId);
-                            tvLastUpdate.setText(loadData.getItem().get(autoId).getLastUpdated());
+                            itemEntityViewModel.updateLastUpdate(dateFormat.format(date), autoId);
+                            tvLastUpdate.setText(dateFormat.format(date));
                             Toast.makeText(getActivity(), "Success", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -284,16 +309,15 @@ public class DeviceDetailFragment extends Fragment {
                 })
                 .show();
     }
+
     private View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            if (view == btnEdit) {
-                Intent intent = new Intent(getActivity(), AddDeviceActivity.class);
-                intent.putExtra("Serial", serial);
-                startActivityForResult(intent, 11111);
-            } else if (view == btnCheck) {
+            if (view == btnCheck) {
                 showAlertDialog(R.string.dialog_msg_checked, "check");
+
             }
         }
     };
+
 }

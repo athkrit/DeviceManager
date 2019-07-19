@@ -72,9 +72,9 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intent);
                         finish();
                     } else {
-                        showLoadingView();
-                        setUpLoadData();
-                        //setStartFragment();
+//                        showLoadingView();
+//                        setUpLoadData();
+                        setStartFragment();
                     }
                 }
             };
@@ -94,6 +94,9 @@ public class MainActivity extends AppCompatActivity {
         sp = this.getSharedPreferences("DownloadStatus", Context.MODE_PRIVATE);
 
         loadData = new LoadData(this);
+        if(loadData.getItem() == null){
+            loadData();
+        }
     }
 
     @Override
@@ -104,10 +107,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (getIntent().getStringExtra("itemId") != null) {
-            SuccessDialog();
-            setUpLoadData();
-        }
+//        if (getIntent().getStringExtra("itemId") != null) {
+//            SuccessDialog();
+//            setUpLoadData();
+//        }
     }
 
     @Override
@@ -174,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Reload", new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                setUpLoadData();
+//                                setUpLoadData();
                             }
                         }).show();
             }
