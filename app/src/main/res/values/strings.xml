@@ -247,11 +247,11 @@
     <string name="title_activity_register">Register</string>
     <string name="invitation_code">Invitation Code</string>
     <string name="digio_email">digio.co.th</string>
-    <string name="added_date">Added Date</string>
+    <string name="added_date">Added Date:</string>
     <string name="last_check">Last Check</string>
     <string name="price">Price</string>
-    <string name="model">Model</string>
-    <string name="brand">Brand</string>
+    <string name="model">Model:</string>
+    <string name="brand">Brand:</string>
     <string name="details">Details</string>
     <string name="device_details">Device Details</string>
     <string name="serial_number">Serial Number</string>
@@ -290,6 +290,7 @@
     <string name="warranty_years">Warranty(Years)</string>
     <string name="warranty">Warranty</string>
     <string name="price_unit">Price/Unit</string>
-    <string name="type">Type</string>
-    <string name="last_updated">Last Updated</string>
+    <string name="type">Type:</string>
+    <string name="last_updated">Last Updated:</string>
+    <string name="s_n">S/N</string>
 </resources>

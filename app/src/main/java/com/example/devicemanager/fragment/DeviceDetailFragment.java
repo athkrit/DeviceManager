@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -49,6 +50,10 @@ import static android.app.Activity.RESULT_OK;
 
 public class DeviceDetailFragment extends Fragment {
 
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
+
     private TextView tvSerialNumber, tvOwnerName, tvDeviceDetail,
             tvLastUpdate, tvAddedDate, tvType, tvItemId, tvBrand, tvModel;
     private static String serial;
@@ -72,6 +77,7 @@ public class DeviceDetailFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         setHasOptionsMenu(true);
     }
 
@@ -214,6 +220,9 @@ public class DeviceDetailFragment extends Fragment {
         });
         AlertDialog dialog = builder.create();
         dialog.show();
+        dialog.getButton(DialogInterface.BUTTON_POSITIVE).setBackgroundColor(getResources().getColor(android.R.color.transparent));
+        dialog.getButton(DialogInterface.BUTTON_NEGATIVE)
+                .setBackgroundColor(getResources().getColor(android.R.color.transparent));
     }
 
     private void checkedDevice() {
