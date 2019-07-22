@@ -36,14 +36,38 @@
                 android:gravity="center"
                 android:text="@string/device_detail" />
 
-            <TextView
-                android:id="@+id/tvSummary"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
+            <RelativeLayout
                 android:layout_weight="1"
-                android:drawableTop="@drawable/ico_summary"
-                android:gravity="center"
-                android:text="@string/summary" />
+                android:layout_width="0dp"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/tvSummary"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:drawableTop="@drawable/ico_summary"
+                    android:gravity="center"
+                    android:text="@string/summary" />
+                <View
+                    android:id="@+id/view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/transparent_background"
+                    android:clickable="true"
+                    android:visibility="invisible" />
+
+                <com.github.ybq.android.spinkit.SpinKitView
+                    android:id="@+id/spin_kit"
+                    style="@style/SpinKitView.Large.ThreeBounce"
+                    android:layout_width="200dp"
+                    android:layout_height="195dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
+                    android:visibility="invisible"
+                    app:SpinKit_Color="@color/colorAccent" />
+
+            </RelativeLayout>
 
             <!--<Button
                 android:id="@+id/btnDetail"
@@ -69,23 +93,6 @@
         </LinearLayout>
     </LinearLayout>
 
-    <View
-        android:id="@+id/view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/transparent_background"
-        android:clickable="true"
-        android:visibility="invisible" />
 
-    <com.github.ybq.android.spinkit.SpinKitView
-        android:id="@+id/spin_kit"
-        style="@style/SpinKitView.Large.ThreeBounce"
-        android:layout_width="200dp"
-        android:layout_height="195dp"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:layout_gravity="center"
-        android:visibility="invisible"
-        app:SpinKit_Color="@color/colorAccent" />
 
 </RelativeLayout>

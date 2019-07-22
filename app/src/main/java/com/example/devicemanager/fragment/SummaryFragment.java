@@ -1,5 +1,7 @@
 package com.example.devicemanager.fragment;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -23,6 +25,7 @@ import com.example.devicemanager.model.ItemEntityViewModel;
 import com.example.devicemanager.room.ItemEntity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class SummaryFragment extends Fragment {
@@ -36,7 +39,8 @@ public class SummaryFragment extends Fragment {
     private ItemEntityViewModel itemEntityViewModel;
     private LoadData loadData;
     String[] typeDevice, typeFurniture, typeOther, typeAll;
-    int[] intDevice, intFurniture, intOther, intAll;
+    private SharedPreferences sp;
+    private SharedPreferences.Editor editor;
 
     public static SummaryFragment newInstance() {
         SummaryFragment fragment = new SummaryFragment();
@@ -63,6 +67,9 @@ public class SummaryFragment extends Fragment {
         loadData = new LoadData(getContext());
         fabContainer = rootView.findViewById(R.id.fabFilter);
 
+        sp = getContext().getSharedPreferences("Type", Context.MODE_PRIVATE);
+        editor = sp.edit();
+
         layoutAll = rootView.findViewById(R.id.layoutAll);
         layoutDevice = rootView.findViewById(R.id.layoutDevice);
         layoutFurniture = rootView.findViewById(R.id.layoutFurniture);
@@ -80,7 +87,8 @@ public class SummaryFragment extends Fragment {
         layoutManager = new LinearLayoutManager(getContext());
         rvSummary = rootView.findViewById(R.id.rvSummary);
         itemEntityViewModel = ViewModelProviders.of(this).get(ItemEntityViewModel.class);
-        typeAll = getResources().getStringArray(R.array.allType);
+        typeAll = sp.getString("allType",null).split(",");
+        Arrays.sort(typeAll);
 //                new String[]{"ACCESS POINT", "ADAPTER", "AIR CONDITIONER", "APPLE CARE", "BARCODE READER", "BATTERY",
 //                "BICYCLE", "CABINET", "CAMERA", "CAR", "CARD READER", "CARPET", "CART", "CASH DRAWER", "CHAIR",
 //                "CHARGER", "CHROMECAST", "CLOTHES DRYERS", "COFFEE MACHINE", "COMPUTER", "COUNTER", "CURTAIN",
@@ -95,7 +103,7 @@ public class SummaryFragment extends Fragment {
 //                "TELEPHONE", "USB", "WASHING MACHINE", "WATCH", "WATER HEATER", "WATER PUMP",
 //                "WHITE BOARD", "WIRELESS", "ขาแขวน", "อุปกรณ์คอมพิวเตอร์"};
 
-        typeDevice = getResources().getStringArray(R.array.device_and_accessory);
+        typeDevice = sp.getString("device",null).split(",");
 //                new String[]{"ACCESS POINT", "ADAPTER", "APPLE CARE", "BATTERY", "CARD READER",
 //                "CHARGER", "CHROMECAST", "COMPUTER", "DEVELOPER PROGRAM", "DISPLAY PORT", "DONGLE", "E-COMMERCE",
 //                "GAME", "HDD", "IMAC", "IPAD", "IPAD COVER", "IPOD", "ITEM", "KEYBOARD", "LAPTOP", "MICRO SD CARD",
@@ -103,7 +111,7 @@ public class SummaryFragment extends Fragment {
 //                "POWER SUPPLIER", "PROGRAM", "ROUTER", "SERVER", "SERVER CABINET", "SOFTWARE", "SOLID STATE DRIVE ",
 //                "SSD", "TABLET", "USB", "WIRELESS", "ขาแขวน", "อุปกรณ์คอมพิวเตอร์"};
 
-        typeFurniture = getResources().getStringArray(R.array.furniture);
+        typeFurniture = sp.getString("furniture",null).split(",");
 //                new String[]{"AIR CONDITIONER", "BARCODE READER", "CABINET", "CAMERA", "CARPET", "CART", "CASH DRAWER",
 //                "CHAIR", "CLOTHES DRYERS", "COFFEE MACHINE", "COUNTER", "CURTAIN", "DOCUMENT SHREDDER", "DOOR ACCESS", "DRAWER",
 //                "EQUIPMENT", "FAN", "FILM", "FURNITURE", "GAS STOVE", "INTERIOR DECORATION", "JUICE BLENDER", "KITCHEN",
@@ -111,7 +119,7 @@ public class SummaryFragment extends Fragment {
 //                "SINK", "SOFA", "STOOL", "SWING", "TABLE", "TABLET", "TELEPHONE", "TELEVISION", "WASHING MACHINE", "WATCH",
 //                "WATER HEATER", "WATER PUMP", "WHITE BOARD"};
 
-        typeOther = getResources().getStringArray(R.array.other_summary);
+        typeOther = sp.getString("other",null).split(",");
 //                new String[]{"BUILDING", "BICYCLE", "CAR"};
 
         getDataByType(typeAll);

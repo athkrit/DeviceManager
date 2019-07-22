@@ -20,6 +20,7 @@ import com.example.devicemanager.fragment.LoginFragment;
 import com.example.devicemanager.fragment.MainFragment;
 import com.example.devicemanager.fragment.SummaryFragment;
 import com.example.devicemanager.manager.LoadData;
+import com.example.devicemanager.model.TypeItem;
 import com.example.devicemanager.room.ItemEntity;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
@@ -38,6 +39,10 @@ import java.util.Locale;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class MainActivity extends AppCompatActivity {
+    SharedPreferences sp;
+    SharedPreferences.Editor editor;
+    private View view;
+    private ProgressBar progressBar;
 
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
@@ -45,14 +50,6 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-
-    private LoadData loadData;
-    private SharedPreferences sp;
-    private SharedPreferences.Editor editor;
-    private View view;
-    private ProgressBar progressBar;
-    private Button btnSummary, btnDetail;
-    private int insertStatus;
     private TextView tvSummary, tvDetail;
 
     @Override
@@ -80,8 +77,6 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intent);
                         finish();
                     } else {
-//                        showLoadingView();
-//                        setUpLoadData();
                         setStartFragment();
                     }
                 }
@@ -93,22 +88,65 @@ public class MainActivity extends AppCompatActivity {
     private void initInstances() {
         getSupportActionBar()
                 .setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorTheme)));
-        /*btnDetail = findViewById(R.id.btnDetail);
-        btnSummary = findViewById(R.id.btnSummary);*/
         tvDetail = findViewById(R.id.tvDetail);
         tvSummary = findViewById(R.id.tvSummary);
+
+        sp = getSharedPreferences("Type", Context.MODE_PRIVATE);
+        editor = sp.edit();
+
         view = findViewById(R.id.view);
         progressBar = findViewById(R.id.spin_kit);
 
         tvDetail.setOnClickListener(onBtnClick);
         tvSummary.setOnClickListener(onBtnClick);
 
-        sp = this.getSharedPreferences("DownloadStatus", Context.MODE_PRIVATE);
+        view.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
+        getType();
 
-//        loadData = new LoadData(this);
-//        if(loadData.getItem() == null){
-//            loadData();
-//        }
+    }
+
+    private void getType() {
+        DatabaseReference databaseReference2 = FirebaseDatabase.getInstance().getReference().child("Type");
+        databaseReference2.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String allType = "";
+                String device = "";
+                String furniture = "";
+                String other = "";
+                for (DataSnapshot s : dataSnapshot.getChildren()) {
+                    TypeItem typeItem = s.getValue(TypeItem.class);
+                    allType = allType + typeItem.getType()+",";
+                    switch (typeItem.getAssetId()) {
+                        case "2":
+                            device = device + typeItem.getType() + ",";
+                            break;
+                        case "3":
+                            furniture = furniture + typeItem.getType() + ",";
+                            break;
+                        case "4":
+                            other = other + typeItem.getType() + ",";
+                            break;
+
+                    }
+
+                }
+                editor.putString("allType", allType);
+                editor.putString("device", device);
+                editor.putString("other", other);
+                editor.putString("furniture", furniture);
+                editor.commit();
+                view.setVisibility(View.INVISIBLE);
+                progressBar.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                view.setVisibility(View.INVISIBLE);
+                progressBar.setVisibility(View.INVISIBLE);
+            }
+        });
     }
 
     @Override
@@ -119,19 +157,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-//        if (getIntent().getStringExtra("itemId") != null) {
-//            SuccessDialog();
-//            setUpLoadData();
-//        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        editor = sp.edit();
-        editor.clear();
-        editor.apply();
-
         if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
         }
@@ -142,59 +172,6 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    private void setUpLoadData() {
-        if (sp.getBoolean("downloadStatus", true)) {
-            if (loadData.deleteTable() == 1) {
-                loadData();
-            }
-        } else {
-            hideLoadingView();
-            setStartFragment();
-        }
-    }
-
-    private void loadData() {
-        insertStatus = 0;
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Data");
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                editor = sp.edit();
-                editor.putBoolean("downloadStatus", false);
-                editor.apply();
-
-                for (DataSnapshot s : dataSnapshot.getChildren()) {
-                    ItemEntity item = s.getValue(ItemEntity.class);
-
-                    if (item != null) {
-                        if (!item.getPurchasedDate().matches("") &&
-                                !item.getPurchasedDate().matches("-")) {
-                            item.setPurchasedDate(setDate(item.getPurchasedDate()));
-                        }
-                        item.setAutoId(Integer.parseInt(s.getKey()));
-                        insertStatus = loadData.insert(item);
-                    }
-                }
-
-                if (insertStatus == 1) {
-                    setStartFragment();
-                    hideLoadingView();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Snackbar.make(view, "Download Failed", Snackbar.LENGTH_SHORT)
-                        .setAction("Reload", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-//                                setUpLoadData();
-                            }
-                        }).show();
-            }
-        });
-    }
-
     private void setStartFragment() {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.contentContainer
@@ -202,41 +179,6 @@ public class MainActivity extends AppCompatActivity {
                         , "MainFragment")
                 .commit();
         //btnDetail.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-    }
-
-    private void showLoadingView() {
-        view.setVisibility(View.VISIBLE);
-        progressBar.setVisibility(View.VISIBLE);
-    }
-
-    private void hideLoadingView() {
-        view.setVisibility(View.INVISIBLE);
-        progressBar.setVisibility(View.INVISIBLE);
-    }
-
-    private String setDate(String inputDate) {
-        if (inputDate.contains("GMT")) {
-            inputDate = inputDate.substring(0, inputDate.indexOf("GMT")).trim();
-        }
-        String inputFormat = "EEE MMM dd yyyy HH:mm:ss";
-        SimpleDateFormat inputDateFormat = new SimpleDateFormat(
-                inputFormat, Locale.ENGLISH);
-        String outputFormat = "yyyy-MM-dd";
-        SimpleDateFormat outputDateFormat = new SimpleDateFormat(
-                outputFormat, Locale.ENGLISH);
-
-        Date date;
-        String str = inputDate;
-
-        try {
-            date = inputDateFormat.parse(inputDate);
-            str = outputDateFormat.format(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        return str;
-
     }
 
     private View.OnClickListener onBtnClick = new View.OnClickListener() {
@@ -291,15 +233,4 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
-    private void SuccessDialog() {
-        new SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
-                .setTitleText("Success")
-                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                    @Override
-                    public void onClick(SweetAlertDialog sDialog) {
-                        sDialog.dismissWithAnimation();
-                    }
-                })
-                .show();
-    }
 }

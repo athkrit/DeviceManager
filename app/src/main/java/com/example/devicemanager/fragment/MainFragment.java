@@ -35,6 +35,7 @@ import com.example.devicemanager.activity.ScanBarcodeActivity;
 import com.example.devicemanager.adapter.ItemListAdapter;
 import com.example.devicemanager.manager.LoadData;
 import com.example.devicemanager.model.ItemEntityViewModel;
+import com.example.devicemanager.model.ListTypeDao;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.example.devicemanager.model.TypeItem;
 import com.example.devicemanager.room.AppDatabase;
@@ -48,6 +49,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -118,21 +120,13 @@ public class MainFragment extends Fragment implements ItemListAdapter.Holder.Ite
     @Override
     public void onResume() {
         super.onResume();
-
         itemEntityViewModel = ViewModelProviders.of(this).get(ItemEntityViewModel.class);
-
         itemEntityViewModel.getOrder().observe(getViewLifecycleOwner(), new Observer<List<ItemEntity>>() {
             @Override
             public void onChanged(@Nullable final List<ItemEntity> itemEntities) {
                 adapter.setList(itemEntities);
             }
         });
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
     }
 
     @Override
@@ -195,7 +189,7 @@ public class MainFragment extends Fragment implements ItemListAdapter.Holder.Ite
 
     @SuppressWarnings("UnusedParameters")
     private void initInstances(View rootView, Bundle savedInstanceState) {
-        sp = getContext().getSharedPreferences("DownloadStatus", Context.MODE_PRIVATE);
+        sp = getContext().getSharedPreferences("Type", Context.MODE_PRIVATE);
         editor = sp.edit();
 
         floatingButton = rootView.findViewById(R.id.fabAdd);
@@ -248,14 +242,6 @@ public class MainFragment extends Fragment implements ItemListAdapter.Holder.Ite
         if (!refreshStatus)
             return;
         refreshStatus = false;
-//        String[] typeAll = getResources().getStringArray(R.array.other_summary);
-//        DatabaseReference databaseReference2 = FirebaseDatabase.getInstance().getReference().child("Type");
-//        for (int i = 0 ; i < typeAll.length ; i++) {
-//            TypeItem typeItem = new TypeItem();
-//            typeItem.setType(typeAll[i]);
-//            typeItem.setAssetId("4");
-//            databaseReference2.push().setValue(typeItem);
-//        }
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Data");
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
