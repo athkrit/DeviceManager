@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import com.example.devicemanager.manager.LoadData;
+import com.example.devicemanager.room.AppDatabase;
 import com.example.devicemanager.room.ItemEntity;
 
 import java.util.List;
@@ -15,19 +16,25 @@ public class ItemEntityViewModel extends AndroidViewModel {
     private LoadData loadData;
     private LiveData<List<ItemEntity>> listLiveData;
     private LiveData<List<ItemEntity>> listOrder;
+    private Application Application;
 
     public ItemEntityViewModel(@NonNull Application application) {
         super(application);
+        Application = application;
         loadData = new LoadData(application);
         listLiveData = loadData.getAllItemEntity();
         listOrder = loadData.getOrderedItem();
     }
 
     public LiveData<List<ItemEntity>> getAll() {
+        loadData = new LoadData(Application);
+        listLiveData = loadData.getAllItemEntity();
         return listLiveData;
     }
 
     public LiveData<List<ItemEntity>> getOrder() {
+        loadData = new LoadData(Application);
+        listOrder = loadData.getOrderedItem();
         return listOrder;
     }
 

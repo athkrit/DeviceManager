@@ -213,7 +213,7 @@ public class AddDeviceFragment extends Fragment {
                 setData();
             }
         }
-        itemEntityViewModel.getAll().observe(this, new Observer<List<ItemEntity>>() {
+        itemEntityViewModel.getAll().observe(getViewLifecycleOwner(), new Observer<List<ItemEntity>>() {
             @Override
             public void onChanged(@Nullable final List<ItemEntity> itemEntities) {
                 getItemEntity= new ArrayList<>(itemEntities);

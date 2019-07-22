@@ -3,6 +3,7 @@ package com.example.devicemanager.adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,21 +33,17 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.Holder
     private Holder.ItemClickListener mClickListener;
     private List<ItemEntity> filteredList = new ArrayList<>();
 
-    public void setItemId(String itemId) {
-        this.itemId = itemId;
-    }
-
-    public static List<ItemEntity> getList() {
-        return list;
+    public void   setList(List<ItemEntity> list) {
+        this.list = list;
+        this.source = new ArrayList<>(list);
+        notifyDataSetChanged();
     }
 
     private String itemId;
 
-    public ItemListAdapter(Context context, List<ItemEntity> list) {
+    public ItemListAdapter(Context context) {
         this.context = context;
-        this.list = list;
-        this.source = new ArrayList<>(list);
-        notifyDataSetChanged();
+
     }
 
     @NonNull

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,6 +15,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.IntegerRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
@@ -33,6 +35,7 @@ import com.example.devicemanager.adapter.ItemListAdapter;
 import com.example.devicemanager.manager.DataManager;
 import com.example.devicemanager.manager.LoadData;
 import com.example.devicemanager.model.ItemEntityViewModel;
+import com.example.devicemanager.model.TypeItem;
 import com.example.devicemanager.room.AppDatabase;
 import com.example.devicemanager.room.ItemEntity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -60,24 +63,25 @@ import static android.app.Activity.RESULT_OK;
 @SuppressWarnings("unused")
 public class MainFragment extends Fragment implements ItemListAdapter.Holder.ItemClickListener {
 
-    private Button btnAdd, btnCheck, btnSummary,downloadStatus;
+    private Button btnAdd, btnCheck, btnSummary, downloadStatus;
     private FloatingActionButton floatingButton;
     private android.widget.SearchView searchView;
     private boolean isFABOpen = false;
     private TextView tvLogout;
     private FirebaseAuth mAuth;
     private RecyclerView recyclerView;
-    private DataManager dataManager;
-    private ItemListAdapter adapter,adapterNew;
+    private ItemListAdapter adapter, adapterNew;
     private LinearLayoutManager layoutManager;
     private LoadData loadData;
     SharedPreferences sp;
     SharedPreferences.Editor editor;
     private View view;
     private ProgressBar progressBar;
-    AppDatabase database;
+    private AppDatabase database;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ItemEntityViewModel itemEntityViewModel;
+    private boolean refreshStatus = true;
+    private int iii = 0;
 
     public MainFragment() {
         super();
@@ -107,6 +111,26 @@ public class MainFragment extends Fragment implements ItemListAdapter.Holder.Ite
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        itemEntityViewModel = ViewModelProviders.of(this).get(ItemEntityViewModel.class);
+
+        itemEntityViewModel.getOrder().observe(getViewLifecycleOwner(), new Observer<List<ItemEntity>>() {
+            @Override
+            public void onChanged(@Nullable final List<ItemEntity> itemEntities) {
+                adapter.setList(itemEntities);
+            }
+        });
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+    }
+
+    @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu, menu);
@@ -116,7 +140,7 @@ public class MainFragment extends Fragment implements ItemListAdapter.Holder.Ite
         final SearchView searchViewActionBar = (SearchView) menuItem.getActionView();
         searchViewActionBar.clearFocus();
         searchViewActionBar.setIconifiedByDefault(false);
-        searchViewActionBar.setPadding(0,0,20,0);
+        searchViewActionBar.setPadding(0, 0, 20, 0);
         searchViewActionBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -133,7 +157,7 @@ public class MainFragment extends Fragment implements ItemListAdapter.Holder.Ite
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if(adapter == null){
+                if (adapter == null) {
                     return true;
                 }
                 adapter.getFilter().filter(newText);
@@ -142,22 +166,6 @@ public class MainFragment extends Fragment implements ItemListAdapter.Holder.Ite
         });
 
 
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 11111) {
-            if (resultCode == RESULT_OK) {
-                ItemEntity itemEntity = new ItemEntity();
-                loadData = new LoadData(getActivity());
-                SuccessDialog();
-//                if (loadData.deleteTable() == 1) {
-//                    swipeRefreshLayout.setRefreshing(true);
-//                    loadData();
-//                }
-            }
-        }
     }
 
     @Override
@@ -177,7 +185,7 @@ public class MainFragment extends Fragment implements ItemListAdapter.Holder.Ite
     }
 
     private void init(Bundle savedInstanceState) {
-        // Init Fragment level's variable(s) here
+
     }
 
     @SuppressWarnings("UnusedParameters")
@@ -191,31 +199,18 @@ public class MainFragment extends Fragment implements ItemListAdapter.Holder.Ite
         view = rootView.findViewById(R.id.view);
         progressBar = rootView.findViewById(R.id.spin_kit);
 
-        dataManager = new DataManager();
         loadData = new LoadData(getContext());
 
-        itemEntityViewModel = ViewModelProviders.of(this).get(ItemEntityViewModel.class);
 
         layoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
-        if(loadData == null){
-            loadData();
-        }
-        itemEntityViewModel.getOrder().observe(this, new Observer<List<ItemEntity>>() {
-            @Override
-            public void onChanged(@Nullable final List<ItemEntity> itemEntities) {
-                if(itemEntities.size() == 0){
-                    view.setVisibility(View.VISIBLE);
-                    progressBar.setVisibility(View.VISIBLE);
-                    loadData();
-                }
-                adapter = new ItemListAdapter(getContext(),itemEntities);
-                recyclerView.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
-            }
-        });
+
+        loadData();
+
+        adapter = new ItemListAdapter(getContext());
         recyclerView.setAdapter(adapter);
-        swipeRefreshLayout =  rootView.findViewById(R.id.swipeRefreshLayout);
+        recyclerView.setLayoutManager(layoutManager);
+
+        swipeRefreshLayout = rootView.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(pullToRefresh);
 
     }
@@ -228,15 +223,30 @@ public class MainFragment extends Fragment implements ItemListAdapter.Holder.Ite
         }
     };
 
-    androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener pullToRefresh = new androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener() {
-        @Override
-        public void onRefresh() {
-            if (loadData.deleteTable() == 1) {
-                loadData();
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 11111) {
+            if (resultCode == RESULT_OK) {
+                loadData = new LoadData(getActivity());
+                SuccessDialog();
+                if (loadData.deleteTable() == 1) {
+                    swipeRefreshLayout.setRefreshing(true);
+                    loadData();
+                }
             }
         }
-    };
+    }
+
     private void loadData() {
+//        String[] typeAll = getResources().getStringArray(R.array.other_summary);
+//        DatabaseReference databaseReference2 = FirebaseDatabase.getInstance().getReference().child("Type");
+//        for (int i = 0 ; i < typeAll.length ; i++) {
+//            TypeItem typeItem = new TypeItem();
+//            typeItem.setType(typeAll[i]);
+//            typeItem.setAssetId("4");
+//            databaseReference2.push().setValue(typeItem);
+//        }
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Data");
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -254,13 +264,17 @@ public class MainFragment extends Fragment implements ItemListAdapter.Holder.Ite
                     }
                 }
                 swipeRefreshLayout.setRefreshing(false);
+                refreshStatus = true;
                 view.setVisibility(View.INVISIBLE);
                 progressBar.setVisibility(View.INVISIBLE);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                swipeRefreshLayout.setRefreshing(false);
+                refreshStatus = true;
+                view.setVisibility(View.INVISIBLE);
+                progressBar.setVisibility(View.INVISIBLE);
             }
         });
     }
@@ -301,4 +315,18 @@ public class MainFragment extends Fragment implements ItemListAdapter.Holder.Ite
                 })
                 .show();
     }
+
+    androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener pullToRefresh = new androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener() {
+        @Override
+        public void onRefresh() {
+            if (refreshStatus) {
+                refreshStatus = false;
+                if (loadData.deleteTable() == 1) {
+                    loadData();
+                } else {
+                    refreshStatus = true;
+                }
+            }
+        }
+    };
 }

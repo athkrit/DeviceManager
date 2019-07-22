@@ -93,10 +93,10 @@ public class MainActivity extends AppCompatActivity {
 
         sp = this.getSharedPreferences("DownloadStatus", Context.MODE_PRIVATE);
 
-        loadData = new LoadData(this);
-        if(loadData.getItem() == null){
-            loadData();
-        }
+//        loadData = new LoadData(this);
+//        if(loadData.getItem() == null){
+//            loadData();
+//        }
     }
 
     @Override
@@ -131,7 +131,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setUpLoadData() {
-        Log.d("test1707", sp.getBoolean("downloadStatus", true) + " Status");
         if (sp.getBoolean("downloadStatus", true)) {
             if (loadData.deleteTable() == 1) {
                 loadData();
