@@ -1,5 +1,6 @@
 package com.example.devicemanager.activity;
 
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -30,6 +31,8 @@ public class DeviceDetailActivity extends AppCompatActivity {
     private void initInstances() {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar()
+                .setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorTheme)));
     }
 
     @Override

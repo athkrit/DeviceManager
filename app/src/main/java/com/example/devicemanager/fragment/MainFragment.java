@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import androidx.annotation.IntegerRes;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
@@ -38,7 +39,8 @@ import com.example.devicemanager.model.ItemEntityViewModel;
 import com.example.devicemanager.model.TypeItem;
 import com.example.devicemanager.room.AppDatabase;
 import com.example.devicemanager.room.ItemEntity;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionButton;
+//import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -63,8 +65,12 @@ import static android.app.Activity.RESULT_OK;
 @SuppressWarnings("unused")
 public class MainFragment extends Fragment implements ItemListAdapter.Holder.ItemClickListener {
 
-    private Button btnAdd, btnCheck, btnSummary, downloadStatus;
-    private FloatingActionButton floatingButton;
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
+
+    private Button btnAdd, btnCheck, btnSummary,downloadStatus;
+    //private FloatingActionButton floatingButton;
     private android.widget.SearchView searchView;
     private boolean isFABOpen = false;
     private TextView tvLogout;
@@ -82,6 +88,7 @@ public class MainFragment extends Fragment implements ItemListAdapter.Holder.Ite
     private ItemEntityViewModel itemEntityViewModel;
     private boolean refreshStatus = true;
     private int iii = 0;
+    private FloatingActionButton floatingButton;
 
     public MainFragment() {
         super();
@@ -135,12 +142,12 @@ public class MainFragment extends Fragment implements ItemListAdapter.Holder.Ite
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu, menu);
         MenuItem menuItem = menu.findItem(R.id.action_search);
-        menuItem.expandActionView();
+        //menuItem.expandActionView();
 
         final SearchView searchViewActionBar = (SearchView) menuItem.getActionView();
         searchViewActionBar.clearFocus();
-        searchViewActionBar.setIconifiedByDefault(false);
-        searchViewActionBar.setPadding(0, 0, 20, 0);
+        //searchViewActionBar.setIconifiedByDefault(false);
+        searchViewActionBar.setPadding(0,0,20,0);
         searchViewActionBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -195,6 +202,7 @@ public class MainFragment extends Fragment implements ItemListAdapter.Holder.Ite
 
         floatingButton = rootView.findViewById(R.id.fabAdd);
         floatingButton.setOnClickListener(onClickFab);
+        floatingButton.setImageDrawable(getResources().getDrawable(R.drawable.add_gradient_blue));
         recyclerView = rootView.findViewById(R.id.recyclerView);
         view = rootView.findViewById(R.id.view);
         progressBar = rootView.findViewById(R.id.spin_kit);

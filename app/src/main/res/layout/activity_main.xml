@@ -4,25 +4,48 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorTheme"
     tools:context=".activity.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/colorTheme"
         android:orientation="vertical">
 
         <FrameLayout
             android:id="@+id/contentContainer"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:background="@color/colorTheme" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:orientation="horizontal">
+            android:layout_height="70dp"
+            android:background="@color/colorTheme"
+            android:orientation="horizontal"
+            android:padding="15dp">
 
-            <Button
+            <TextView
+                android:id="@+id/tvDetail"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/ico_device_detil"
+                android:gravity="center"
+                android:text="@string/device_detail" />
+
+            <TextView
+                android:id="@+id/tvSummary"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/ico_summary"
+                android:gravity="center"
+                android:text="@string/summary" />
+
+            <!--<Button
                 android:id="@+id/btnDetail"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -30,10 +53,7 @@
                 android:layout_marginRight="1dp"
                 android:layout_weight="1"
                 android:background="@color/colorPrimary"
-                android:drawableStart="@drawable/ic_list"
-                android:drawableLeft="@drawable/ic_list"
-                android:paddingLeft="30dp"
-                android:paddingRight="30dp"
+                android:drawableTop="@drawable/ico_device_detil"
                 android:text="@string/detail"
                 android:textColor="#ffffff" />
 
@@ -43,12 +63,9 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@color/colorPrimary"
-                android:drawableStart="@drawable/ic_summary"
-                android:drawableLeft="@drawable/ic_summary"
-                android:paddingLeft="30dp"
-                android:paddingRight="30dp"
+                android:drawableTop="@drawable/ico_summary"
                 android:text="@string/summary"
-                android:textColor="#ffffff" />
+                android:textColor="#ffffff" />-->
         </LinearLayout>
     </LinearLayout>
 

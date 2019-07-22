@@ -2,15 +2,18 @@ package com.example.devicemanager.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.example.devicemanager.R;
 import com.example.devicemanager.fragment.LoginFragment;
@@ -36,6 +39,10 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class MainActivity extends AppCompatActivity {
 
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
+
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
@@ -46,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private Button btnSummary, btnDetail;
     private int insertStatus;
+    private TextView tvSummary, tvDetail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,13 +91,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initInstances() {
-        btnDetail = findViewById(R.id.btnDetail);
-        btnSummary = findViewById(R.id.btnSummary);
+        getSupportActionBar()
+                .setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorTheme)));
+        /*btnDetail = findViewById(R.id.btnDetail);
+        btnSummary = findViewById(R.id.btnSummary);*/
+        tvDetail = findViewById(R.id.tvDetail);
+        tvSummary = findViewById(R.id.tvSummary);
         view = findViewById(R.id.view);
         progressBar = findViewById(R.id.spin_kit);
 
-        btnDetail.setOnClickListener(onBtnClick);
-        btnSummary.setOnClickListener(onBtnClick);
+        tvDetail.setOnClickListener(onBtnClick);
+        tvSummary.setOnClickListener(onBtnClick);
 
         sp = this.getSharedPreferences("DownloadStatus", Context.MODE_PRIVATE);
 
@@ -189,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
                         , MainFragment.newInstance()
                         , "MainFragment")
                 .commit();
-        btnDetail.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+        //btnDetail.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
     }
 
     private void showLoadingView() {
@@ -236,7 +248,7 @@ public class MainActivity extends AppCompatActivity {
             SummaryFragment secondFragment = (SummaryFragment)
                     getSupportFragmentManager().findFragmentByTag("SummaryFragment");
 
-            if (view == btnDetail) {
+            if (view == tvDetail) {
                 if (mainFragment == null && secondFragment == null) {
                     setStartFragment();
                 } else if (mainFragment == null) {
@@ -252,9 +264,9 @@ public class MainActivity extends AppCompatActivity {
                             .detach(secondFragment)
                             .commit();
                 }
-                btnDetail.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-                btnSummary.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-            } else if (view == btnSummary) {
+                /*btnDetail.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                btnSummary.setBackgroundColor(getResources().getColor(R.color.colorPrimary));*/
+            } else if (view == tvSummary) {
                 if (mainFragment == null && secondFragment == null) {
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.contentContainer
@@ -274,8 +286,8 @@ public class MainActivity extends AppCompatActivity {
                             .detach(mainFragment)
                             .commit();
                 }
-                btnSummary.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-                btnDetail.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                /*btnSummary.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                btnDetail.setBackgroundColor(getResources().getColor(R.color.colorPrimary));*/
             }
         }
     };
