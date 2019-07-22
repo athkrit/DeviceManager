@@ -35,10 +35,10 @@ import com.example.devicemanager.activity.ScanBarcodeActivity;
 import com.example.devicemanager.adapter.ItemListAdapter;
 import com.example.devicemanager.manager.LoadData;
 import com.example.devicemanager.model.ItemEntityViewModel;
+import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.example.devicemanager.model.TypeItem;
 import com.example.devicemanager.room.AppDatabase;
 import com.example.devicemanager.room.ItemEntity;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -67,7 +67,7 @@ public class MainFragment extends Fragment implements ItemListAdapter.Holder.Ite
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
 
-    private Button btnAdd, btnCheck, btnSummary,downloadStatus;
+    private Button btnAdd, btnCheck, btnSummary, downloadStatus;
     //private FloatingActionButton floatingButton;
     private android.widget.SearchView searchView;
     private boolean isFABOpen = false;
@@ -145,7 +145,7 @@ public class MainFragment extends Fragment implements ItemListAdapter.Holder.Ite
         final SearchView searchViewActionBar = (SearchView) menuItem.getActionView();
         searchViewActionBar.clearFocus();
         //searchViewActionBar.setIconifiedByDefault(false);
-        searchViewActionBar.setPadding(0,0,20,0);
+        searchViewActionBar.setPadding(0, 0, 20, 0);
         searchViewActionBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -245,6 +245,9 @@ public class MainFragment extends Fragment implements ItemListAdapter.Holder.Ite
     }
 
     private void loadData() {
+        if (!refreshStatus)
+            return;
+        refreshStatus = false;
 //        String[] typeAll = getResources().getStringArray(R.array.other_summary);
 //        DatabaseReference databaseReference2 = FirebaseDatabase.getInstance().getReference().child("Type");
 //        for (int i = 0 ; i < typeAll.length ; i++) {
@@ -325,14 +328,11 @@ public class MainFragment extends Fragment implements ItemListAdapter.Holder.Ite
     androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener pullToRefresh = new androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener() {
         @Override
         public void onRefresh() {
-            if (refreshStatus) {
-                refreshStatus = false;
-                if (loadData.deleteTable() == 1) {
-                    loadData();
-                } else {
-                    refreshStatus = true;
-                }
+
+            if (loadData.deleteTable() == 1) {
+                loadData();
             }
+
         }
     };
 }
