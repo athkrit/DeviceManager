@@ -38,6 +38,16 @@ public class ItemEntityViewModel extends AndroidViewModel {
         return listOrder;
     }
 
+    public LiveData<List<ItemEntity>> selectData(String serialNew) {
+        loadData = new LoadData(Application);
+        return loadData.selectData(serialNew);
+    }
+
+    public LiveData<List<ItemEntity>> selectProductByType(String type, String order) {
+        loadData = new LoadData(Application);
+        return loadData.selectProductByType(type,order);
+    }
+
     public void insert(ItemEntity itemEntity) {
         loadData.insert(itemEntity);
     }
@@ -54,4 +64,5 @@ public class ItemEntityViewModel extends AndroidViewModel {
                 purchased_date, price, note, forwardDepreciation, depreciationRate, depreciationYear, accumulatedDepreciation,
                 forwardBudget, id);
     }
+
 }

@@ -21,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.devicemanager.R;
@@ -65,6 +66,7 @@ public class DeviceDetailFragment extends Fragment {
     private String lastKey;
     List<ItemEntity> itemEntity;
     private ItemEntityViewModel itemEntityViewModel;
+    private String idKey;
 
     public static DeviceDetailFragment newInstances(String barcode) {
         DeviceDetailFragment fragment = new DeviceDetailFragment();
@@ -153,27 +155,33 @@ public class DeviceDetailFragment extends Fragment {
     private void getData(String serialNew) {
         progressDialogBackground.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.VISIBLE);
+        itemEntityViewModel = ViewModelProviders.of(this).get(ItemEntityViewModel.class);
 
-        itemEntity = loadData.selectData(serialNew);
+        itemEntityViewModel.selectData(serialNew).observe(getViewLifecycleOwner(), new Observer<List<ItemEntity>>() {
+            @Override
+            public void onChanged(@Nullable final List<ItemEntity> itemEntities) {
+                itemEntity=itemEntities;
+                if (itemEntity != null) {
+                    lastKey = itemEntity.get(0).getAutoId() + "";
+                    idKey = itemEntity.get(0).getAutoId() + "";
+                    //tvItemId.setText(itemEntity.get(0).getUnnamed2());
+                    tvOwnerName.setText(checkNoneData(itemEntity.get(0).getPlaceName(), "No Owner"));
+                    tvDeviceDetail.setText(checkNoneData(itemEntity.get(0).getDetail(), "N/A"));
+                    tvBrand.setText(checkNoneData(itemEntity.get(0).getBrand(), "N/A"));
+                    tvType.setText(itemEntity.get(0).getType());
+                    tvModel.setText(checkNoneData(itemEntity.get(0).getModel(), "N/A"));
+                    tvSerialNumber.setText(checkNoneData(itemEntity.get(0).getSerialNo(), "No Serial"));
 
-        if (itemEntity != null) {
-            lastKey = itemEntity.get(0).getAutoId() + "";
+                    tvLastUpdate.setText(setDateForm2(itemEntity.get(0).getLastUpdated()));
 
-            //tvItemId.setText(itemEntity.get(0).getUnnamed2());
-            tvOwnerName.setText(checkNoneData(itemEntity.get(0).getPlaceName(), "No Owner"));
-            tvDeviceDetail.setText(checkNoneData(itemEntity.get(0).getDetail(), "N/A"));
-            tvBrand.setText(checkNoneData(itemEntity.get(0).getBrand(), "N/A"));
-            tvType.setText(itemEntity.get(0).getType());
-            tvModel.setText(checkNoneData(itemEntity.get(0).getModel(), "N/A"));
-            tvSerialNumber.setText(checkNoneData(itemEntity.get(0).getSerialNo(), "No Serial"));
-
-            tvLastUpdate.setText(itemEntity.get(0).getLastUpdated());
-            tvAddedDate.setText(setDate(itemEntity.get(0).getPurchasedDate()));
-            hideDialog();
-        } else {
-            getActivity().finish();
-            hideDialog();
-        }
+                    tvAddedDate.setText(setDate(itemEntity.get(0).getPurchasedDate()));
+                    hideDialog();
+                } else {
+                    getActivity().finish();
+                    hideDialog();
+                }
+            }
+        });
     }
 
     private String checkNoneData(String data, String text) {
@@ -228,7 +236,6 @@ public class DeviceDetailFragment extends Fragment {
     private void checkedDevice() {
         progressDialogBackground.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.VISIBLE);
-        final String idKey = loadData.selectData(serial).get(0).getAutoId() + "";
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference()
                 .child("Data").child(idKey).child("lastUpdated");
         final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
@@ -241,7 +248,6 @@ public class DeviceDetailFragment extends Fragment {
                             int autoId = itemEntity.get(0).getAutoId();
                             hideDialog();
                             itemEntityViewModel.updateLastUpdate(dateFormat.format(date), autoId);
-                            tvLastUpdate.setText(dateFormat.format(date));
                             Toast.makeText(getActivity(), "Success", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -289,7 +295,32 @@ public class DeviceDetailFragment extends Fragment {
         String inputFormat = "yyyy-MM-dd";
         SimpleDateFormat inputDateFormat = new SimpleDateFormat(
                 inputFormat, Locale.ENGLISH);
-        String outputFormat = "dd/MM/yyyy";
+        String outputFormat = "dd/MMMM/yyyy";
+        SimpleDateFormat outputDateFormat = new SimpleDateFormat(
+                outputFormat, Locale.ENGLISH);
+
+        Date date;
+        String str = inputDate;
+
+        try {
+            date = inputDateFormat.parse(inputDate);
+            str = outputDateFormat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return str;
+
+    }
+
+    private String setDateForm2(String inputDate) {
+        if (inputDate.contains("GMT")) {
+            inputDate = inputDate.substring(0, inputDate.indexOf("GMT")).trim();
+        }
+        String inputFormat = "dd/MM/yyyy";
+        SimpleDateFormat inputDateFormat = new SimpleDateFormat(
+                inputFormat, Locale.ENGLISH);
+        String outputFormat = "dd/MMMM/yyyy";
         SimpleDateFormat outputDateFormat = new SimpleDateFormat(
                 outputFormat, Locale.ENGLISH);
 

@@ -19,19 +19,19 @@ public interface ItemDao {
     LiveData<List<ItemEntity>> getAllOrderByDate();
 
     @Query("SELECT * FROM ItemEntity WHERE item_id = :id ")
-    List<ItemEntity> getProduct(String id);
+    LiveData<List<ItemEntity>> getProduct(String id);
 
     @Query("SELECT * FROM ItemEntity WHERE item_type = :type ORDER BY purchased_date ASC")
-    List<ItemEntity> getAllProductByTypeOrderDateAsc(String type);
+    LiveData<List<ItemEntity>> getAllProductByTypeOrderDateAsc(String type);
 
     @Query("SELECT * FROM ItemEntity WHERE item_type = :type ORDER BY purchased_date DESC")
-    List<ItemEntity> getAllProductByTypeOrderDateDesc(String type);
+    LiveData<List<ItemEntity>> getAllProductByTypeOrderDateDesc(String type);
 
     @Query("SELECT * FROM ItemEntity WHERE item_type = :type ORDER BY brand ASC")
-    List<ItemEntity> getAllProductByTypeOrderBrandAsc(String type);
+    LiveData<List<ItemEntity>> getAllProductByTypeOrderBrandAsc(String type);
 
     @Query("SELECT * FROM ItemEntity WHERE item_type = :type ORDER BY brand DESC")
-    List<ItemEntity> getAllProductByTypeOrderBrandDesc(String type);
+    LiveData<List<ItemEntity>> getAllProductByTypeOrderBrandDesc(String type);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertAll(ItemEntity item);

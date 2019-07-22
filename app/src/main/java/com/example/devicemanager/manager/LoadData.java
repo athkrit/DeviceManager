@@ -69,8 +69,8 @@ public class LoadData {
         return status;
     }
 
-    public List<ItemEntity> selectData(String id) {
-        List<ItemEntity> itemEntities = null;
+    public LiveData<List<ItemEntity>> selectData(String id) {
+        LiveData<List<ItemEntity>> itemEntities = null;
         try {
             itemEntities = new SelectAsyncTask(itemDao, id).execute().get();
         } catch (ExecutionException e) {
@@ -105,8 +105,8 @@ public class LoadData {
         return itemEntities;
     }
 
-    public List<ItemEntity> selectProductByType(String type, String order) {
-        List<ItemEntity> itemEntities = new ArrayList<>();
+    public LiveData<List<ItemEntity>> selectProductByType(String type, String order) {
+        LiveData<List<ItemEntity>> itemEntities = new MediatorLiveData<>();
         try {
             itemEntities = new getAllProductByType(itemDao, type, order).execute().get();
         } catch (ExecutionException e) {
@@ -184,7 +184,7 @@ public class LoadData {
         }
     }
 
-    private static class SelectAsyncTask extends AsyncTask<ItemEntity, Void, List<ItemEntity>> {
+    private static class SelectAsyncTask extends AsyncTask<ItemEntity, Void, LiveData<List<ItemEntity>>> {
         private ItemDao itemDao;
         private String id;
 
@@ -194,12 +194,12 @@ public class LoadData {
         }
 
         @Override
-        protected List<ItemEntity> doInBackground(ItemEntity... itemEntities) {
+        protected LiveData<List<ItemEntity>> doInBackground(ItemEntity... itemEntities) {
             return itemDao.getProduct(id);
         }
     }
 
-    private static class getAllProductByType extends AsyncTask<ItemEntity, Void, List<ItemEntity>> {
+    private static class getAllProductByType extends AsyncTask<ItemEntity, Void, LiveData<List<ItemEntity>>> {
         private ItemDao itemDao;
         private String type;
         private String order;
@@ -211,7 +211,7 @@ public class LoadData {
         }
 
         @Override
-        protected List<ItemEntity> doInBackground(ItemEntity... itemEntities) {
+        protected LiveData<List<ItemEntity>> doInBackground(ItemEntity... itemEntities) {
             if (order.matches("DateAsc")) {
                 return itemDao.getAllProductByTypeOrderDateAsc(type);
             } else if (order.matches("DateDesc")) {

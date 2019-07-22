@@ -209,14 +209,13 @@ public class AddDeviceFragment extends Fragment {
             } else {
                 //tvQuantity.setText(getResources().getString(R.string.quantity) + ":1");
                 etQuantity.setVisibility(View.INVISIBLE);
-                lastKey = "" + loadData.selectData(itemId).get(0).getAutoId();
                 setData();
             }
         }
         itemEntityViewModel.getAll().observe(getViewLifecycleOwner(), new Observer<List<ItemEntity>>() {
             @Override
             public void onChanged(@Nullable final List<ItemEntity> itemEntities) {
-                getItemEntity= new ArrayList<>(itemEntities);
+                getItemEntity = new ArrayList<>(itemEntities);
             }
         });
     }
@@ -241,26 +240,35 @@ public class AddDeviceFragment extends Fragment {
                 setSpinnerPosition(R.array.other, spTypeList, -1, spinnerName);
                 break;
         }
-        itemEntity = loadData.selectData(itemId);
-        if (itemEntity.size() == 0) {
-            return;
-        }
-        etOwnerId.setText(itemEntity.get(0).getPlaceId());
-        etOwnerName.setText(itemEntity.get(0).getPlaceName());
-        etBrand.setText(itemEntity.get(0).getBrand());
-        etSerialNumber.setText(itemEntity.get(0).getSerialNo());
-        etDeviceDetail.setText(itemEntity.get(0).getDetail());
-        etDeviceModel.setText(itemEntity.get(0).getModel());
-        etDevicePrice.setText(itemEntity.get(0).getPrice());
-        etPurchasePrice.setText(itemEntity.get(0).getPurchasedPrice());
-        etDatePicker.setText(setDateFromRoom(itemEntity.get(0).getPurchasedDate()));
-        etNote.setText(itemEntity.get(0).getNote());
-        etForwardDepreciation.setText(itemEntity.get(0).getForwardDepreciation());
-        etDepreciationRate.setText(itemEntity.get(0).getDepreciationRate());
-        etDepreciationinYear.setText(itemEntity.get(0).getDepreciationYear());
-        etAccumulateDepreciation.setText(itemEntity.get(0).getAccumulatedDepreciation());
-        etForwardedBudget.setText(itemEntity.get(0).getForwardedBudget());
-        etWarranty.setText(itemEntity.get(0).getWarrantyDate());
+        itemEntityViewModel = ViewModelProviders.of(this).get(ItemEntityViewModel.class);
+
+        itemEntityViewModel.selectData(itemId).observe(getViewLifecycleOwner(), new Observer<List<ItemEntity>>() {
+            @Override
+            public void onChanged(@Nullable final List<ItemEntity> itemEntities) {
+                itemEntity = itemEntities;
+                if (itemEntity.size() == 0) {
+                    return;
+                }
+                lastKey = "" + itemEntities.get(0).getAutoId();
+                etOwnerId.setText(itemEntity.get(0).getPlaceId());
+                etOwnerName.setText(itemEntity.get(0).getPlaceName());
+                etBrand.setText(itemEntity.get(0).getBrand());
+                etSerialNumber.setText(itemEntity.get(0).getSerialNo());
+                etDeviceDetail.setText(itemEntity.get(0).getDetail());
+                etDeviceModel.setText(itemEntity.get(0).getModel());
+                etDevicePrice.setText(itemEntity.get(0).getPrice());
+                etPurchasePrice.setText(itemEntity.get(0).getPurchasedPrice());
+                etDatePicker.setText(setDateFromRoom(itemEntity.get(0).getPurchasedDate()));
+                etNote.setText(itemEntity.get(0).getNote());
+                etForwardDepreciation.setText(itemEntity.get(0).getForwardDepreciation());
+                etDepreciationRate.setText(itemEntity.get(0).getDepreciationRate());
+                etDepreciationinYear.setText(itemEntity.get(0).getDepreciationYear());
+                etAccumulateDepreciation.setText(itemEntity.get(0).getAccumulatedDepreciation());
+                etForwardedBudget.setText(itemEntity.get(0).getForwardedBudget());
+                etWarranty.setText(itemEntity.get(0).getWarrantyDate());
+            }
+        });
+
     }
 
     private void setSpinner(int spinnerlist, Spinner spinner) {
@@ -358,11 +366,11 @@ public class AddDeviceFragment extends Fragment {
                 }
             }
         }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getActivity(), "Cancel", Toast.LENGTH_SHORT).show();
-                    }
-                });
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getActivity(), "Cancel", Toast.LENGTH_SHORT).show();
+            }
+        });
         AlertDialog dialog = builder.create();
         dialog.show();
 
@@ -427,7 +435,7 @@ public class AddDeviceFragment extends Fragment {
                 "" + abbreviation, "-", "DGO", etWarranty.getText().toString());
 
         itemSave = new ItemEntity(getItemEntity.size(), getUnnamed2(), type, etDeviceDetail.getText().toString(),
-                etSerialNumber.getText().toString(), etOwnerName.getText().toString(),  saveDateToDB(date),etNote.getText().toString(),
+                etSerialNumber.getText().toString(), etOwnerName.getText().toString(), saveDateToDB(date), etNote.getText().toString(),
                 "-", etOwnerId.getText().toString(), getUnnamed2().substring(3), etDevicePrice.getText().toString(),
                 etDeviceModel.getText().toString(), etDepreciationRate.getText().toString(), "ID", etBrand.getText().toString(),
                 abbreviation, order + "", "-", YY + "", "DGO", "-",
@@ -523,6 +531,7 @@ public class AddDeviceFragment extends Fragment {
         return str;
 
     }
+
     private String setDateFromRoom(String inputDate) {
         if (inputDate.contains("GMT")) {
             inputDate = inputDate.substring(0, inputDate.indexOf("GMT")).trim();
@@ -547,6 +556,7 @@ public class AddDeviceFragment extends Fragment {
         return str;
 
     }
+
     private String saveDateToDB(String inputDate) {
         if (inputDate.contains("GMT")) {
             inputDate = inputDate.substring(0, inputDate.indexOf("GMT")).trim();
@@ -581,6 +591,7 @@ public class AddDeviceFragment extends Fragment {
         }
         return unnamed2;
     }
+
     private String getOrder(int order) {
         String num;
         if (order < 1) {
@@ -596,7 +607,7 @@ public class AddDeviceFragment extends Fragment {
         return num;
     }
 
-        private void updateLabel() {
+    private void updateLabel() {
         String myFormat = "dd/MM/yyyy";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.ENGLISH);
         etDatePicker.setText(sdf.format(calendar.getTime()));
@@ -645,11 +656,11 @@ public class AddDeviceFragment extends Fragment {
         }
 
         if (branch == 0) {
-            branch = spBranch.getSelectedItemPosition()+1;
+            branch = spBranch.getSelectedItemPosition() + 1;
         }
 
         if (category == 0) {
-            category = spType.getSelectedItemPosition()+1;
+            category = spType.getSelectedItemPosition() + 1;
         }
 
         if (abbreviation == null || abbreviation.length() == 0) {
@@ -840,14 +851,13 @@ public class AddDeviceFragment extends Fragment {
     private View.OnFocusChangeListener onFocusChangeListener = new View.OnFocusChangeListener() {
         @Override
         public void onFocusChange(View view, boolean b) {
-            if (view == etDevicePrice){
+            if (view == etDevicePrice) {
                 if (b) {
                     etDevicePrice.setHint("1000.00");
                 } else {
                     etDevicePrice.setHint("");
                 }
-            }
-            else if (view == etPurchasePrice){
+            } else if (view == etPurchasePrice) {
                 if (b) {
                     etPurchasePrice.setHint("1000.00");
                 } else {

@@ -13,7 +13,10 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,6 +25,7 @@ import com.example.devicemanager.adapter.RecyclerListDetailAdapter;
 import com.example.devicemanager.manager.Contextor;
 import com.example.devicemanager.manager.LoadData;
 import com.example.devicemanager.model.DataItem;
+import com.example.devicemanager.model.ItemEntityViewModel;
 import com.example.devicemanager.room.ItemEntity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -50,6 +54,7 @@ public class SummaryListDetailFragment extends Fragment {
     private View progressDialogBackground;
     private Spinner spFilter, spSortBy;
     private LoadData loadData;
+    private ItemEntityViewModel itemEntityViewModel;
 
 
     @SuppressWarnings("unused")
@@ -162,42 +167,49 @@ public class SummaryListDetailFragment extends Fragment {
 
         recyclerListDetailAdapter = new RecyclerListDetailAdapter(getContext());
 
-        List<ItemEntity> itemEntities = loadData.selectProductByType(type, order);
-        if (itemEntities != null) {
-            for (int i = 0; i < itemEntities.size(); i++) {
-                if (brandType.matches("-")||brandType.matches(itemEntities.get(i).getBrand().trim().toLowerCase())) {
-                    String productType = itemEntities.get(i).getType().trim();
-                    String productBrand = itemEntities.get(i).getBrand().trim();
-                    String productDetail = itemEntities.get(i).getDetail().trim();
-                    String productAddedDate = itemEntities.get(i).getPurchasedDate().trim();
-                    String productOwner = itemEntities.get(i).getPlaceName().trim();
-                    String productStatus;
-                    if (productOwner.matches("-")) {
-                        productStatus = "Available";
-                    } else {
-                        productStatus = "InUse";
-                    }
-                    String productKey = itemEntities.get(i).getUnnamed2().trim();
-                    Log.d("date", "" + productAddedDate);
-                    brand.add(productBrand);
-                    detail.add(productDetail);
-                    owner.add(productOwner);
-                    addedDate.add(productAddedDate);
-                    status.add(productStatus);
-                    key.add(productKey);
-                }
-            }
-        }
-        recyclerListDetailAdapter.setBrand(brand);
-        recyclerListDetailAdapter.setDetail(detail);
-        recyclerListDetailAdapter.setOwner(owner);
-        recyclerListDetailAdapter.setAddedDate(addedDate);
-        recyclerListDetailAdapter.setStatus(status);
-        recyclerListDetailAdapter.setKey(key);
-        recyclerListDetailAdapter.notifyDataSetChanged();
+        itemEntityViewModel = ViewModelProviders.of(this).get(ItemEntityViewModel.class);
 
-        progressDialogBackground.setVisibility(View.INVISIBLE);
-        progressBar.setVisibility(View.INVISIBLE);
+        itemEntityViewModel.selectProductByType(type, order).observe(getViewLifecycleOwner(), new Observer<List<ItemEntity>>() {
+            @Override
+            public void onChanged(@Nullable final List<ItemEntity> itemEntities) {
+                if (itemEntities != null) {
+                    for (int i = 0; i < itemEntities.size(); i++) {
+                        if (brandType.matches("-") || brandType.matches(itemEntities.get(i).getBrand().trim().toLowerCase())) {
+                            String productType = itemEntities.get(i).getType().trim();
+                            String productBrand = itemEntities.get(i).getBrand().trim();
+                            String productDetail = itemEntities.get(i).getDetail().trim();
+                            String productAddedDate = itemEntities.get(i).getPurchasedDate().trim();
+                            String productOwner = itemEntities.get(i).getPlaceName().trim();
+                            String productStatus;
+                            if (productOwner.matches("-")) {
+                                productStatus = "Available";
+                            } else {
+                                productStatus = "InUse";
+                            }
+                            String productKey = itemEntities.get(i).getUnnamed2().trim();
+                            Log.d("date", "" + productAddedDate);
+                            brand.add(productBrand);
+                            detail.add(productDetail);
+                            owner.add(productOwner);
+                            addedDate.add(productAddedDate);
+                            status.add(productStatus);
+                            key.add(productKey);
+                        }
+                    }
+                }
+                recyclerListDetailAdapter.setBrand(brand);
+                recyclerListDetailAdapter.setDetail(detail);
+                recyclerListDetailAdapter.setOwner(owner);
+                recyclerListDetailAdapter.setAddedDate(addedDate);
+                recyclerListDetailAdapter.setStatus(status);
+                recyclerListDetailAdapter.setKey(key);
+                recyclerListDetailAdapter.notifyDataSetChanged();
+
+                progressDialogBackground.setVisibility(View.INVISIBLE);
+                progressBar.setVisibility(View.INVISIBLE);
+            }
+        });
+
     }
 
     private AdapterView.OnItemSelectedListener onSpinnerSelect = new AdapterView.OnItemSelectedListener() {
