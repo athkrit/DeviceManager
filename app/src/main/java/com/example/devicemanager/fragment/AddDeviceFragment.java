@@ -395,6 +395,9 @@ public class AddDeviceFragment extends Fragment {
                         } catch (NumberFormatException num) {
                             Toast.makeText(getContext(), "" + num, Toast.LENGTH_SHORT).show();
                         }
+                        if (hasOtherType) {
+                            addType();
+                        }
                         for (int i = 0; i < count; i++) {
                             setUpdatedId(lastKey);
                             saveData();
@@ -501,9 +504,6 @@ public class AddDeviceFragment extends Fragment {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isSuccessful()) {
-                        if (hasOtherType) {
-                            addType();
-                        }
                         if (countDevice == quntity) {
                             itemEntityViewModel.insert(itemSave);
                             Toast.makeText(getActivity(), "Complete!", Toast.LENGTH_SHORT).show();
