@@ -7,11 +7,6 @@
 
             <solid android:color="@color/blue" />
 
-            <gradient
-                android:startColor="@color/blue"
-                android:endColor="@color/dark_blue"
-                android:angle="90" />
-
             <size
                 android:width="64dp"
                 android:height="64dp"/>
@@ -19,6 +14,10 @@
         </shape>
     </item>
     <item
+        android:bottom="24dp"
+        android:left="24dp"
+        android:right="24dp"
+        android:top="24dp"
         android:drawable="@drawable/ico_add"
         android:gravity="center" />
 </layer-list>

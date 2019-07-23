@@ -108,7 +108,6 @@ public class SummaryAdapter extends RecyclerView.Adapter<SummaryAdapter.Holder> 
             tvAvailable = itemView.findViewById(R.id.tvAvailable);
             tvActive = itemView.findViewById(R.id.tvActive);
             tvType = itemView.findViewById(R.id.tvType);
-            imgView = itemView.findViewById(R.id.imgView);
         }
 
         public void setItem(int position) {
@@ -140,35 +139,9 @@ public class SummaryAdapter extends RecyclerView.Adapter<SummaryAdapter.Holder> 
             tvActive.setText("" + count[position]);
             if (type.length <= 1) {
                 tvType.setText(type[0]);
-                setImage(0);
             } else {
                 tvType.setText("" + type[position]);
-                setImage(position);
             }
-        }
-
-        private void setImage(int position) {
-            if (brand!=null){
-                return;
-            }
-            if(type[position].matches("LAPTOP")){
-                imgView.setImageResource(R.drawable.ic_summary_laptop);
-                return;
-            }
-            for (int i = 0; i < other.length; i++) {
-                if (other[i].toUpperCase().trim().matches(type[position].toUpperCase().trim())){
-                    imgView.setImageResource(R.drawable.ic_summary_other);
-                    return;
-                }
-            }
-            for (int i = 0; i < furniture.length; i++) {
-                if (furniture[i].toUpperCase().trim().matches(type[position].toUpperCase().trim())){
-                    imgView.setImageResource(R.drawable.ic_summary_furniture_s);
-                    return;
-                }
-            }
-            imgView.setImageResource(R.drawable.ic_summary_device_s);
-
         }
     }
 }

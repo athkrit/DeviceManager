@@ -9,20 +9,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.devicemanager.R;
 import com.example.devicemanager.fragment.LoginFragment;
 import com.example.devicemanager.fragment.MainFragment;
 import com.example.devicemanager.fragment.SummaryFragment;
-import com.example.devicemanager.manager.LoadData;
 import com.example.devicemanager.model.TypeItem;
-import com.example.devicemanager.room.ItemEntity;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -31,18 +25,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-
-import cn.pedant.SweetAlert.SweetAlertDialog;
-
 public class MainActivity extends AppCompatActivity {
     SharedPreferences sp;
     SharedPreferences.Editor editor;
-    private View view;
-    private ProgressBar progressBar;
 
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
@@ -94,14 +79,8 @@ public class MainActivity extends AppCompatActivity {
         sp = getSharedPreferences("Type", Context.MODE_PRIVATE);
         editor = sp.edit();
 
-        view = findViewById(R.id.view);
-        progressBar = findViewById(R.id.spin_kit);
-
         tvDetail.setOnClickListener(onBtnClick);
         tvSummary.setOnClickListener(onBtnClick);
-
-        view.setVisibility(View.VISIBLE);
-        progressBar.setVisibility(View.VISIBLE);
         getType();
 
     }
@@ -142,14 +121,10 @@ public class MainActivity extends AppCompatActivity {
                 editor.putString("other", other);
                 editor.putString("furniture", furniture);
                 editor.commit();
-                view.setVisibility(View.INVISIBLE);
-                progressBar.setVisibility(View.INVISIBLE);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                view.setVisibility(View.INVISIBLE);
-                progressBar.setVisibility(View.INVISIBLE);
             }
         });
     }

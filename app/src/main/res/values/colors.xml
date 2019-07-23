@@ -24,4 +24,5 @@
     <color name="grey_black">#3c3f49</color>
     <color name="mid_grey">#4e5259</color>
     <color name="grey_2">#454850</color>
+    <color name="edit_btn_color">#2c2f39</color>
 </resources>
