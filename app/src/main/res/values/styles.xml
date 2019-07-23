@@ -11,9 +11,9 @@
         <item name="android:fontFamily">@font/kanit_regular</item>
     </style>
 
-    <style name="AppTheme.Material" parent="Theme.MaterialComponents.Light">
+    <style name="AppTheme.Material" parent="Theme.MaterialComponents">
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColor">@color/grey</item>
         <item name="android:windowEnableSplitTouch">false</item>

@@ -5,7 +5,8 @@
     android:layout_height="wrap_content"
     android:gravity="start"
     android:padding="15dp"
-    android:textColor="@color/grey"
+    android:textColor="@color/white"
+    android:background="@color/colorTheme"
     android:textSize="20sp"
     android:ellipsize="end"
     android:maxLines="1"/>

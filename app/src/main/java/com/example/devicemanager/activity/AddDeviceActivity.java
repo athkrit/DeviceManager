@@ -3,6 +3,7 @@ package com.example.devicemanager.activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.MenuItem;
@@ -45,8 +46,8 @@ public class AddDeviceActivity extends AppCompatActivity {
 
     private void initInstances() {
         getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(Html.fromHtml("<font color='#ffffff'>Add Device</font>"));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);getSupportActionBar()
+                .setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorTheme)));
     }
 
     @Override

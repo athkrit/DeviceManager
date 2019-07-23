@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorTheme"
     android:fillViewport="true">
 
     <FrameLayout
@@ -26,14 +27,15 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_marginEnd="15dp"
-                android:layout_marginRight="15dp"
-                android:text="Item Id" />
+                android:text="Item Id"
+                android:textColor="@android:color/white" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
-                android:text="@string/choose_item_type" />
+                android:text="@string/choose_item_type"
+                android:textColor="@android:color/white" />
 
             <Spinner
                 android:id="@+id/spinnerBranch"
@@ -58,12 +60,16 @@
                 android:gravity="center"
                 android:padding="8dp"
                 android:textSize="20sp" />
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/etOtherTypeLayout"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="invisible">
+                android:visibility="invisible"
+                app:boxStrokeColor="@android:color/white"
+                app:boxStrokeWidth="2dp"
+                app:hintTextColor="@android:color/white">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etOtherType"
@@ -86,7 +92,6 @@
                     android:layout_height="30dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginEnd="22dp"
-                    android:layout_marginRight="22dp"
                     android:src="@drawable/ic_person" />
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -95,8 +100,10 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_weight="2">
+                    android:layout_weight="2"
+                    app:boxStrokeColor="@android:color/white"
+                    app:boxStrokeWidth="2dp"
+                    app:hintTextColor="@android:color/white">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etOwnerId"
@@ -111,7 +118,10 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="5">
+                    android:layout_weight="5"
+                    app:boxStrokeColor="@android:color/white"
+                    app:boxStrokeWidth="2dp"
+                    app:hintTextColor="@android:color/white">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etOwnerName"
@@ -134,13 +144,15 @@
                     android:layout_height="30dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginEnd="22dp"
-                    android:layout_marginRight="22dp"
                     android:src="@drawable/ic_detail" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    app:boxStrokeColor="@android:color/white"
+                    app:boxStrokeWidth="2dp"
+                    app:hintTextColor="@android:color/white">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etDeviceDetail"
@@ -158,7 +170,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:paddingStart="52dp"
-                android:paddingLeft="52dp"
+                app:boxStrokeColor="@android:color/white"
+                app:boxStrokeWidth="2dp"
+                app:hintTextColor="@android:color/white"
                 tools:ignore="RtlSymmetry">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -166,8 +180,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/quantity"
-                    android:text="@string/number_1"
-                    android:inputType="number" />
+                    android:inputType="number"
+                    android:text="@string/number_1" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -183,7 +197,6 @@
                     android:layout_height="30dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginEnd="22dp"
-                    android:layout_marginRight="22dp"
                     android:src="@drawable/ic_tag"
                     android:tint="#A2A2A2" />
 
@@ -192,14 +205,16 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_weight="5">
+                    android:layout_weight="5"
+                    app:boxStrokeColor="@android:color/white"
+                    app:boxStrokeWidth="2dp"
+                    app:hintTextColor="@android:color/white">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etDeviceBrand"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/brand"
+                        android:hint="Brand"
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -208,7 +223,10 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3">
+                    android:layout_weight="3"
+                    app:boxStrokeColor="@android:color/white"
+                    app:boxStrokeWidth="2dp"
+                    app:hintTextColor="@android:color/white">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etWarranty"
@@ -226,7 +244,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:paddingStart="52dp"
-                android:paddingLeft="52dp"
+                app:boxStrokeColor="@android:color/white"
+                app:boxStrokeWidth="2dp"
+                app:hintTextColor="@android:color/white"
                 tools:ignore="RtlSymmetry">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -234,7 +254,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableEnd="@drawable/ic_photo"
-                    android:drawableRight="@drawable/ic_photo"
                     android:hint="@string/serial_number"
                     android:inputType="text" />
 
@@ -246,14 +265,16 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:paddingStart="52dp"
-                android:paddingLeft="52dp"
+                app:boxStrokeColor="@android:color/white"
+                app:boxStrokeWidth="2dp"
+                app:hintTextColor="@android:color/white"
                 tools:ignore="RtlSymmetry">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etDeviceModel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/model"
+                    android:hint="Model"
                     android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -269,7 +290,6 @@
                     android:layout_height="30dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginEnd="22dp"
-                    android:layout_marginRight="22dp"
                     android:src="@drawable/ic_calendar"
                     android:tint="#A2A2A2" />
 
@@ -277,7 +297,10 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    app:boxStrokeColor="@android:color/white"
+                    app:boxStrokeWidth="2dp"
+                    app:hintTextColor="@android:color/white">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etPurchaseDate"
@@ -296,7 +319,6 @@
                 android:layout_marginTop="5dp"
                 android:orientation="horizontal"
                 android:paddingStart="52dp"
-                android:paddingLeft="52dp"
                 tools:ignore="RtlSymmetry">
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -304,9 +326,11 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
                     android:layout_weight="1"
-                    android:hint="@string/price">
+                    android:hint="@string/price"
+                    app:boxStrokeColor="@android:color/white"
+                    app:boxStrokeWidth="2dp"
+                    app:hintTextColor="@android:color/white">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etDevicePurchasePrice"
@@ -320,7 +344,10 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    app:boxStrokeColor="@android:color/white"
+                    app:boxStrokeWidth="2dp"
+                    app:hintTextColor="@android:color/white">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etPrice"
@@ -344,14 +371,16 @@
                     android:layout_height="30dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginEnd="22dp"
-                    android:layout_marginRight="22dp"
                     android:src="@drawable/ic_note" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp">
+                    android:layout_marginTop="5dp"
+                    app:boxStrokeColor="@android:color/white"
+                    app:boxStrokeWidth="2dp"
+                    app:hintTextColor="@android:color/white">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etNote"
@@ -370,7 +399,9 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
-                android:text="@string/more" />
+                android:backgroundTint="@android:color/white"
+                android:text="@string/more"
+                android:textColor="@color/colorTheme" />
 
             <!-- TODO: Change "hidedLayout" to Fragment-->
             <LinearLayout
@@ -390,8 +421,10 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
-                        android:layout_marginRight="8dp"
-                        android:layout_weight="1">
+                        android:layout_weight="1"
+                        app:boxStrokeColor="@android:color/white"
+                        app:boxStrokeWidth="2dp"
+                        app:hintTextColor="@android:color/white">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etForwardDepreciation"
@@ -406,7 +439,10 @@
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1">
+                        android:layout_weight="1"
+                        app:boxStrokeColor="@android:color/white"
+                        app:boxStrokeWidth="2dp"
+                        app:hintTextColor="@android:color/white">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etDepreciationRate"
@@ -429,8 +465,10 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
-                        android:layout_marginRight="8dp"
-                        android:layout_weight="1">
+                        android:layout_weight="1"
+                        app:boxStrokeColor="@android:color/white"
+                        app:boxStrokeWidth="2dp"
+                        app:hintTextColor="@android:color/white">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etDepreciationinYear"
@@ -445,7 +483,10 @@
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1">
+                        android:layout_weight="1"
+                        app:boxStrokeColor="@android:color/white"
+                        app:boxStrokeWidth="2dp"
+                        app:hintTextColor="@android:color/white">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etAccumulateDepreciation"
@@ -463,7 +504,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:layout_marginBottom="20dp">
+                    android:layout_marginBottom="20dp"
+                    app:boxStrokeColor="@android:color/white"
+                    app:boxStrokeWidth="2dp"
+                    app:hintTextColor="@android:color/white">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etForwardedBudget"
@@ -485,14 +529,23 @@
             android:clickable="true"
             android:visibility="invisible" />
 
-        <com.github.ybq.android.spinkit.SpinKitView
+        <ProgressBar
+            android:id="@+id/spin_kit"
+            android:layout_width="200dp"
+            android:layout_height="195dp"
+            android:layout_gravity="center"
+            android:indeterminateTintMode="src_atop"
+            android:indeterminateTint="@android:color/white"
+            android:visibility="invisible" />
+
+        <!--<com.github.ybq.android.spinkit.SpinKitView
             android:id="@+id/spin_kit"
             style="@style/SpinKitView.Large.ThreeBounce"
             android:layout_width="200dp"
             android:layout_height="195dp"
             android:layout_gravity="center"
             android:visibility="invisible"
-            app:SpinKit_Color="@color/colorAccent" />
+            app:SpinKit_Color="@color/colorAccent" />-->
     </FrameLayout>
 
 </ScrollView>
