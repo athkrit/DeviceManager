@@ -9,7 +9,7 @@
             <gradient
                 android:startColor="@color/deep_blue"
                 android:endColor="@color/deep_dark_blue"
-                android:angle="90" />
+                android:angle="270" />
 
             <size
                 android:width="64dp"

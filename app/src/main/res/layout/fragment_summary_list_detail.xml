@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorTheme"
     android:orientation="vertical">
 
     <LinearLayout
@@ -21,9 +22,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="5dp"
-                android:layout_marginRight="5dp"
                 android:gravity="center"
                 android:text="@string/filter"
+                android:textColor="@android:color/white"
                 android:textSize="@dimen/text_14_sp" />
 
             <androidx.appcompat.widget.AppCompatSpinner
@@ -31,7 +32,6 @@
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
                 android:layout_weight="1">
 
             </androidx.appcompat.widget.AppCompatSpinner>
@@ -40,9 +40,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="5dp"
-                android:layout_marginRight="5dp"
                 android:gravity="center"
                 android:text="@string/sort_by"
+                android:textColor="@android:color/white"
                 android:textSize="@dimen/text_14_sp" />
 
             <androidx.appcompat.widget.AppCompatSpinner

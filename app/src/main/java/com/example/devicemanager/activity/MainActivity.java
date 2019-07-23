@@ -7,7 +7,9 @@ import androidx.appcompat.app.AppCompatDelegate;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -158,7 +160,8 @@ public class MainActivity extends AppCompatActivity {
                         , MainFragment.newInstance()
                         , "MainFragment")
                 .commit();
-        //btnDetail.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+        setBottomNavColor(tvDetail, "selected");
+        setBottomNavColor(tvSummary, "none");
     }
 
     private View.OnClickListener onBtnClick = new View.OnClickListener() {
@@ -186,8 +189,10 @@ public class MainActivity extends AppCompatActivity {
                             .detach(secondFragment)
                             .commit();
                 }
-                /*btnDetail.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-                btnSummary.setBackgroundColor(getResources().getColor(R.color.colorPrimary));*/
+
+                setBottomNavColor(tvDetail, "selected");
+                setBottomNavColor(tvSummary, "none");
+
             } else if (view == tvSummary) {
                 if (mainFragment == null && secondFragment == null) {
                     getSupportFragmentManager().beginTransaction()
@@ -208,9 +213,25 @@ public class MainActivity extends AppCompatActivity {
                             .detach(mainFragment)
                             .commit();
                 }
-                /*btnSummary.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-                btnDetail.setBackgroundColor(getResources().getColor(R.color.colorPrimary));*/
+                setBottomNavColor(tvDetail, "none");
+                setBottomNavColor(tvSummary, "selected");
             }
         }
     };
+
+    private void setBottomNavColor(TextView textView, String state){
+        int color;
+
+        if (state.equals("selected")) {
+            color = R.color.white;
+        } else {
+            color = R.color.mid_grey;
+        }
+
+        Drawable[] drawables = textView.getCompoundDrawables();
+        if (drawables[1] != null) {
+            drawables[1].setColorFilter(getResources().getColor(color), PorterDuff.Mode.SRC_ATOP);
+        }
+        textView.setTextColor(getResources().getColor(color));
+    }
 }

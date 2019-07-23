@@ -3,6 +3,7 @@ package com.example.devicemanager.adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +15,23 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.devicemanager.R;
 import com.example.devicemanager.activity.DeviceDetailActivity;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class RecyclerListDetailAdapter extends RecyclerView.Adapter<RecyclerListDetailAdapter.Holder> {
-    Context context;
-    ArrayList<String> brand, detail, owner, addedDate, status, key;
+    private Context context;
+    private ArrayList<String> brand;
+    private ArrayList<String> detail;
+    private ArrayList<String> owner;
+    private ArrayList<String> addedDate;
+    private ArrayList<String> status;
+    private ArrayList<String> key;
+    private ArrayList<String> lastUpdated;
 
     public void setBrand(ArrayList<String> brand) {
         this.brand = brand;
@@ -49,6 +62,12 @@ public class RecyclerListDetailAdapter extends RecyclerView.Adapter<RecyclerList
         this.status = status;
         notifyDataSetChanged();
     }
+
+    public void setLastUpdated(ArrayList<String> lastUpdated) {
+        this.lastUpdated = lastUpdated;
+        notifyDataSetChanged();
+    }
+
 
     public RecyclerListDetailAdapter(Context context) {
         this.context = context;
@@ -91,30 +110,120 @@ public class RecyclerListDetailAdapter extends RecyclerView.Adapter<RecyclerList
         return position;
     }
 
-    TextView tvBrand, tvDetail, tvOwner, tvAddedDate, tvStatus;
+    private TextView tvBrand, tvDetail, tvOwner, tvAddedDate, tvStatus, tvLastUpdated;
 
     class Holder extends RecyclerView.ViewHolder {
 
-        public Holder(View itemView) {
+        Holder(View itemView) {
             super(itemView);
-            tvBrand     = (TextView) itemView.findViewById(R.id.tvBrand);
-            tvDetail    = (TextView) itemView.findViewById(R.id.tvDetail);
-            tvOwner     = (TextView) itemView.findViewById(R.id.tvOwner);
+            tvBrand = (TextView) itemView.findViewById(R.id.tvBrand);
+            tvDetail = (TextView) itemView.findViewById(R.id.tvDetail);
+            tvOwner = (TextView) itemView.findViewById(R.id.tvOwner);
             tvAddedDate = (TextView) itemView.findViewById(R.id.tvAddedDate);
-            tvStatus    = (TextView) itemView.findViewById(R.id.tvStatus);
+            tvStatus = (TextView) itemView.findViewById(R.id.tvStatus);
+            tvLastUpdated = itemView.findViewById(R.id.tvLastUpdate);
         }
 
-        @SuppressLint("ResourceAsColor")
+        @SuppressLint({"ResourceAsColor", "SetTextI18n"})
         public void setItem(int position) {
-            tvBrand.setText(brand.get(position));
-            tvDetail.setText(detail.get(position));
-            tvOwner.setText(owner.get(position));
-            tvAddedDate.setText(addedDate.get(position));
+
+            if (!brand.get(position).matches("-") &&
+                    detail.get(position).toLowerCase().contains(brand.get(position).toLowerCase())) {
+                tvBrand.setText(detail.get(position));
+            } else if (brand.get(position).matches("-")) {
+                tvBrand.setText(detail.get(position));
+            } else {
+                tvBrand.setText(brand.get(position));
+                tvDetail.setText(detail.get(position));
+            }
+
+            if (owner.get(position).matches("-")){
+                tvOwner.setText("no owner");
+            } else {
+                tvOwner.setText(owner.get(position));
+            }
+
+            String[] date = setDate(addedDate.get(position)).split(",");
+            tvAddedDate.setText(date[0]);
+            tvLastUpdated.setText(checkLastUpdate(date[1], date[2], date[3]));
             tvStatus.setText(status.get(position));
+
             if (status.get(position).matches("InUse")) {
                 tvStatus.setTextColor(context.getResources().getColor(R.color.red));
             } else {
                 tvStatus.setTextColor(context.getResources().getColor(R.color.green));
+            }
+        }
+
+        private String setDate(String inputDate) {
+
+            String inputFormat = "yyyy-MM-dd";
+            SimpleDateFormat inputDateFormat = new SimpleDateFormat(
+                    inputFormat, Locale.ENGLISH);
+            String outputFormat = "dd MMMM yyyy";
+            SimpleDateFormat outputDateFormat = new SimpleDateFormat(
+                    outputFormat, Locale.ENGLISH);
+            SimpleDateFormat outputDFormat = new SimpleDateFormat(
+                    "dd", Locale.ENGLISH);
+            SimpleDateFormat outputMFormat = new SimpleDateFormat(
+                    "MM", Locale.ENGLISH);
+            SimpleDateFormat outputYFormat = new SimpleDateFormat(
+                    "yyyy", Locale.ENGLISH);
+
+            Date date;
+            String str = inputDate;
+            String d = "0";
+            String m = "0";
+            String y = "0";
+
+            try {
+                date = inputDateFormat.parse(inputDate);
+                if (date != null){
+                    str = outputDateFormat.format(date);
+                    d = outputDFormat.format(date);
+                    m = outputMFormat.format(date);
+                    y = outputYFormat.format(date);
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            return str + "," + d + "," + m + "," + y;
+
+        }
+
+        private String checkLastUpdate(String d, String m, String y){
+
+            Calendar calendar = Calendar.getInstance(Locale.getDefault());
+            int year = calendar.get(Calendar.YEAR) - Integer.parseInt(y);
+
+            if (year == 1){
+                return " Updated: last year" ;
+            }
+            else if (year > 1){
+                return " Updated: " + year + " years ago";
+            }
+
+            int month = calendar.get(Calendar.MONTH) - Integer.parseInt(m);
+            if (month == 1){
+                return " Updated: last month" ;
+            }
+            else if (month > 1){
+                return " Updated: " + month + " month ago";
+            }
+
+            int date = calendar.get(Calendar.DATE) - Integer.parseInt(d);
+            if (date == 1){
+                return " Updated: yesterday" ;
+            }
+            else if (date > 1) {
+                return " Updated: " + date + " days ago" ;
+            }
+            else if (date == 0){
+                return " Updated: today" ;
+            }
+            else {
+                return "";
             }
         }
 

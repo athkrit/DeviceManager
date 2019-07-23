@@ -58,7 +58,6 @@ public class DeviceDetailFragment extends Fragment {
     private AppCompatButton btnCheck, btnEdit;
     private ProgressBar progressBar;
     private View progressDialogBackground;
-    private LoadData loadData;
     private int updatedKey;
     private String lastKey;
     List<ItemEntity> itemEntity;
@@ -92,7 +91,6 @@ public class DeviceDetailFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 11111) {
             if (resultCode == RESULT_OK) {
-                loadData = new LoadData(getActivity());
                 getData(serial);
                 SuccessDialog();
             }
@@ -100,8 +98,6 @@ public class DeviceDetailFragment extends Fragment {
     }
 
     private void initInstances(View view) {
-
-        loadData = new LoadData(getContext());
 
         itemEntityViewModel = ViewModelProviders.of(this).get(ItemEntityViewModel.class);
 
@@ -275,7 +271,7 @@ public class DeviceDetailFragment extends Fragment {
         String inputFormat = "yyyy-MM-dd";
         SimpleDateFormat inputDateFormat = new SimpleDateFormat(
                 inputFormat, Locale.ENGLISH);
-        String outputFormat = "dd/MMMM/yyyy";
+        String outputFormat = "dd MMMM yyyy";
         SimpleDateFormat outputDateFormat = new SimpleDateFormat(
                 outputFormat, Locale.ENGLISH);
 
@@ -300,7 +296,7 @@ public class DeviceDetailFragment extends Fragment {
         String inputFormat = "dd/MM/yyyy";
         SimpleDateFormat inputDateFormat = new SimpleDateFormat(
                 inputFormat, Locale.ENGLISH);
-        String outputFormat = "dd/MMMM/yyyy";
+        String outputFormat = "dd MMMM yyyy";
         SimpleDateFormat outputDateFormat = new SimpleDateFormat(
                 outputFormat, Locale.ENGLISH);
 
