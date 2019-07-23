@@ -112,13 +112,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String allType = "";
+                String building = "";
                 String device = "";
                 String furniture = "";
                 String other = "";
                 for (DataSnapshot s : dataSnapshot.getChildren()) {
                     TypeItem typeItem = s.getValue(TypeItem.class);
-                    allType = allType + typeItem.getType()+",";
+                    allType = allType + typeItem.getType() + ",";
                     switch (typeItem.getAssetId()) {
+                        case "1":
+                            building = building + typeItem.getType() + ",";
+                            break;
                         case "2":
                             device = device + typeItem.getType() + ",";
                             break;
@@ -133,6 +137,7 @@ public class MainActivity extends AppCompatActivity {
 
                 }
                 editor.putString("allType", allType);
+                editor.putString("building", building);
                 editor.putString("device", device);
                 editor.putString("other", other);
                 editor.putString("furniture", furniture);

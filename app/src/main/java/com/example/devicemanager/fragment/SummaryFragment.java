@@ -87,8 +87,7 @@ public class SummaryFragment extends Fragment {
         layoutManager = new LinearLayoutManager(getContext());
         rvSummary = rootView.findViewById(R.id.rvSummary);
         itemEntityViewModel = ViewModelProviders.of(this).get(ItemEntityViewModel.class);
-        typeAll = sp.getString("allType",null).split(",");
-        Arrays.sort(typeAll);
+        typeAll = sp.getString("allType", null).split(",");
 //                new String[]{"ACCESS POINT", "ADAPTER", "AIR CONDITIONER", "APPLE CARE", "BARCODE READER", "BATTERY",
 //                "BICYCLE", "CABINET", "CAMERA", "CAR", "CARD READER", "CARPET", "CART", "CASH DRAWER", "CHAIR",
 //                "CHARGER", "CHROMECAST", "CLOTHES DRYERS", "COFFEE MACHINE", "COMPUTER", "COUNTER", "CURTAIN",
@@ -103,7 +102,7 @@ public class SummaryFragment extends Fragment {
 //                "TELEPHONE", "USB", "WASHING MACHINE", "WATCH", "WATER HEATER", "WATER PUMP",
 //                "WHITE BOARD", "WIRELESS", "ขาแขวน", "อุปกรณ์คอมพิวเตอร์"};
 
-        typeDevice = sp.getString("device",null).split(",");
+        typeDevice = sp.getString("device", null).split(",");
 //                new String[]{"ACCESS POINT", "ADAPTER", "APPLE CARE", "BATTERY", "CARD READER",
 //                "CHARGER", "CHROMECAST", "COMPUTER", "DEVELOPER PROGRAM", "DISPLAY PORT", "DONGLE", "E-COMMERCE",
 //                "GAME", "HDD", "IMAC", "IPAD", "IPAD COVER", "IPOD", "ITEM", "KEYBOARD", "LAPTOP", "MICRO SD CARD",
@@ -111,16 +110,30 @@ public class SummaryFragment extends Fragment {
 //                "POWER SUPPLIER", "PROGRAM", "ROUTER", "SERVER", "SERVER CABINET", "SOFTWARE", "SOLID STATE DRIVE ",
 //                "SSD", "TABLET", "USB", "WIRELESS", "ขาแขวน", "อุปกรณ์คอมพิวเตอร์"};
 
-        typeFurniture = sp.getString("furniture",null).split(",");
+        typeFurniture = sp.getString("furniture", null).split(",");
 //                new String[]{"AIR CONDITIONER", "BARCODE READER", "CABINET", "CAMERA", "CARPET", "CART", "CASH DRAWER",
 //                "CHAIR", "CLOTHES DRYERS", "COFFEE MACHINE", "COUNTER", "CURTAIN", "DOCUMENT SHREDDER", "DOOR ACCESS", "DRAWER",
 //                "EQUIPMENT", "FAN", "FILM", "FURNITURE", "GAS STOVE", "INTERIOR DECORATION", "JUICE BLENDER", "KITCHEN",
 //                "LABEL PRINTER", "LAMP", "LOCKER", "MIRCROWAVE", "PRINTER", "REFRIGERATOR", "RICE COOKER", "SCANNER", "SHELVES",
 //                "SINK", "SOFA", "STOOL", "SWING", "TABLE", "TABLET", "TELEPHONE", "TELEVISION", "WASHING MACHINE", "WATCH",
 //                "WATER HEATER", "WATER PUMP", "WHITE BOARD"};
+        String[] other = sp.getString("other", null).split(",");
+        String[] building = sp.getString("building", null).split(",");
 
-        typeOther = sp.getString("other",null).split(",");
+        typeOther = new String[other.length + building.length];
+        for (int i = 0; i < typeOther.length; i++) {
+            if (i >= other.length)
+                typeOther[i] = building[i-other.length];
+
+            else
+                typeOther[i] = other[i];
+
+        }
 //                new String[]{"BUILDING", "BICYCLE", "CAR"};
+        Arrays.sort(typeAll);
+        Arrays.sort(typeDevice);
+        Arrays.sort(typeFurniture);
+        Arrays.sort(typeOther);
 
         getDataByType(typeAll);
 
