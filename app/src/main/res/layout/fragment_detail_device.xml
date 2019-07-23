@@ -83,7 +83,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
-                        android:layout_marginRight="10dp"
                         android:background="@android:color/transparent"
                         android:gravity="center_vertical"
                         android:orientation="vertical">
@@ -143,9 +142,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="26dp"
-                android:layout_marginLeft="26dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginStart="18dp"
                 android:baselineAligned="true"
                 android:orientation="horizontal">
 
@@ -153,22 +150,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginEnd="14dp"
-                    android:layout_marginRight="14dp"
                     android:orientation="vertical">
 
                     <TextView
                         style="@style/TextViewForDetailDeviceWhite"
                         android:layout_marginBottom="10dp"
                         android:drawableStart="@drawable/circle_gradient_blue"
-                        android:drawableLeft="@drawable/circle_gradient_blue"
                         android:drawablePadding="10dp"
+                        android:fontFamily="@font/open_sans_regular"
                         android:text="@string/added_date" />
 
                     <TextView
                         style="@style/TextViewForDetailDeviceWhite"
                         android:drawableStart="@drawable/circle_gradient_red"
-                        android:drawableLeft="@drawable/circle_gradient_red"
                         android:drawablePadding="10dp"
+                        android:fontFamily="@font/open_sans_regular"
                         android:text="@string/last_updated" />
 
                 </LinearLayout>
@@ -182,11 +178,13 @@
                     <TextView
                         android:id="@+id/tvAddedDate"
                         style="@style/TextViewForDetailDeviceWhite"
-                        android:layout_marginBottom="10dp" />
+                        android:layout_marginBottom="10dp"
+                        android:fontFamily="@font/open_sans_regular" />
 
                     <TextView
                         android:id="@+id/tvLastUpdate"
-                        style="@style/TextViewForDetailDeviceWhite" />
+                        style="@style/TextViewForDetailDeviceWhite"
+                        android:fontFamily="@font/open_sans_regular" />
 
                 </LinearLayout>
             </LinearLayout>
@@ -202,21 +200,23 @@
                 android:layout_marginTop="15dp"
                 android:orientation="horizontal">
 
-                <Button
-                    style="@style/RoundedCornerMaterialButton"
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btnEdit"
+                    style="@style/RoundedCornerMaterialButton"
                     android:layout_width="0dp"
-                    android:layout_height="60dp"
+                    android:layout_height="55dp"
+                    android:layout_marginEnd="15dp"
                     android:layout_weight="1"
+                    android:backgroundTint="@color/edit_btn_color"
                     android:text="@string/edit" />
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btnCheck"
                     style="@style/RoundedCornerMaterialButton"
                     android:layout_width="0dp"
-                    android:layout_height="60dp"
+                    android:layout_height="55dp"
                     android:layout_weight="1"
-                    android:text="@string/check"/>
+                    android:text="@string/check" />
             </LinearLayout>
 
         </LinearLayout>
@@ -227,6 +227,7 @@
             android:layout_height="match_parent"
             android:background="@color/transparent_background"
             android:clickable="true"
+            android:focusable="true"
             android:visibility="invisible" />
 
         <com.github.ybq.android.spinkit.SpinKitView

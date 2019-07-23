@@ -37,7 +37,7 @@
             android:layout_height="50dp"
             android:layout_toEndOf="@+id/tvAll"
             android:layout_toRightOf="@+id/tvAll"
-            android:src="@drawable/ic_all_list"
+            app:srcCompat="@drawable/ic_all_list"
             app:fabCustomSize="50dp" />
 
     </RelativeLayout>
@@ -61,7 +61,7 @@
             android:layout_height="50dp"
             android:layout_toEndOf="@+id/tvLaptop"
             android:layout_toRightOf="@+id/tvLaptop"
-            android:src="@drawable/ic_laptop"
+            app:srcCompat="@drawable/ic_laptop"
             app:fabCustomSize="50dp" />
 
     </RelativeLayout>
@@ -85,7 +85,7 @@
             android:layout_height="50dp"
             android:layout_toEndOf="@+id/tvDevice"
             android:layout_toRightOf="@+id/tvDevice"
-            android:src="@drawable/ic_device"
+            app:srcCompat="@drawable/ic_device"
             app:fabCustomSize="50dp" />
 
     </RelativeLayout>
@@ -132,21 +132,22 @@
             android:layout_height="50dp"
             android:layout_toEndOf="@+id/tvOther"
             android:layout_toRightOf="@+id/tvOther"
-            android:src="@drawable/ic_more"
+            app:srcCompat="@drawable/ic_more"
             app:fabCustomSize="50dp" />
 
     </RelativeLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabFilter"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="10dp"
-        android:src="@drawable/ic_filter" />
+        app:fab_icon="@drawable/button_blue_add"
+        app:maxImageSize="64dp"/>
 
 </RelativeLayout>

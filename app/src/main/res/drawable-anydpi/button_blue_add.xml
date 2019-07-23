@@ -19,8 +19,10 @@
         </shape>
     </item>
     <item
+        android:bottom="24dp"
+        android:left="24dp"
+        android:right="24dp"
+        android:top="24dp"
         android:drawable="@drawable/ico_add"
-        android:gravity="center">
-
-    </item>
+        android:gravity="center" />
 </layer-list>

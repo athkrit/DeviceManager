@@ -31,10 +31,11 @@
         <item name="android:splitMotionEvents">false</item>
     </style>
 
-    <style name="RoundedCornerMaterialButton" parent="Widget.MaterialComponents.Button">
+    <style name="RoundedCornerMaterialButton">
+        <item name="android:fontFamily">@font/open_sans_regular</item>
         <item name="android:textColor">#fff</item>
-        <item name="backgroundTint">@color/main_blue_color</item>
         <item name="android:textSize">16sp</item>
+        <item name="android:background">@drawable/rec_gradient_blue</item>
     </style>
 
     <style name="TextViewDefault">
@@ -57,6 +58,10 @@
         <item name="android:textSize">12sp</item>
         <item name="android:singleLine">true</item>
         <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="buttonSource">
+        <item name="android:src">@drawable/selector_button_blue_add</item>
     </style>
 
     <style name="Divider">
@@ -121,11 +126,11 @@
     </style>
 
     <style name="AddFABStyle" parent="Widget.AppCompat.Button.Colored">
-        <!--<item name="android:src">@drawable/add_gradient_blue</item>
-        <item name="android:drawable">@drawable/add_gradient_blue</item>-->
+        <!--<item name="android:src">@drawable/button_blue_add</item>
+        <item name="android:drawable">@drawable/button_blue_add</item>-->
         <!--<item name="srcCompat">@drawable/rec_gradient_blue</item>-->
-        <!--<item name="android:src">@drawable/add_gradient_blue</item>-->
-        <item name="android:drawable">@drawable/add_gradient_blue</item>
+        <!--<item name="android:src">@drawable/button_blue_add</item>-->
+        <item name="android:drawable">@drawable/button_blue_add</item>
         <item name="fabSize">normal</item>
     </style>
 

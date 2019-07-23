@@ -7,12 +7,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +16,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -58,7 +55,7 @@ public class DeviceDetailFragment extends Fragment {
     private TextView tvSerialNumber, tvOwnerName, tvDeviceDetail,
             tvLastUpdate, tvAddedDate, tvType, tvItemId, tvBrand, tvModel;
     private static String serial;
-    private Button btnCheck, btnEdit;
+    private AppCompatButton btnCheck, btnEdit;
     private ProgressBar progressBar;
     private View progressDialogBackground;
     private LoadData loadData;
@@ -80,7 +77,6 @@ public class DeviceDetailFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
-        setHasOptionsMenu(true);
     }
 
     @Nullable
@@ -89,24 +85,6 @@ public class DeviceDetailFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_detail_device, container, false);
         initInstances(view);
         return view;
-    }
-
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu_list_detail, menu);
-        MenuItem menuEdit = menu.findItem(R.id.action_edit);
-        menuEdit.expandActionView();
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.action_edit) {
-            Intent intent = new Intent(getActivity(), AddDeviceActivity.class);
-            intent.putExtra("Serial", serial);
-            startActivityForResult(intent, 11111);
-        }
-        return true;
     }
 
     @Override
@@ -133,12 +111,14 @@ public class DeviceDetailFragment extends Fragment {
         tvAddedDate = view.findViewById(R.id.tvAddedDate);
         tvLastUpdate = view.findViewById(R.id.tvLastUpdate);
         tvType = view.findViewById(R.id.tvType);
-        //tvItemId = view.findViewById(R.id.tvItemId);
+        tvItemId = view.findViewById(R.id.tvItemId);
         tvBrand = view.findViewById(R.id.tvBrand);
         tvModel = view.findViewById(R.id.tvModel);
         btnCheck = view.findViewById(R.id.btnCheck);
+        btnEdit = view.findViewById(R.id.btnEdit);
 
         btnCheck.setOnClickListener(clickListener);
+        btnEdit.setOnClickListener(clickListener);
 
         progressBar = (ProgressBar) view.findViewById(R.id.spin_kit);
         progressDialogBackground = (View) view.findViewById(R.id.view);
@@ -160,21 +140,21 @@ public class DeviceDetailFragment extends Fragment {
         itemEntityViewModel.selectData(serialNew).observe(getViewLifecycleOwner(), new Observer<List<ItemEntity>>() {
             @Override
             public void onChanged(@Nullable final List<ItemEntity> itemEntities) {
-                itemEntity=itemEntities;
+                itemEntity = itemEntities;
                 if (itemEntity != null) {
                     lastKey = itemEntity.get(0).getAutoId() + "";
                     idKey = itemEntity.get(0).getAutoId() + "";
-                    //tvItemId.setText(itemEntity.get(0).getUnnamed2());
+
+                    tvItemId.setText("ID :" + checkNoneData(itemEntity.get(0).getUnnamed2(), ""));
                     tvOwnerName.setText(checkNoneData(itemEntity.get(0).getPlaceName(), "No Owner"));
                     tvDeviceDetail.setText(checkNoneData(itemEntity.get(0).getDetail(), "N/A"));
                     tvBrand.setText(checkNoneData(itemEntity.get(0).getBrand(), "N/A"));
                     tvType.setText(itemEntity.get(0).getType());
                     tvModel.setText(checkNoneData(itemEntity.get(0).getModel(), "N/A"));
                     tvSerialNumber.setText(checkNoneData(itemEntity.get(0).getSerialNo(), "No Serial"));
-
                     tvLastUpdate.setText(setDateForm2(itemEntity.get(0).getLastUpdated()));
-
                     tvAddedDate.setText(setDate(itemEntity.get(0).getPurchasedDate()));
+
                     hideDialog();
                 } else {
                     getActivity().finish();
@@ -355,7 +335,11 @@ public class DeviceDetailFragment extends Fragment {
         public void onClick(View view) {
             if (view == btnCheck) {
                 showAlertDialog(R.string.dialog_msg_checked, "check");
-
+            }
+            else if (view == btnEdit){
+                Intent intent = new Intent(getActivity(), AddDeviceActivity.class);
+                intent.putExtra("Serial", serial);
+                startActivityForResult(intent, 11111);
             }
         }
     };

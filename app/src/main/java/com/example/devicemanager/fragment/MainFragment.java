@@ -194,7 +194,6 @@ public class MainFragment extends Fragment implements ItemListAdapter.Holder.Ite
 
         floatingButton = rootView.findViewById(R.id.fabAdd);
         floatingButton.setOnClickListener(onClickFab);
-        floatingButton.setImageDrawable(getResources().getDrawable(R.drawable.add_gradient_blue));
         recyclerView = rootView.findViewById(R.id.recyclerView);
         view = rootView.findViewById(R.id.view);
         progressBar = rootView.findViewById(R.id.spin_kit);
