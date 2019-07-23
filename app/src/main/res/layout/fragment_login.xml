@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -20,29 +20,45 @@
             android:text="@string/login"
             android:textSize="26sp" />
 
-        <EditText
-            android:id="@+id/etLoginEmail"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout1"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tvLogin"
-            android:hint="@string/email"
-            android:inputType="textEmailAddress" />
+            android:layout_below="@+id/tvLogin">
 
-        <EditText
-            android:id="@+id/etLoginPassword"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etLoginEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout2"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/etLoginEmail"
-            android:layout_alignStart="@+id/etLoginEmail"
-            android:layout_alignLeft="@+id/etLoginEmail"
-            android:hint="@string/password"
-            android:inputType="textPassword" />
+            android:layout_below="@+id/textInputLayout1"
+            android:layout_alignStart="@+id/textInputLayout1"
+            android:layout_alignLeft="@+id/textInputLayout1">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etLoginPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/password"
+                android:inputType="textPassword" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/btnLoginSubmit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/etLoginPassword"
+            android:layout_below="@+id/textInputLayout2"
             android:text="@string/submit" />
 
         <TextView
@@ -55,21 +71,22 @@
             android:layout_marginTop="20dp"
             android:text="@string/register" />
     </RelativeLayout>
+
     <View
-        android:clickable="true"
-        android:visibility="invisible"
         android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/transparent_background"/>
+        android:background="@color/transparent_background"
+        android:clickable="true"
+        android:visibility="invisible" />
 
     <com.github.ybq.android.spinkit.SpinKitView
-        android:visibility="invisible"
         android:id="@+id/spin_kit"
         style="@style/SpinKitView.Large.ThreeBounce"
         android:layout_width="200dp"
         android:layout_height="195dp"
         android:layout_gravity="center"
+        android:visibility="invisible"
         app:SpinKit_Color="@color/colorAccent" />
 
 </FrameLayout>
