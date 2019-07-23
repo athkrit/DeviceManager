@@ -36,63 +36,17 @@
                 android:gravity="center"
                 android:text="@string/device_detail" />
 
-            <RelativeLayout
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="match_parent">
-                <TextView
-                    android:id="@+id/tvSummary"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:drawableTop="@drawable/ico_summary"
-                    android:gravity="center"
-                    android:text="@string/summary" />
-                <View
-                    android:id="@+id/view"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/transparent_background"
-                    android:clickable="true"
-                    android:visibility="invisible" />
-
-                <com.github.ybq.android.spinkit.SpinKitView
-                    android:id="@+id/spin_kit"
-                    style="@style/SpinKitView.Large.ThreeBounce"
-                    android:layout_width="200dp"
-                    android:layout_height="195dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
-                    android:layout_gravity="center"
-                    android:visibility="invisible"
-                    app:SpinKit_Color="@color/colorAccent" />
-
-            </RelativeLayout>
-
-            <!--<Button
-                android:id="@+id/btnDetail"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="1dp"
-                android:layout_marginRight="1dp"
-                android:layout_weight="1"
-                android:background="@color/colorPrimary"
-                android:drawableTop="@drawable/ico_device_detil"
-                android:text="@string/detail"
-                android:textColor="#ffffff" />
-
-            <Button
-                android:id="@+id/btnSummary"
+            <TextView
+                android:id="@+id/tvSummary"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@color/colorPrimary"
                 android:drawableTop="@drawable/ico_summary"
-                android:text="@string/summary"
-                android:textColor="#ffffff" />-->
+                android:gravity="center"
+                android:text="@string/summary" />
+
         </LinearLayout>
+
     </LinearLayout>
-
-
 
 </RelativeLayout>

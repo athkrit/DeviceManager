@@ -23,13 +23,16 @@ import com.example.devicemanager.adapter.SummaryAdapter;
 import com.example.devicemanager.manager.LoadData;
 import com.example.devicemanager.model.ItemEntityViewModel;
 import com.example.devicemanager.room.ItemEntity;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionButton;
+
 
 import java.util.Arrays;
 import java.util.List;
 
 public class SummaryFragment extends Fragment {
     private FloatingActionButton fabContainer;
+    private com.google.android.material.floatingactionbutton.FloatingActionButton
+            fabAll, fabDevice, fabLaptop, fabFurniture, fabOther;
     private boolean isFABOpen = false;
     private RecyclerView rvSummary;
     private SummaryAdapter summaryAdapter, summaryAdapterLaptop;
@@ -77,12 +80,24 @@ public class SummaryFragment extends Fragment {
         layoutOther = rootView.findViewById(R.id.layoutOther);
         hidedView = rootView.findViewById(R.id.hidedView);
 
+        fabAll = rootView.findViewById(R.id.fabAll);
+        fabDevice = rootView.findViewById(R.id.fabDevice);
+        fabFurniture = rootView.findViewById(R.id.fabFurniture);
+        fabLaptop = rootView.findViewById(R.id.fabLaptop);
+        fabOther = rootView.findViewById(R.id.fabOther);
+
         fabContainer.setOnClickListener(onClickListener);
         layoutAll.setOnClickListener(onClickListener);
         layoutOther.setOnClickListener(onClickListener);
         layoutDevice.setOnClickListener(onClickListener);
         layoutLaptop.setOnClickListener(onClickListener);
         layoutFurniture.setOnClickListener(onClickListener);
+
+        fabAll.setOnClickListener(onClickListener);
+        fabLaptop.setOnClickListener(onClickListener);
+        fabFurniture.setOnClickListener(onClickListener);
+        fabDevice.setOnClickListener(onClickListener);
+        fabOther.setOnClickListener(onClickListener);
 
         layoutManager = new LinearLayoutManager(getContext());
         rvSummary = rootView.findViewById(R.id.rvSummary);
@@ -273,19 +288,19 @@ public class SummaryFragment extends Fragment {
                 } else {
                     closeFABMenu();
                 }
-            } else if (view == layoutAll) {
+            } else if (view == layoutAll || view == fabAll) {
                 getDataByType(typeAll);
                 closeFABMenu();
-            } else if (view == layoutDevice) {
+            } else if (view == layoutDevice || view == fabDevice) {
                 getDataByType(typeDevice);
                 closeFABMenu();
-            } else if (view == layoutLaptop) {
+            } else if (view == layoutLaptop || view == fabLaptop) {
                 getLaptop();
                 closeFABMenu();
-            } else if (view == layoutFurniture) {
+            } else if (view == layoutFurniture || view == fabFurniture) {
                 getDataByType(typeFurniture);
                 closeFABMenu();
-            } else if (view == layoutOther) {
+            } else if (view == layoutOther || view == fabOther) {
                 getDataByType(typeOther);
                 closeFABMenu();
             }

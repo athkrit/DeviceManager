@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="transition_floating_1">310dp</dimen>
-    <dimen name="transition_floating_2">250dp</dimen>
-    <dimen name="transition_floating_3">185dp</dimen>
-    <dimen name="transition_floating_4">125dp</dimen>
-    <dimen name="transition_floating_5">65dp</dimen>
+    <dimen name="transition_floating_1">330dp</dimen>
+    <dimen name="transition_floating_2">270dp</dimen>
+    <dimen name="transition_floating_3">205dp</dimen>
+    <dimen name="transition_floating_4">145dp</dimen>
+    <dimen name="transition_floating_5">85dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="text_14_sp">14sp</dimen>
     <dimen name="text_10_sp">10sp</dimen>

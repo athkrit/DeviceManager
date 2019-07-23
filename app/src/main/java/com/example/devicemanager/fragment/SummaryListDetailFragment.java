@@ -40,6 +40,7 @@ public class SummaryListDetailFragment extends Fragment {
     private ArrayList<String> addedDate = new ArrayList<String>();
     private ArrayList<String> status = new ArrayList<String>();
     private ArrayList<String> key = new ArrayList<String>();
+    private ArrayList<String> lastUpdated = new ArrayList<>();
     private ProgressBar progressBar;
     private View progressDialogBackground;
     private Spinner spFilter, spSortBy;
@@ -154,6 +155,7 @@ public class SummaryListDetailFragment extends Fragment {
         brand.clear();
         key.clear();
         status.clear();
+        lastUpdated.clear();
 
         recyclerListDetailAdapter = new RecyclerListDetailAdapter(getContext());
 
@@ -170,6 +172,7 @@ public class SummaryListDetailFragment extends Fragment {
                             String productDetail = itemEntities.get(i).getDetail().trim();
                             String productAddedDate = itemEntities.get(i).getPurchasedDate().trim();
                             String productOwner = itemEntities.get(i).getPlaceName().trim();
+                            String productLastUpdated = itemEntities.get(i).getLastUpdated().trim();
                             String productStatus;
                             if (productOwner.matches("-")) {
                                 productStatus = "Available";
@@ -184,6 +187,7 @@ public class SummaryListDetailFragment extends Fragment {
                             addedDate.add(productAddedDate);
                             status.add(productStatus);
                             key.add(productKey);
+                            lastUpdated.add(productLastUpdated);
                         }
                     }
                 }
@@ -193,6 +197,7 @@ public class SummaryListDetailFragment extends Fragment {
                 recyclerListDetailAdapter.setAddedDate(addedDate);
                 recyclerListDetailAdapter.setStatus(status);
                 recyclerListDetailAdapter.setKey(key);
+                recyclerListDetailAdapter.setLastUpdated(lastUpdated);
                 recyclerListDetailAdapter.notifyDataSetChanged();
 
                 progressDialogBackground.setVisibility(View.INVISIBLE);

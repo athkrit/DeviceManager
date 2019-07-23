@@ -198,13 +198,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
                 android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btnEdit"
                     style="@style/RoundedCornerMaterialButton"
                     android:layout_width="0dp"
-                    android:layout_height="55dp"
+                    android:layout_height="50dp"
                     android:layout_marginEnd="15dp"
                     android:layout_weight="1"
                     android:backgroundTint="@color/edit_btn_color"
@@ -214,7 +216,7 @@
                     android:id="@+id/btnCheck"
                     style="@style/RoundedCornerMaterialButton"
                     android:layout_width="0dp"
-                    android:layout_height="55dp"
+                    android:layout_height="50dp"
                     android:layout_weight="1"
                     android:text="@string/check" />
             </LinearLayout>

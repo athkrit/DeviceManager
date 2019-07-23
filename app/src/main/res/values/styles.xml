@@ -92,10 +92,11 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-    <style name="FABStyle">
-        <item name="android:layout_marginRight">22.5dp</item>
-        <item name="android:layout_marginEnd">22.5dp</item>
+    <style name="FABStyle" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="android:layout_marginRight">28dp</item>
+        <item name="android:layout_marginEnd">28dp</item>
         <item name="android:layout_marginBottom">10dp</item>
+        <item name="backgroundTint">@color/colorPrimaryLight</item>
     </style>
 
     <style name="TextViewForFab">
@@ -104,6 +105,7 @@
         <item name="android:layout_marginEnd">10dp</item>
         <item name="android:layout_marginBottom">15dp</item>
         <item name="android:layout_centerVertical">true</item>
+        <item name="android:textColor">@color/colorTheme</item>
         <item name="android:textSize">18sp</item>
     </style>
 
