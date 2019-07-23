@@ -18,10 +18,7 @@ import com.example.devicemanager.manager.Contextor;
 public class SummaryAdapter extends RecyclerView.Adapter<SummaryAdapter.Holder> {
     private Context context;
     private int[] available,count,total;
-    private Context contextor = Contextor.getInstance().getContext();
-    private String[] brand,type,
-            furniture = contextor.getResources().getStringArray(R.array.spinner_type_furniture_list),
-            other = contextor.getResources().getStringArray(R.array.spinner_type_other_summary_list);
+    private String[] brand,type;
 
     public SummaryAdapter(Context context) {
         this.context = context;
@@ -99,7 +96,6 @@ public class SummaryAdapter extends RecyclerView.Adapter<SummaryAdapter.Holder> 
 
     class Holder extends RecyclerView.ViewHolder {
         TextView tvBrand, tvTotal, tvAvailable, tvActive, tvType;
-        ImageView imgView;
 
         Holder(View itemView) {
             super(itemView);
@@ -113,26 +109,6 @@ public class SummaryAdapter extends RecyclerView.Adapter<SummaryAdapter.Holder> 
         public void setItem(int position) {
             if (brand != null) {
                 tvBrand.setText("" + brand[position]);
-                switch (brand[position].toLowerCase()) {
-                    case "apple":
-                        imgView.setImageResource(R.drawable.ic_brand_apple);
-                        break;
-                    case "hp":
-                        imgView.setImageResource(R.drawable.ic_brand_hp);
-                        break;
-                    case "lenovo":
-                        imgView.setImageResource(R.drawable.ic_brand_lenovo);
-                        break;
-                    case "dell":
-                        imgView.setImageResource(R.drawable.ic_brand_dell);
-                        break;
-                    case "true idc chromebook 11":
-                        imgView.setImageResource(R.drawable.ic_brand_chromebook);
-                        break;
-                    case "-":
-                        imgView.setImageResource(R.drawable.ic_barcode);
-                        break;
-                }
             }
             tvTotal.setText("" + total[position]);
             tvAvailable.setText("" + available[position]);
