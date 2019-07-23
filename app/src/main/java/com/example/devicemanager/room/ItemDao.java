@@ -43,9 +43,9 @@ public interface ItemDao {
             "lastUpdated = :lastUpdate ,owner_name = :ownedName ,placeId = :ownerId,brand = :brand ,serial_no = :serial_no ,"+
             "item_detail = :item_detail ,model = :model ,warrantyDate = :warrantyDate ,purchasedPrice = :purchasedPrice ,"+
             "purchased_date = :purchased_date ,price = :price ,note = :note ,forwardDepreciation = :forwardDepreciation ,"+
-            "depreciationRate = :depreciationRate ,depreciationYear = :depreciationYear ," +
+            "depreciationRate = :depreciationRate ,depreciationYear = :depreciationYear ,branchCode = :branchCode," +
             "accumulatedDepreciation = :accumulatedDepreciation ,forwardedBudget = :forwardedBudget WHERE autoId = :id")
-    void updateDataFromAdd(String lastUpdate, String ownedName, String ownerId, String brand, String serial_no, String item_detail,
+    void updateDataFromAdd(String branchCode ,String lastUpdate, String ownedName, String ownerId, String brand, String serial_no, String item_detail,
                            String model, String warrantyDate, String purchasedPrice, String purchased_date, String price, String note,
                            String forwardDepreciation, String depreciationRate, String depreciationYear, String accumulatedDepreciation,
                            String forwardedBudget, int id);

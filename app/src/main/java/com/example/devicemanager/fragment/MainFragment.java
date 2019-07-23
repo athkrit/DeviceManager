@@ -120,13 +120,7 @@ public class MainFragment extends Fragment implements ItemListAdapter.Holder.Ite
     @Override
     public void onResume() {
         super.onResume();
-        itemEntityViewModel = ViewModelProviders.of(this).get(ItemEntityViewModel.class);
-        itemEntityViewModel.getOrder().observe(getViewLifecycleOwner(), new Observer<List<ItemEntity>>() {
-            @Override
-            public void onChanged(@Nullable final List<ItemEntity> itemEntities) {
-                adapter.setList(itemEntities);
-            }
-        });
+
     }
 
     @Override
@@ -208,6 +202,15 @@ public class MainFragment extends Fragment implements ItemListAdapter.Holder.Ite
         adapter = new ItemListAdapter(getContext());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(layoutManager);
+
+        itemEntityViewModel = ViewModelProviders.of(this).get(ItemEntityViewModel.class);
+        itemEntityViewModel.getOrder().observe(getViewLifecycleOwner(), new Observer<List<ItemEntity>>() {
+            @Override
+            public void onChanged(@Nullable final List<ItemEntity> itemEntities) {
+                adapter.setList(itemEntities);
+                recyclerView.setAdapter(adapter);
+            }
+        });
 
         swipeRefreshLayout = rootView.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(pullToRefresh);

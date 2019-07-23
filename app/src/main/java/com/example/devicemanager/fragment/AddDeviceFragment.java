@@ -37,9 +37,11 @@ import com.example.devicemanager.R;
 import com.example.devicemanager.activity.ScanBarCodeAddDeviceActivity;
 import com.example.devicemanager.model.DataItem;
 import com.example.devicemanager.model.ItemEntityViewModel;
+import com.example.devicemanager.model.TypeItem;
 import com.example.devicemanager.room.ItemEntity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -65,7 +67,7 @@ public class AddDeviceFragment extends Fragment {
     private EditText etOwnerName, etSerialNumber, etDeviceDetail, etDatePicker,
             etOwnerId, etBrand, etDeviceModel, etDevicePrice, etNote, etQuantity,
             etPurchasePrice, etForwardDepreciation, etDepreciationRate, etDepreciationinYear,
-            etAccumulateDepreciation, etForwardedBudget, etWarranty;
+            etAccumulateDepreciation, etForwardedBudget, etWarranty, etOtherType;
     private Button btnShowMore;
     private Calendar calendar;
     private DatePickerDialog.OnDateSetListener date;
@@ -86,7 +88,9 @@ public class AddDeviceFragment extends Fragment {
     private Date dateCheck;
     private ItemEntityViewModel itemEntityViewModel;
     private ArrayList<ItemEntity> getItemEntity;
-    private String[] deviceAndAccessories, furniture, other, building;
+    private String[] deviceAndAccessories, furniture, other, building, allType;
+    private TextInputLayout etOtherTypeLayout;
+    private boolean hasOtherType = false;
 
     public static AddDeviceFragment newInstances() {
         AddDeviceFragment fragment = new AddDeviceFragment();
@@ -120,6 +124,7 @@ public class AddDeviceFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_check) {
+            etOtherType.setText(etOtherType.getText().toString().toUpperCase());
             hideKeyboardFrom(getContext(), getView());
             getUpdateKey();
             showAlertDialog("save");
@@ -154,6 +159,7 @@ public class AddDeviceFragment extends Fragment {
         deviceAndAccessories = setStringArray("device");
         furniture = setStringArray("furniture");
         other = setStringArray("other");
+        allType = sp.getString("allType", null).split(",");
 
         setSpinnerFromResource(R.array.spinner_branch, spBranch);
         setSpinnerFromResource(R.array.spinner_type_device, spType);
@@ -179,7 +185,8 @@ public class AddDeviceFragment extends Fragment {
         etAccumulateDepreciation = view.findViewById(R.id.etAccumulateDepreciation);
         etForwardedBudget = view.findViewById(R.id.etForwardedBudget);
         etWarranty = view.findViewById(R.id.etWarranty);
-
+        etOtherTypeLayout = view.findViewById(R.id.etOtherTypeLayout);
+        etOtherType = view.findViewById(R.id.etOtherType);
         btnShowMore.setOnClickListener(clickListener);
         etPurchasePrice.setOnFocusChangeListener(onFocusChangeListener);
         etDevicePrice.setOnFocusChangeListener(onFocusChangeListener);
@@ -216,7 +223,7 @@ public class AddDeviceFragment extends Fragment {
 
     private String[] setStringArray(String Sp) {
         String[] buildingRef = sp.getString(Sp, null).split(",");
-        String[] setType = new String[buildingRef.length+1];
+        String[] setType = new String[buildingRef.length + 1];
 
         for (int i = 0; i < setType.length; i++) {
             if (i == buildingRef.length)
@@ -229,7 +236,6 @@ public class AddDeviceFragment extends Fragment {
 
     private void setData() {
         tvItemId.setText(itemId);
-        setSpinnerPositionFromResource(R.array.spinner_branch, spBranch, Integer.parseInt(itemId.substring(5, 6)), null);
         setSpinnerPositionFromResource(R.array.spinner_type_device, spType, Integer.parseInt(itemId.substring(6, 7)), null);
         String spinnerName;
         spinnerName = itemId.substring(8, 11);
@@ -247,6 +253,9 @@ public class AddDeviceFragment extends Fragment {
                 setSpinnerPositionFromSp(other, spTypeList, -1, spinnerName);
                 break;
         }
+        spType.setEnabled(false);
+        spTypeList.setEnabled(false);
+
         itemEntityViewModel = ViewModelProviders.of(this).get(ItemEntityViewModel.class);
 
         itemEntityViewModel.selectData(itemId).observe(getViewLifecycleOwner(), new Observer<List<ItemEntity>>() {
@@ -256,6 +265,8 @@ public class AddDeviceFragment extends Fragment {
                 if (itemEntity.size() == 0) {
                     return;
                 }
+                setSpinnerPositionFromResource(R.array.spinner_branch, spBranch, Integer.parseInt(itemEntity.get(0).getBranchCode()), null);
+
                 lastKey = "" + itemEntities.get(0).getAutoId();
                 etOwnerId.setText(itemEntity.get(0).getPlaceId());
                 etOwnerName.setText(itemEntity.get(0).getPlaceName());
@@ -424,11 +435,11 @@ public class AddDeviceFragment extends Fragment {
     private void updateData() {
         final int autoId = itemEntity.get(0).getAutoId();
         String date = etDatePicker.getText().toString();
-        String order = tvItemId.getText().toString().substring(10);
+        String order = tvItemId.getText().toString().substring(11);
         DataItem item = new DataItem("ID", etOwnerId.getText().toString(), etOwnerName.getText().toString(),
                 etBrand.getText().toString(), etSerialNumber.getText().toString(), etDeviceModel.getText().toString(),
                 etDeviceDetail.getText().toString(), etDevicePrice.getText().toString(), etPurchasePrice.getText().toString(),
-                setDate(date), etNote.getText().toString(), type, getUnnamed2(), etForwardDepreciation.getText().toString(),
+                setDate(date), etNote.getText().toString(), type, tvItemId.getText().toString(), etForwardDepreciation.getText().toString(),
                 etDepreciationRate.getText().toString(), etDepreciationinYear.getText().toString(),
                 etAccumulateDepreciation.getText().toString(), etForwardedBudget.getText().toString(), "" + YY,
                 getUnnamed2().substring(3), "" + category, "" + branch, "-",
@@ -440,7 +451,7 @@ public class AddDeviceFragment extends Fragment {
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
                     setUpdatedId(lastKey);
-                    itemEntityViewModel.update(dateFormat.format(dateCheck), etOwnerName.getText().toString(), etOwnerId.getText().toString(),
+                    itemEntityViewModel.update(branch+"",dateFormat.format(dateCheck), etOwnerName.getText().toString(), etOwnerId.getText().toString(),
                             etBrand.getText().toString(), etSerialNumber.getText().toString(), etDeviceDetail.getText().toString(),
                             etDeviceModel.getText().toString(), etWarranty.getText().toString(), etPurchasePrice.getText().toString(),
                             saveDateToDB(etDatePicker.getText().toString()), etDevicePrice.getText().toString(), etNote.getText().toString(),
@@ -473,14 +484,14 @@ public class AddDeviceFragment extends Fragment {
                 etDepreciationRate.getText().toString(), etDepreciationinYear.getText().toString(),
                 etAccumulateDepreciation.getText().toString(), etForwardedBudget.getText().toString(), "" + YY,
                 getUnnamed2().substring(3), "" + category, "" + branch, "-",
-                "-", "" + dateFormat.format(dateCheck).toString(), "" + order,
+                "-", "" + dateFormat.format(dateCheck).toString(), "" + setOrderFormat(order),
                 "" + abbreviation, "-", "DGO", etWarranty.getText().toString());
 
         itemSave = new ItemEntity(getItemEntity.size(), getUnnamed2(), type, etDeviceDetail.getText().toString(),
                 etSerialNumber.getText().toString(), etOwnerName.getText().toString(), saveDateToDB(date), etNote.getText().toString(),
                 "-", etOwnerId.getText().toString(), getUnnamed2().substring(3), etDevicePrice.getText().toString(),
                 etDeviceModel.getText().toString(), etDepreciationRate.getText().toString(), "ID", etBrand.getText().toString(),
-                abbreviation, order + "", "-", YY + "", "DGO", "-",
+                abbreviation, setOrderFormat(order) + "", "-", YY + "", "DGO", "-",
                 etForwardedBudget.getText().toString(), etAccumulateDepreciation.getText().toString(),
                 etWarranty.getText().toString(), etDepreciationinYear.getText().toString(), branch + "",
                 "" + category, etPurchasePrice.getText().toString(),
@@ -490,7 +501,9 @@ public class AddDeviceFragment extends Fragment {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isSuccessful()) {
-
+                        if (hasOtherType) {
+                            addType();
+                        }
                         if (countDevice == quntity) {
                             itemEntityViewModel.insert(itemSave);
                             Toast.makeText(getActivity(), "Complete!", Toast.LENGTH_SHORT).show();
@@ -510,6 +523,35 @@ public class AddDeviceFragment extends Fragment {
                 }
             });
         }
+    }
+
+    private void addType() {
+        DatabaseReference databaseReference2 = FirebaseDatabase.getInstance().getReference().child("Type");
+        Query query = databaseReference2.orderByKey().limitToLast(1);
+        final int[] typeKey = new int[1];
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                int key = 0;
+                for (DataSnapshot s : dataSnapshot.getChildren()) {
+                    try {
+                        key = Integer.parseInt(s.getKey()) + 1;
+                    } catch (NumberFormatException e) {
+                        key = 999;
+
+                    }
+                }
+                typeKey[0] = key+1;
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        TypeItem typeItem = new TypeItem();
+        typeItem.setType(type);
+        typeItem.setAssetId(category + "");
+        databaseReference2.child(""+typeKey[0]).setValue(typeItem);
     }
 
     private void getUpdateKey() {
@@ -637,13 +679,13 @@ public class AddDeviceFragment extends Fragment {
         if (unnamed2 == null) {
             String date = etDatePicker.getText().toString();
             YY = date.substring(8, 10);
-            String generateSerial = "DGO" + YY + branch + category + "-" + abbreviation + getOrder(order);
+            String generateSerial = "DGO" + YY + branch + category + "-" + abbreviation + setOrderFormat(order);
             return generateSerial;
         }
         return unnamed2;
     }
 
-    private String getOrder(int order) {
+    private String setOrderFormat(int order) {
         String num;
         if (order < 1) {
             num = "001";
@@ -701,7 +743,30 @@ public class AddDeviceFragment extends Fragment {
     }
 
     private boolean checkForm() {
-
+        if (spTypeList.getSelectedItem().toString().matches("OTHER")) {
+            if (!TextUtils.isEmpty(etOtherType.getText())) {
+                String other = etOtherType.getText().toString().toUpperCase();
+                for (int i = 0; i < allType.length; i++) {
+                    if (other.matches(allType[i])) {
+                        Toast.makeText(getActivity(), "Type already created", Toast.LENGTH_SHORT).show();
+                        hasOtherType = false;
+                        return false;
+                    }
+                }
+                if (other.length() < 3) {
+                    Toast.makeText(getActivity(), "Type less than 3 character", Toast.LENGTH_SHORT).show();
+                    hasOtherType = false;
+                    return false;
+                } else {
+                    hasOtherType = true;
+                    abbreviation = other.substring(0, 3);
+                    type = other;
+                }
+            } else {
+                hasOtherType = false;
+                return false;
+            }
+        }
         if (type == null || type.length() == 0) {
             type = spTypeList.getSelectedItem().toString();
         }
@@ -878,6 +943,13 @@ public class AddDeviceFragment extends Fragment {
                 selected = adapterView.getItemAtPosition(i).toString();
                 abbreviation = selected.toUpperCase().substring(0, 3);
                 type = selected.toUpperCase();
+                if (selected.matches("OTHER")) {
+                    etOtherTypeLayout.setVisibility(View.VISIBLE);
+                    Toast.makeText(getContext(), "you select other item", Toast.LENGTH_SHORT).show();
+                } else {
+                    etOtherTypeLayout.setVisibility(View.INVISIBLE);
+                    hasOtherType = false;
+                }
             } else if (adapterView == spBranch) {
                 switch (i) {
                     case 0:
