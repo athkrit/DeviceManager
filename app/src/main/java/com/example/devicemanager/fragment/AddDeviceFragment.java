@@ -1,6 +1,5 @@
 package com.example.devicemanager.fragment;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
@@ -8,9 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.Html;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,23 +29,17 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.devicemanager.R;
 import com.example.devicemanager.activity.ScanBarCodeAddDeviceActivity;
-import com.example.devicemanager.activity.ScanBarcodeActivity;
-import com.example.devicemanager.manager.Contextor;
-import com.example.devicemanager.manager.LoadData;
 import com.example.devicemanager.model.DataItem;
 import com.example.devicemanager.model.ItemEntityViewModel;
 import com.example.devicemanager.room.ItemEntity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -83,9 +74,8 @@ public class AddDeviceFragment extends Fragment {
     private ProgressBar progressBar;
     private View progressDialogBackground;
     private DatabaseReference databaseReference;
-    private TextView tvItemId, tvQuantity, tvClickToShow;
+    private TextView tvItemId;
     private ArrayAdapter<CharSequence> spinnerAdapter;
-    private LoadData loadData;
     private LinearLayout moreData;
     private Boolean clickMore = false;
     List<ItemEntity> itemEntity;
@@ -96,6 +86,7 @@ public class AddDeviceFragment extends Fragment {
     private Date dateCheck;
     private ItemEntityViewModel itemEntityViewModel;
     private ArrayList<ItemEntity> getItemEntity;
+    private String[] deviceAndAccessories, furniture, other, building;
 
     public static AddDeviceFragment newInstances() {
         AddDeviceFragment fragment = new AddDeviceFragment();
@@ -149,8 +140,6 @@ public class AddDeviceFragment extends Fragment {
     }
 
     private void initInstances(View view, Bundle savedInstanceState) {
-        loadData = new LoadData(getContext());
-
         dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
         dateCheck = new Date();
 
@@ -158,11 +147,16 @@ public class AddDeviceFragment extends Fragment {
         spType = view.findViewById(R.id.spinnerDeviceType);
         spTypeList = view.findViewById(R.id.spinnerDeviceTypeList);
 
-        sp = getContext().getSharedPreferences("DownloadStatus", Context.MODE_PRIVATE);
+        sp = getContext().getSharedPreferences("Type", Context.MODE_PRIVATE);
         editor = sp.edit();
 
-        setSpinner(R.array.branch, spBranch);
-        setSpinner(R.array.device_types, spType);
+        building = setStringArray("building");
+        deviceAndAccessories = setStringArray("device");
+        furniture = setStringArray("furniture");
+        other = setStringArray("other");
+
+        setSpinnerFromResource(R.array.branch, spBranch);
+        setSpinnerFromResource(R.array.device_types, spType);
 
 
         itemEntityViewModel = ViewModelProviders.of(this).get(ItemEntityViewModel.class);
@@ -220,24 +214,37 @@ public class AddDeviceFragment extends Fragment {
         });
     }
 
+    private String[] setStringArray(String Sp) {
+        String[] buildingRef = sp.getString(Sp, null).split(",");
+        String[] setType = new String[buildingRef.length+1];
+
+        for (int i = 0; i < setType.length; i++) {
+            if (i == buildingRef.length)
+                setType[i] = "OTHER";
+            else
+                setType[i] = buildingRef[i];
+        }
+        return setType;
+    }
+
     private void setData() {
         tvItemId.setText(itemId);
-        setSpinnerPosition(R.array.branch, spBranch, Integer.parseInt(itemId.substring(5, 6)), null);
-        setSpinnerPosition(R.array.device_types, spType, Integer.parseInt(itemId.substring(6, 7)), null);
+        setSpinnerPositionFromResource(R.array.branch, spBranch, Integer.parseInt(itemId.substring(5, 6)), null);
+        setSpinnerPositionFromResource(R.array.device_types, spType, Integer.parseInt(itemId.substring(6, 7)), null);
         String spinnerName;
         spinnerName = itemId.substring(8, 11);
         switch (Integer.parseInt(itemId.substring(6, 7))) {
             case 1:
-                setSpinnerPosition(R.array.building, spTypeList, -1, spinnerName);
+                setSpinnerPositionFromSp(building, spTypeList, -1, spinnerName);
                 break;
             case 2:
-                setSpinnerPosition(R.array.device_and_accessory, spTypeList, -1, spinnerName);
+                setSpinnerPositionFromSp(deviceAndAccessories, spTypeList, -1, spinnerName);
                 break;
             case 3:
-                setSpinnerPosition(R.array.furniture, spTypeList, -1, spinnerName);
+                setSpinnerPositionFromSp(furniture, spTypeList, -1, spinnerName);
                 break;
             case 4:
-                setSpinnerPosition(R.array.other, spTypeList, -1, spinnerName);
+                setSpinnerPositionFromSp(other, spTypeList, -1, spinnerName);
                 break;
         }
         itemEntityViewModel = ViewModelProviders.of(this).get(ItemEntityViewModel.class);
@@ -271,7 +278,17 @@ public class AddDeviceFragment extends Fragment {
 
     }
 
-    private void setSpinner(int spinnerlist, Spinner spinner) {
+    private void setSpinnerFromSp(String[] spinnerlist, Spinner spinner) {
+        spinnerAdapter = new ArrayAdapter<CharSequence>(
+                getActivity(),
+                R.layout.spinner_item,
+                spinnerlist);
+        spinnerAdapter.setDropDownViewResource(R.layout.spinner_item);
+        spinner.setAdapter(spinnerAdapter);
+        spinner.setOnItemSelectedListener(onSpinnerSelect);
+    }
+
+    private void setSpinnerFromResource(int spinnerlist, Spinner spinner) {
         spinnerAdapter = ArrayAdapter.createFromResource(
                 getContext(),
                 spinnerlist,
@@ -281,16 +298,16 @@ public class AddDeviceFragment extends Fragment {
         spinner.setOnItemSelectedListener(onSpinnerSelect);
     }
 
-    private void setSpinnerPosition(int spinerlist, Spinner spinner, int position, String spinerName) {
+    private void setSpinnerPositionFromSp(String[] spinerlist, Spinner spinner, int position, String spinerName) {
         if (position == -1) {
-            spinnerAdapter = ArrayAdapter.createFromResource(
-                    getContext(),
-                    spinerlist,
-                    R.layout.spinner_item);
+            spinnerAdapter = new ArrayAdapter<CharSequence>(
+                    getActivity(),
+                    R.layout.spinner_item,
+                    spinerlist);
             spinnerAdapter.setDropDownViewResource(R.layout.spinner_item);
             spinner.setAdapter(spinnerAdapter);
-            String[] array = getResources().getStringArray(spinerlist);
-            List<String> list = Arrays.asList(array);
+
+            List<String> list = Arrays.asList(spinerlist);
             int spinnerPosition = 0;
 
             for (String str : list) {
@@ -302,6 +319,31 @@ public class AddDeviceFragment extends Fragment {
         } else {
             spinner.setSelection(position - 1);
         }
+    }
+
+    private void setSpinnerPositionFromResource(int spinerlist, Spinner spinner, int position, String spinerName) {
+        if (position == -1) {
+            spinnerAdapter = ArrayAdapter.createFromResource(
+                    getContext(),
+                    spinerlist,
+                    R.layout.spinner_item
+            );
+            spinnerAdapter.setDropDownViewResource(R.layout.spinner_item);
+            spinner.setAdapter(spinnerAdapter);
+
+            List<String> list = Arrays.asList(getActivity().getResources().getStringArray(spinerlist));
+            int spinnerPosition = 0;
+
+            for (String str : list) {
+                if (str.contains(spinerName)) {
+                    spinnerPosition = list.indexOf(str);
+                }
+            }
+            spinner.setSelection(spinnerPosition, true);
+        } else {
+            spinner.setSelection(position - 1);
+        }
+
     }
 
     private void showAlertDialog(final String type) {
@@ -807,19 +849,19 @@ public class AddDeviceFragment extends Fragment {
                 selected = adapterView.getItemAtPosition(i).toString();
                 switch (i) {
                     case 0:
-                        setSpinner(R.array.building, spTypeList);
+                        setSpinnerFromSp(building, spTypeList);
                         category = 1;
                         break;
                     case 1:
-                        setSpinner(R.array.device_and_accessory, spTypeList);
+                        setSpinnerFromSp(deviceAndAccessories, spTypeList);
                         category = 2;
                         break;
                     case 2:
-                        setSpinner(R.array.furniture, spTypeList);
+                        setSpinnerFromSp(furniture, spTypeList);
                         category = 3;
                         break;
                     case 3:
-                        setSpinner(R.array.other, spTypeList);
+                        setSpinnerFromSp(other, spTypeList);
                         category = 4;
                         break;
                 }
