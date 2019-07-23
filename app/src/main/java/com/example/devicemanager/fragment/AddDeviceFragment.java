@@ -155,9 +155,8 @@ public class AddDeviceFragment extends Fragment {
         furniture = setStringArray("furniture");
         other = setStringArray("other");
 
-        setSpinnerFromResource(R.array.branch, spBranch);
-        setSpinnerFromResource(R.array.device_types, spType);
-
+        setSpinnerFromResource(R.array.spinner_branch, spBranch);
+        setSpinnerFromResource(R.array.spinner_type_device, spType);
 
         itemEntityViewModel = ViewModelProviders.of(this).get(ItemEntityViewModel.class);
         tvItemId = view.findViewById(R.id.tvItemId);
@@ -212,6 +211,7 @@ public class AddDeviceFragment extends Fragment {
                 getItemEntity = new ArrayList<>(itemEntities);
             }
         });
+
     }
 
     private String[] setStringArray(String Sp) {
@@ -229,8 +229,8 @@ public class AddDeviceFragment extends Fragment {
 
     private void setData() {
         tvItemId.setText(itemId);
-        setSpinnerPositionFromResource(R.array.branch, spBranch, Integer.parseInt(itemId.substring(5, 6)), null);
-        setSpinnerPositionFromResource(R.array.device_types, spType, Integer.parseInt(itemId.substring(6, 7)), null);
+        setSpinnerPositionFromResource(R.array.spinner_branch, spBranch, Integer.parseInt(itemId.substring(5, 6)), null);
+        setSpinnerPositionFromResource(R.array.spinner_type_device, spType, Integer.parseInt(itemId.substring(6, 7)), null);
         String spinnerName;
         spinnerName = itemId.substring(8, 11);
         switch (Integer.parseInt(itemId.substring(6, 7))) {
@@ -520,7 +520,16 @@ public class AddDeviceFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot s : dataSnapshot.getChildren()) {
-                    updatedKey = Integer.parseInt(s.getKey()) + 1;
+                    try {
+                        updatedKey = Integer.parseInt(s.getKey()) + 1;
+                    } catch (NumberFormatException e) {
+                        itemEntityViewModel.getAll().observe(getViewLifecycleOwner(), new Observer<List<ItemEntity>>() {
+                            @Override
+                            public void onChanged(@Nullable final List<ItemEntity> itemEntities) {
+                                updatedKey = itemEntities.size();
+                            }
+                        });
+                    }
                 }
             }
 

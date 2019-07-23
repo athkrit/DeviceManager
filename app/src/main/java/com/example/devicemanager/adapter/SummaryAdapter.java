@@ -20,8 +20,8 @@ public class SummaryAdapter extends RecyclerView.Adapter<SummaryAdapter.Holder> 
     private int[] available,count,total;
     private Context contextor = Contextor.getInstance().getContext();
     private String[] brand,type,
-            furniture = contextor.getResources().getStringArray(R.array.furniture),
-            other = contextor.getResources().getStringArray(R.array.other_summary);
+            furniture = contextor.getResources().getStringArray(R.array.spinner_type_furniture_list),
+            other = contextor.getResources().getStringArray(R.array.spinner_type_other_summary_list);
 
     public SummaryAdapter(Context context) {
         this.context = context;

@@ -1,6 +1,5 @@
 package com.example.devicemanager.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,9 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -24,15 +21,8 @@ import com.example.devicemanager.R;
 import com.example.devicemanager.adapter.RecyclerListDetailAdapter;
 import com.example.devicemanager.manager.Contextor;
 import com.example.devicemanager.manager.LoadData;
-import com.example.devicemanager.model.DataItem;
 import com.example.devicemanager.model.ItemEntityViewModel;
 import com.example.devicemanager.room.ItemEntity;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,13 +86,13 @@ public class SummaryListDetailFragment extends Fragment {
 //        ArrayAdapter<String> adapter=new ArrayAdapter<String>(this,R.layout.spinner_item_list_detail,R.id.text, countries);
         ArrayAdapter<CharSequence> spinnerFilterAdapter = ArrayAdapter.createFromResource(
                 Contextor.getInstance().getContext(),
-                R.array.filter,
+                R.array.spinner_filter,
                 R.layout.spinner_item_list_detail);
         spinnerFilterAdapter.setDropDownViewResource(R.layout.spinner_item_list_detail);
 
         ArrayAdapter<CharSequence> spinnerSortByAdapter = ArrayAdapter.createFromResource(
                 Contextor.getInstance().getContext(),
-                R.array.sort_by,
+                R.array.spinner_sort_by,
                 R.layout.spinner_item_list_detail);
         spinnerSortByAdapter.setDropDownViewResource(R.layout.spinner_item_list_detail);
 

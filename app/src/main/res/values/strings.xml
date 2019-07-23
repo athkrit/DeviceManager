@@ -1,23 +1,23 @@
 <resources>
     <string name="app_name">DeviceManager</string>
 
-    <string-array name="branch">
+    <string-array name="spinner_branch">
         <item>สาขาสำนักงานใหญ่</item>
         <item>สาขาเชียงใหม่</item>
         <item>สาขานนทบุรี</item>
     </string-array>
-    <string-array name="device_types">
+    <string-array name="spinner_type_device">
         <item>Building</item>
         <item>Device and Accessory</item>
         <item>Furniture</item>
         <item>Others</item>
     </string-array>
 
-    <string-array name="building">
+    <string-array name="spinner_type_building">
         <item>BUILDING</item>
     </string-array>
 
-    <string-array name="allType">
+    <string-array name="spinner_type_all">
         <item>ACCESS POINT</item>
         <item>ADAPTER</item>
         <item>AIR CONDITIONER</item>
@@ -108,7 +108,7 @@
         <item>อุปกรณ์คอมพิวเตอร์</item>
     </string-array>
 
-    <string-array name="device_and_accessory">
+    <string-array name="spinner_type_device_list">
         <item>ACCESS POINT</item>
         <item>ADAPTER</item>
         <item>APPLE CARE</item>
@@ -153,7 +153,7 @@
         <item>อุปกรณ์คอมพิวเตอร์</item>
     </string-array>
 
-    <string-array name="furniture">
+    <string-array name="spinner_type_furniture_list">
         <item>AIR CONDITIONER</item>
         <item>BARCODE READER</item>
         <item>CABINET</item>
@@ -199,23 +199,23 @@
         <item>WHITE BOARD</item>
     </string-array>
 
-    <string-array name="other">
+    <string-array name="spinner_type_other_list">
         <item>BICYCLE</item>
         <item>CAR</item>
     </string-array>
-    <string-array name="other_summary">
+    <string-array name="spinner_type_other_summary_list">
         <item>BICYCLE</item>
         <item>BUILDING</item>
         <item>CAR</item>
     </string-array>
 
-    <string-array name="filter">
+    <string-array name="spinner_filter">
         <item>All</item>
         <item>Available</item>
         <item>InUse</item>
     </string-array>
 
-    <string-array name="sort_by">
+    <string-array name="spinner_sort_by">
         <item>Date ▲</item>
         <item>Date ▼</item>
         <item>Brand ▲</item>
