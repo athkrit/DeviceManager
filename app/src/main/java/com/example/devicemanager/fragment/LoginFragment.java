@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -17,6 +16,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 
 import com.example.devicemanager.R;
@@ -33,7 +33,7 @@ public class LoginFragment extends Fragment {
     private EditText etEmail, etPassword;
     private FirebaseAuth mAuth;
     private String strEmail, strPassword;
-    private Button btnSubmit;
+    private AppCompatButton btnSubmit;
     private TextView tvRegister;
     private FirebaseAuth.AuthStateListener mAuthListener;
     ProgressBar progressBar;

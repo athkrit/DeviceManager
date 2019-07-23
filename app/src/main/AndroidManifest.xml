@@ -67,7 +67,8 @@
         <activity
             android:name=".activity.DeviceDetailActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".activity.LoginActivity" />
+        <activity android:name=".activity.LoginActivity"
+            android:theme="@style/AppTheme.noActionbar"/>
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"
             android:value="ocr" />

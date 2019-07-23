@@ -3,11 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorTheme">
 
-    <RelativeLayout
+    <LinearLayout
+        android:layout_gravity="center_vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical"
         android:padding="50dp">
 
         <TextView
@@ -15,24 +19,29 @@
             style="@style/TextViewDefault"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="30dp"
+            android:fontFamily="@font/open_sans_regular"
             android:text="@string/login"
-            android:textSize="26sp" />
+            android:textSize="40sp"
+            android:textStyle="bold" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayout1"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tvLogin">
+            app:boxStrokeColor="@android:color/white"
+            app:boxStrokeWidth="2dp"
+            app:hintTextColor="@android:color/white">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etLoginEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/email"
-                android:inputType="textEmailAddress" />
+                android:inputType="textEmailAddress"
+                android:textColor="@android:color/white" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -41,36 +50,38 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/textInputLayout1"
-            android:layout_alignStart="@+id/textInputLayout1"
-            android:layout_alignLeft="@+id/textInputLayout1">
+            app:boxStrokeColor="@android:color/white"
+            app:boxStrokeWidth="2dp"
+            app:hintTextColor="@android:color/white">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etLoginPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/password"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:textColor="@android:color/white" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnLoginSubmit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/textInputLayout2"
-            android:text="@string/submit" />
+            android:layout_marginTop="20dp"
+            android:background="@drawable/rec_gradient_blue"
+            android:text="@string/submit"/>
 
         <TextView
             android:id="@+id/tvRegister"
             style="@style/TextViewSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/btnLoginSubmit"
-            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp"
-            android:text="@string/register" />
-    </RelativeLayout>
+            android:text="@string/register"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
 
     <View
         android:id="@+id/view"

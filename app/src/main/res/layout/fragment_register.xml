@@ -1,28 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorTheme"
     tools:context=".fragment.RegisterFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="50dp"
-        android:orientation="vertical">
+        android:layout_marginTop="20dp"
+        android:orientation="vertical"
+        android:padding="50dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="30dp"
+            android:fontFamily="@font/open_sans_regular"
             android:text="@string/register"
-            android:textSize="40sp" />
+            android:textSize="40sp"
+            android:textStyle="bold" />
+
         <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:boxStrokeColor="@android:color/white"
+            app:boxStrokeWidth="2dp"
+            app:hintTextColor="@android:color/white">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etRegEmail"
@@ -34,16 +42,19 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:boxStrokeColor="@android:color/white"
+            app:boxStrokeWidth="2dp"
+            app:hintTextColor="@android:color/white">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etRegPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/password"
-                android:inputType="textPassword"/>
+                android:inputType="textPassword" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -62,10 +73,14 @@
                 android:layout_marginRight="20dp"
                 android:layout_marginBottom="5dp"
                 android:text="@string/invitation_code" />
+
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="90dp"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:boxStrokeColor="@android:color/white"
+                app:boxStrokeWidth="2dp"
+                app:hintTextColor="@android:color/white">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etRegInviteCode"
@@ -73,18 +88,20 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:inputType="text"
-                    android:paddingBottom="10dp"/>
+                    android:paddingBottom="10dp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnRegSubmit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="@string/submit" />
+            android:background="@drawable/rec_gradient_blue"
+            android:text="@string/submit"
+            android:textColor="@android:color/white" />
 
         <TextView
             android:id="@+id/tvRegLogin"
@@ -97,20 +114,21 @@
     </LinearLayout>
 
     <View
-        android:clickable="true"
         android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/transparent_background"
+        android:clickable="true"
         android:visibility="invisible" />
 
     <com.github.ybq.android.spinkit.SpinKitView
         android:id="@+id/spin_kit"
         style="@style/SpinKitView.Large.ThreeBounce"
-        app:SpinKit_Color="@color/colorAccent"
         android:layout_width="200dp"
         android:layout_height="195dp"
         android:layout_gravity="center"
-        android:visibility="invisible" />
+        android:visibility="invisible"
+        app:SpinKit_Color="@color/colorAccent" />
+
 </FrameLayout>
 

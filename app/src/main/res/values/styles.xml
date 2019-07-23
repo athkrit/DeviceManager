@@ -22,7 +22,7 @@
         <item name="homeAsUpIndicator">@drawable/ic_back</item>
     </style>
 
-    <style name="AppTheme.noActionbar" parent="Theme.AppCompat.NoActionBar">
+    <style name="AppTheme.noActionbar" parent="Theme.MaterialComponents.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>

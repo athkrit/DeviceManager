@@ -945,7 +945,6 @@ public class AddDeviceFragment extends Fragment {
                 type = selected.toUpperCase();
                 if (selected.matches("OTHER")) {
                     etOtherTypeLayout.setVisibility(View.VISIBLE);
-                    Toast.makeText(getContext(), "you select other item", Toast.LENGTH_SHORT).show();
                 } else {
                     etOtherTypeLayout.setVisibility(View.INVISIBLE);
                     hasOtherType = false;
