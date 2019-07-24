@@ -35,9 +35,7 @@ import com.example.devicemanager.activity.ScanBarcodeActivity;
 import com.example.devicemanager.adapter.ItemListAdapter;
 import com.example.devicemanager.manager.LoadData;
 import com.example.devicemanager.model.ItemEntityViewModel;
-import com.example.devicemanager.model.ListTypeDao;
 import com.getbase.floatingactionbutton.FloatingActionButton;
-import com.example.devicemanager.model.TypeItem;
 import com.example.devicemanager.room.AppDatabase;
 import com.example.devicemanager.room.ItemEntity;
 import com.google.firebase.auth.FirebaseAuth;
@@ -49,7 +47,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
