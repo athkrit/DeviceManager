@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         tools:replace="android:icon"
@@ -58,6 +59,7 @@
         <activity
             android:name=".activity.AddDeviceActivity"
             android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Material"
             android:label="@string/add_device"
             android:windowSoftInputMode="stateHidden" />
         <activity
