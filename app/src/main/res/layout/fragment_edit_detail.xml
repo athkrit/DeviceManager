@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorTheme"
-    android:fillViewport="true">
+    android:background="@color/colorTheme">
 
-    <FrameLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -520,32 +520,24 @@
 
             </LinearLayout>
         </LinearLayout>
+    </ScrollView>
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparent_background"
+        android:clickable="true"
+        android:visibility="invisible" />
 
-        <View
-            android:id="@+id/view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/transparent_background"
-            android:clickable="true"
-            android:visibility="invisible" />
+    <ProgressBar
+        android:layout_centerInParent="true"
+        android:id="@+id/spin_kit"
+        android:layout_width="200dp"
+        android:layout_height="195dp"
+        android:layout_gravity="center"
+        android:indeterminateTintMode="src_atop"
+        android:indeterminateTint="@android:color/white"
+        android:visibility="invisible" />
 
-        <ProgressBar
-            android:id="@+id/spin_kit"
-            android:layout_width="200dp"
-            android:layout_height="195dp"
-            android:layout_gravity="center"
-            android:indeterminateTint="@android:color/white"
-            android:indeterminateTintMode="src_atop"
-            android:visibility="invisible" />
 
-        <!--<com.github.ybq.android.spinkit.SpinKitView
-            android:id="@+id/spin_kit"
-            style="@style/SpinKitView.Large.ThreeBounce"
-            android:layout_width="200dp"
-            android:layout_height="195dp"
-            android:layout_gravity="center"
-            android:visibility="invisible"
-            app:SpinKit_Color="@color/colorAccent" />-->
-    </FrameLayout>
-
-</ScrollView>
+</RelativeLayout>
