@@ -53,9 +53,34 @@ public class AddDeviceActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            finish();
+            showAlertDialog("Discard all Changing?");
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+    public void onBackPressed() {
+        showAlertDialog("Discard all Changing?");
+    }
+
+        private void showAlertDialog(final String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(message).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(AddDeviceActivity.this, "Discard", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(AddDeviceActivity.this, "Cancel", Toast.LENGTH_SHORT).show();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.white);
+        dialog.getButton(DialogInterface.BUTTON_POSITIVE).setBackgroundColor(getResources().getColor(R.color.white));
+        dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setBackgroundColor(getResources().getColor(R.color.white));
     }
 }
