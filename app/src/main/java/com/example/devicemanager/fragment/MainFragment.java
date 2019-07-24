@@ -232,10 +232,14 @@ public class MainFragment extends Fragment implements ItemListAdapter.Holder.Ite
             if (resultCode == RESULT_OK) {
                 loadData = new LoadData(getActivity());
                 SuccessDialog();
-                if (loadData.deleteTable() == 1) {
-                    swipeRefreshLayout.setRefreshing(true);
-                    loadData();
-                }
+                itemEntityViewModel = ViewModelProviders.of(this).get(ItemEntityViewModel.class);
+                itemEntityViewModel.getOrder().observe(getViewLifecycleOwner(), new Observer<List<ItemEntity>>() {
+                    @Override
+                    public void onChanged(@Nullable final List<ItemEntity> itemEntities) {
+                        adapter.setList(itemEntities);
+                        recyclerView.setAdapter(adapter);
+                    }
+                });
             }
         }
     }

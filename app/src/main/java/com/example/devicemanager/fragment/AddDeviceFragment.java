@@ -206,6 +206,7 @@ public class AddDeviceFragment extends Fragment {
         if (itemId != null) {
             if (itemId.length() < 14) {
                 Toast.makeText(getContext(), "Something went wrong.", Toast.LENGTH_SHORT).show();
+                getActivity().finish();
             } else {
                 //tvQuantity.setText(getResources().getString(R.string.quantity) + ":1");
                 etQuantity.setVisibility(View.INVISIBLE);
@@ -265,7 +266,10 @@ public class AddDeviceFragment extends Fragment {
                 if (itemEntity.size() == 0) {
                     return;
                 }
-                setSpinnerPositionFromResource(R.array.spinner_branch, spBranch, Integer.parseInt(itemEntity.get(0).getBranchCode()), null);
+                setSpinnerPositionFromResource(R.array.spinner_branch,
+                        spBranch,
+                        Integer.parseInt(itemEntity.get(0).getBranchCode()),
+                        null);
 
                 lastKey = "" + itemEntities.get(0).getAutoId();
                 etOwnerId.setText(itemEntity.get(0).getPlaceId());

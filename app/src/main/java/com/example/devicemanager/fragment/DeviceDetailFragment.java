@@ -333,6 +333,10 @@ public class DeviceDetailFragment extends Fragment {
                 showAlertDialog(R.string.dialog_msg_checked, "check");
             }
             else if (view == btnEdit){
+                if(serial.length() < 14){
+                    Toast.makeText(getContext(), "This is not asset", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 Intent intent = new Intent(getActivity(), AddDeviceActivity.class);
                 intent.putExtra("Serial", serial);
                 startActivityForResult(intent, 11111);
