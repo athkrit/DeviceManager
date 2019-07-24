@@ -419,7 +419,7 @@ public class AddDeviceFragment extends Fragment {
                     }
 
                 } else if (type.matches("serial")) {
-                    Toast.makeText(getActivity(), "Intent to Detail", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Already has this item", Toast.LENGTH_SHORT).show();
                     /*Intent intent = new Intent(getContext(), DeviceDetailActivity.class);
                     startActivity(intent);
                     getActivity().finish();*/
@@ -428,15 +428,20 @@ public class AddDeviceFragment extends Fragment {
         }).setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(getActivity(), "Cancel", Toast.LENGTH_SHORT).show();
+                /*Toast.makeText(getActivity(), "Cancel", Toast.LENGTH_SHORT).show();*/
             }
         });
         AlertDialog dialog = builder.create();
         dialog.show();
 
-        dialog.getWindow().setBackgroundDrawableResource(android.R.color.white);
-        dialog.getButton(DialogInterface.BUTTON_POSITIVE).setBackgroundColor(getResources().getColor(R.color.white));
-        dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setBackgroundColor(getResources().getColor(R.color.white));
+        dialog.getButton(DialogInterface.BUTTON_POSITIVE)
+                .setTextColor(getResources().getColor(android.R.color.white));
+        dialog.getButton(DialogInterface.BUTTON_NEGATIVE)
+                .setTextColor(getResources().getColor(android.R.color.white));
+        dialog.getButton(DialogInterface.BUTTON_POSITIVE)
+                .setBackgroundColor(getResources().getColor(android.R.color.transparent));
+        dialog.getButton(DialogInterface.BUTTON_NEGATIVE)
+                .setBackgroundColor(getResources().getColor(android.R.color.transparent));
     }
 
     private void updateData() {

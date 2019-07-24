@@ -152,10 +152,10 @@ public class RecyclerListDetailAdapter extends RecyclerView.Adapter<RecyclerList
                 tvOwner.setText(owner.get(position));
             }
 
-            String[] date = setDate(addedDate.get(position)).split(",");
+            String[] date = setDate(addedDate.get(position), lastUpdated.get(position)).split(",");
             tvAddedDate.setText(date[0]);
             tvLastUpdated.setText(checkLastUpdate(date[1], date[2], date[3]));
-            tvStatus.setText(status.get(position));
+            tvStatus.setText(" Updated: " +  status.get(position));
 
             if (status.get(position).matches("InUse")) {
                 tvStatus.setTextColor(context.getResources().getColor(R.color.red));
@@ -164,7 +164,11 @@ public class RecyclerListDetailAdapter extends RecyclerView.Adapter<RecyclerList
             }
         }
 
-        private String setDate(String inputDate) {
+        private String setDate(String inputDate, String lastUpdatedDate) {
+
+            if (lastUpdatedDate.matches("-")){
+                lastUpdatedDate = inputDate;
+            }
 
             String inputFormat = "yyyy-MM-dd";
             SimpleDateFormat inputDateFormat = new SimpleDateFormat(
@@ -179,7 +183,7 @@ public class RecyclerListDetailAdapter extends RecyclerView.Adapter<RecyclerList
             SimpleDateFormat outputYFormat = new SimpleDateFormat(
                     "yyyy", Locale.ENGLISH);
 
-            Date date;
+            Date date, updatedDate;
             String str = inputDate;
             String d = "0";
             String m = "0";
@@ -187,11 +191,14 @@ public class RecyclerListDetailAdapter extends RecyclerView.Adapter<RecyclerList
 
             try {
                 date = inputDateFormat.parse(inputDate);
+                updatedDate = inputDateFormat.parse(lastUpdatedDate);
                 if (date != null) {
                     str = outputDateFormat.format(date);
-                    d = outputDFormat.format(date);
-                    m = outputMFormat.format(date);
-                    y = outputYFormat.format(date);
+                }
+                if (updatedDate != null){
+                    d = outputDFormat.format(updatedDate);
+                    m = outputMFormat.format(updatedDate);
+                    y = outputYFormat.format(updatedDate);
                 }
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -207,25 +214,25 @@ public class RecyclerListDetailAdapter extends RecyclerView.Adapter<RecyclerList
             int year = calendar.get(Calendar.YEAR) - Integer.parseInt(y);
 
             if (year == 1) {
-                return " Updated: last year";
+                return "last year";
             } else if (year > 1) {
-                return " Updated: " + year + " years ago";
+                return year + " years ago";
             }
 
             int month = calendar.get(Calendar.MONTH) - Integer.parseInt(m);
             if (month == 1) {
-                return " Updated: last month";
+                return "last month";
             } else if (month > 1) {
-                return " Updated: " + month + " month ago";
+                return month + " month ago";
             }
 
             int date = calendar.get(Calendar.DATE) - Integer.parseInt(d);
             if (date == 1) {
-                return " Updated: yesterday";
+                return "yesterday";
             } else if (date > 1) {
-                return " Updated: " + date + " days ago";
+                return date + " days ago";
             } else if (date == 0) {
-                return " Updated: today";
+                return "today";
             } else {
                 return "";
             }

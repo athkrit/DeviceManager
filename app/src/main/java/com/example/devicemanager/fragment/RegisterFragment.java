@@ -41,7 +41,6 @@ public class RegisterFragment extends Fragment {
 
     private EditText etEmail, etPassword, etCode;
     private String strEmail, strPassword, strCode, code;
-    private boolean state;
     private FirebaseAuth mAuth;
     private Button btnSubmit;
     private TextView tvLogin;
@@ -49,7 +48,6 @@ public class RegisterFragment extends Fragment {
     private Context context;
     ProgressBar progressBar;
     View progressDialogBackground;
-    private boolean btnClick=true;
 
     public RegisterFragment() {
     }
@@ -92,15 +90,16 @@ public class RegisterFragment extends Fragment {
         btnSubmit = view.findViewById(R.id.btnRegSubmit);
         tvLogin = view.findViewById(R.id.tvRegLogin);
 
+        enableClick();
+        btnSubmit.setOnClickListener(onClickSubmit);
+        tvLogin.setOnClickListener(onClickLogin);
+
         progressBar = (ProgressBar) view.findViewById(R.id.spin_kit);
         progressDialogBackground = (View) view.findViewById(R.id.view);
 
         mAuth = FirebaseAuth.getInstance();
 
         code = getCode();
-
-        btnSubmit.setOnClickListener(onClickSubmit);
-        tvLogin.setOnClickListener(onClickLogin);
     }
 
     private void registerUser() {
@@ -111,22 +110,19 @@ public class RegisterFragment extends Fragment {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        progressDialogBackground.setVisibility(View.INVISIBLE);
-                        progressBar.setVisibility(View.INVISIBLE);
+                        closeLoadingDialog();
                         Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
-                        Log.d("isSuccessful", e.getMessage());
-                        btnClick = true;
                     }
                 })
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            closeLoadingDialog();
                             Toast.makeText(context, "Register Success", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(context, MainActivity.class);
                             startActivity(intent);
                             getActivity().finish();
-                            btnClick = true;
                         }
                     }
                 });
@@ -192,38 +188,40 @@ public class RegisterFragment extends Fragment {
     private View.OnClickListener onClickSubmit = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            if(!btnClick){
-                return;
-            }
-            btnClick = false;
+            disableClick();
             hideKeyboardFrom(context, view);
             progressDialogBackground.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.VISIBLE);
             if (checkForm()) {
                 registerUser();
             }
-//            progressDialogBackground.setVisibility(View.INVISIBLE);
-//            progressBar.setVisibility(View.INVISIBLE);
         }
     };
 
     private View.OnClickListener onClickLogin = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            if(!btnClick){
-                return;
-            }
-            btnClick = false;
+            disableClick();
             getActivity().getSupportFragmentManager().beginTransaction()
                     .replace(R.id.contentContainer, LoginFragment.newInstance())
                     .commit();
-            btnClick = true;
         }
     };
 
     private void closeLoadingDialog() {
         progressDialogBackground.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.INVISIBLE);
+        enableClick();
+    }
+
+    private void enableClick(){
+        btnSubmit.setEnabled(true);
+        tvLogin.setEnabled(true);
+    }
+
+    private void disableClick(){
+        btnSubmit.setEnabled(false);
+        tvLogin.setEnabled(false);
     }
 
 }

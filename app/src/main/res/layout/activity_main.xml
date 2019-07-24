@@ -24,8 +24,9 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:background="@color/colorTheme"
+            android:gravity="center"
             android:orientation="horizontal"
-            android:padding="5dp">
+            android:paddingTop="8dp">
 
             <TextView
                 android:id="@+id/tvDetail"
@@ -34,7 +35,8 @@
                 android:layout_weight="1"
                 android:drawableTop="@drawable/ico_device_detil"
                 android:gravity="center"
-                android:text="@string/device_detail" />
+                android:text="@string/device_detail"
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/tvSummary"
@@ -43,7 +45,8 @@
                 android:layout_weight="1"
                 android:drawableTop="@drawable/ico_summary"
                 android:gravity="center"
-                android:text="@string/summary" />
+                android:text="@string/summary"
+                android:textSize="12sp" />
 
         </LinearLayout>
 

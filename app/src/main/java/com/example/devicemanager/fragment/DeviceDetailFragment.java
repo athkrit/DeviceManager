@@ -206,7 +206,12 @@ public class DeviceDetailFragment extends Fragment {
         });
         AlertDialog dialog = builder.create();
         dialog.show();
-        dialog.getButton(DialogInterface.BUTTON_POSITIVE).setBackgroundColor(getResources().getColor(android.R.color.transparent));
+        dialog.getButton(DialogInterface.BUTTON_POSITIVE)
+                .setTextColor(getResources().getColor(android.R.color.white));
+        dialog.getButton(DialogInterface.BUTTON_NEGATIVE)
+                .setTextColor(getResources().getColor(android.R.color.white));
+        dialog.getButton(DialogInterface.BUTTON_POSITIVE)
+                .setBackgroundColor(getResources().getColor(android.R.color.transparent));
         dialog.getButton(DialogInterface.BUTTON_NEGATIVE)
                 .setBackgroundColor(getResources().getColor(android.R.color.transparent));
         btnClick = true;

@@ -58,7 +58,6 @@
         <activity
             android:name=".activity.AddDeviceActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Material"
             android:label="@string/add_device"
             android:windowSoftInputMode="stateHidden" />
         <activity

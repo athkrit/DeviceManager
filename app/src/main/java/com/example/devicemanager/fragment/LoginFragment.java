@@ -36,9 +36,8 @@ public class LoginFragment extends Fragment {
     private AppCompatButton btnSubmit;
     private TextView tvRegister;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    ProgressBar progressBar;
-    View progressDialogBackground;
-    private boolean btnClick = true;
+    private ProgressBar progressBar;
+    private View progressDialogBackground;
 
     public static LoginFragment newInstance() {
         LoginFragment fragment = new LoginFragment();
@@ -82,10 +81,10 @@ public class LoginFragment extends Fragment {
         etEmail = view.findViewById(R.id.etLoginEmail);
         etPassword = view.findViewById(R.id.etLoginPassword);
         btnSubmit = view.findViewById(R.id.btnLoginSubmit);
-
-        btnSubmit.setOnClickListener(onClickBtnSubmit);
-
         tvRegister = view.findViewById(R.id.tvRegister);
+
+        enableClick();
+        btnSubmit.setOnClickListener(onClickBtnSubmit);
         tvRegister.setOnClickListener(onClickRegister);
 
         mAuth = FirebaseAuth.getInstance();
@@ -101,20 +100,18 @@ public class LoginFragment extends Fragment {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
+                                enableClick();
+                                hideLoading();
                                 Toast.makeText(Contextor.getInstance().getContext(),
                                         "Login Success", Toast.LENGTH_SHORT).show();
-                                progressDialogBackground.setVisibility(View.INVISIBLE);
-                                progressBar.setVisibility(View.INVISIBLE);
                                 Intent intent = new Intent(getActivity(), MainActivity.class);
                                 startActivity(intent);
-                                btnClick = true;
                                 getActivity().finish();
                             } else {
+                                enableClick();
+                                hideLoading();
                                 Toast.makeText(Contextor.getInstance().getContext(),
                                         "Failed to Login", Toast.LENGTH_SHORT).show();
-                                progressDialogBackground.setVisibility(View.INVISIBLE);
-                                progressBar.setVisibility(View.INVISIBLE);
-                                btnClick = true;
                             }
                         }
                     });
@@ -124,11 +121,12 @@ public class LoginFragment extends Fragment {
 
     private boolean checkForm(String strEmail, String strPassword) {
         if (TextUtils.isEmpty(strEmail) || TextUtils.isEmpty(strPassword)) {
+            enableClick();
+            hideLoading();
             Toast.makeText(getActivity(), "Please insert all the fields", Toast.LENGTH_SHORT).show();
             return false;
-        } else {
-            return true;
         }
+        return true;
     }
 
     private boolean checkEmail() {
@@ -136,11 +134,16 @@ public class LoginFragment extends Fragment {
         if (email.contains(getResources().getString(R.string.digio_email))) {
             return true;
         } else {
-            progressDialogBackground.setVisibility(View.INVISIBLE);
-            progressBar.setVisibility(View.INVISIBLE);
+            enableClick();
+            hideLoading();
             Toast.makeText(getContext(), "Incorrect E-mail", Toast.LENGTH_SHORT).show();
             return false;
         }
+    }
+
+    private void hideLoading() {
+        progressDialogBackground.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(View.INVISIBLE);
     }
 
     private static void hideKeyboardFrom(Context context, View view) {
@@ -148,13 +151,20 @@ public class LoginFragment extends Fragment {
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
+    private void enableClick(){
+        btnSubmit.setEnabled(true);
+        tvRegister.setEnabled(true);
+    }
+
+    private void disableClick(){
+        btnSubmit.setEnabled(false);
+        tvRegister.setEnabled(false);
+    }
+
     private View.OnClickListener onClickBtnSubmit = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            if(!btnClick){
-                return;
-            }
-            btnClick = false;
+            disableClick();
             hideKeyboardFrom(getContext(), view);
             progressDialogBackground.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.VISIBLE);
@@ -176,14 +186,11 @@ public class LoginFragment extends Fragment {
     private View.OnClickListener onClickRegister = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            if(!btnClick){
-                return;
-            }
-            btnClick = false;
+            disableClick();
             getActivity().getSupportFragmentManager().beginTransaction()
                     .replace(R.id.contentContainer, RegisterFragment.newInstance())
                     .commit();
-            btnClick = true;
+            enableClick();
         }
     };
 

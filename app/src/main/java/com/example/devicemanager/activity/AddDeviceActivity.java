@@ -46,7 +46,8 @@ public class AddDeviceActivity extends AppCompatActivity {
 
     private void initInstances() {
         getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);getSupportActionBar()
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar()
                 .setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorTheme)));
     }
 
@@ -58,11 +59,12 @@ public class AddDeviceActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
     public void onBackPressed() {
         showAlertDialog("Discard all Changing?");
     }
 
-        private void showAlertDialog(final String message) {
+    private void showAlertDialog(final String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(message).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
@@ -73,14 +75,19 @@ public class AddDeviceActivity extends AppCompatActivity {
         }).setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(AddDeviceActivity.this, "Cancel", Toast.LENGTH_SHORT).show();
+                /*Toast.makeText(AddDeviceActivity.this, "Cancel", Toast.LENGTH_SHORT).show();*/
             }
         });
         AlertDialog dialog = builder.create();
         dialog.show();
 
-        dialog.getWindow().setBackgroundDrawableResource(android.R.color.white);
-        dialog.getButton(DialogInterface.BUTTON_POSITIVE).setBackgroundColor(getResources().getColor(R.color.white));
-        dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setBackgroundColor(getResources().getColor(R.color.white));
+        dialog.getButton(DialogInterface.BUTTON_POSITIVE)
+                .setTextColor(getResources().getColor(android.R.color.white));
+        dialog.getButton(DialogInterface.BUTTON_NEGATIVE)
+                .setTextColor(getResources().getColor(android.R.color.white));
+        dialog.getButton(DialogInterface.BUTTON_POSITIVE)
+                .setBackgroundColor(getResources().getColor(android.R.color.transparent));
+        dialog.getButton(DialogInterface.BUTTON_NEGATIVE)
+                .setBackgroundColor(getResources().getColor(android.R.color.transparent));
     }
 }

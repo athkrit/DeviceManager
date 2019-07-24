@@ -9,23 +9,13 @@
         <item name="android:windowEnableSplitTouch">false</item>
         <item name="android:splitMotionEvents">false</item>
         <item name="android:fontFamily">@font/kanit_regular</item>
-    </style>
-
-    <style name="AppTheme.Material" parent="Theme.MaterialComponents">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimary</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:textColor">@color/grey</item>
-        <item name="android:windowEnableSplitTouch">false</item>
-        <item name="android:splitMotionEvents">false</item>
-        <item name="android:label">@string/add_device</item>
-        <item name="homeAsUpIndicator">@drawable/ic_back</item>
+        <item name="android:textColorPrimary">@android:color/white</item>
     </style>
 
     <style name="AppTheme.noActionbar" parent="Theme.MaterialComponents.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">@color/light_grey</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowEnableSplitTouch">false</item>
         <item name="android:splitMotionEvents">false</item>
@@ -128,10 +118,6 @@
     </style>
 
     <style name="AddFABStyle" parent="Widget.AppCompat.Button.Colored">
-        <!--<item name="android:src">@drawable/button_blue_add</item>
-        <item name="android:drawable">@drawable/button_blue_add</item>-->
-        <!--<item name="srcCompat">@drawable/rec_gradient_blue</item>-->
-        <!--<item name="android:src">@drawable/button_blue_add</item>-->
         <item name="android:drawable">@drawable/button_blue_add</item>
         <item name="fabSize">normal</item>
     </style>

@@ -14,213 +14,247 @@
         android:padding="10dp">
 
         <LinearLayout
+            android:id="@+id/layoutCard"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorTheme"
+            android:layout_height="360dp"
+            android:background="@drawable/img_card"
             android:orientation="vertical">
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="350dp"
-                android:background="@drawable/img_card">
+                android:layout_height="180dp"
+                android:background="@android:color/transparent"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:paddingStart="26dp"
+                android:paddingEnd="32dp"
+                tools:ignore="RtlSymmetry">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="180dp"
-                    android:layout_alignParentTop="true"
-                    android:background="@android:color/transparent"
+                <TextView
+                    android:id="@+id/tvItemId"
+                    style="@style/TextViewForDetailDeviceWhite"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:text="@string/serial_number"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvDeviceDetail"
+                    style="@style/TextViewForDetailDeviceWhite"
+                    android:layout_height="0dp"
+                    android:layout_weight="3"
+                    android:drawablePadding="10dp"
+                    android:text="@string/details"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvOwnerName"
+                    style="@style/TextViewForDetailDeviceWhite"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:drawableStart="@drawable/ico_owner"
+                    android:drawablePadding="10dp"
                     android:gravity="center_vertical"
-                    android:orientation="vertical"
-                    android:padding="16dp"
-                    android:paddingStart="26dp"
-                    android:paddingLeft="26dp"
-                    android:paddingEnd="32dp"
-                    android:paddingRight="32dp"
-                    tools:ignore="RtlSymmetry">
+                    android:text="@string/name" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:baselineAligned="false"
+                android:orientation="vertical"
+                android:layout_marginTop="5dp"
+                android:padding="16dp"
+                android:paddingStart="26dp"
+                android:paddingEnd="26dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/tvItemId"
-                        style="@style/TextViewForDetailDeviceWhite"
-                        android:layout_height="0dp"
+                        style="@style/TextViewForDetailDevice"
+                        android:layout_width="0dp"
                         android:layout_weight="1"
-                        android:text="@string/serial_number"
-                        android:textSize="14sp" />
+                        android:text="@string/type"
+                        android:textColor="@color/light_grey" />
 
                     <TextView
-                        android:id="@+id/tvDeviceDetail"
-                        style="@style/TextViewForDetailDeviceWhite"
-                        android:layout_height="0dp"
-                        android:layout_weight="3"
-                        android:drawablePadding="10dp"
-                        android:text="@string/details"
-                        android:textSize="24sp"
-                        android:textStyle="bold" />
+                        android:id="@+id/tvType"
+                        style="@style/TextViewForDetailDevice"
+                        android:layout_width="0dp"
+                        android:layout_weight="3" />
 
-                    <TextView
-                        android:id="@+id/tvOwnerName"
-                        style="@style/TextViewForDetailDeviceWhite"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:drawableStart="@drawable/ico_owner"
-                        android:drawableLeft="@drawable/ico_owner"
-                        android:drawablePadding="10dp"
-                        android:gravity="center_vertical"
-                        android:text="@string/name" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="170dp"
-                    android:layout_alignParentBottom="true"
-                    android:background="@android:color/transparent"
-                    android:baselineAligned="false"
-                    android:orientation="horizontal"
-                    android:padding="16dp"
-                    android:paddingStart="26dp"
-                    android:paddingLeft="26dp">
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:orientation="horizontal">
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:background="@android:color/transparent"
-                        android:gravity="center_vertical"
-                        android:orientation="vertical">
-
-                        <TextView
-                            style="@style/TextViewForDetailDevice"
-                            android:text="@string/type"
-                            android:textColor="@color/light_grey" />
-
-                        <TextView
-                            style="@style/TextViewForDetailDevice"
-                            android:text="@string/brand"
-                            android:textColor="@color/light_grey" />
-
-                        <TextView
-                            style="@style/TextViewForDetailDevice"
-                            android:text="@string/model"
-                            android:textColor="@color/light_grey" />
-
-                        <TextView
-                            style="@style/TextViewForDetailDevice"
-                            android:text="@string/s_n"
-                            android:textColor="@color/light_grey" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
+                    <TextView
+                        style="@style/TextViewForDetailDevice"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:background="@android:color/transparent"
-                        android:gravity="center_vertical"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/tvType"
-                            style="@style/TextViewForDetailDevice" />
-
-                        <TextView
-                            android:id="@+id/tvBrand"
-                            style="@style/TextViewForDetailDevice" />
-
-                        <TextView
-                            android:id="@+id/tvModel"
-                            style="@style/TextViewForDetailDevice" />
-
-                        <TextView
-                            android:id="@+id/tvSerialNumber"
-                            style="@style/TextViewForDetailDevice" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-            </RelativeLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="18dp"
-                android:baselineAligned="true"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="14dp"
-                    android:orientation="vertical">
+                        android:text="@string/brand"
+                        android:textColor="@color/light_grey" />
 
                     <TextView
-                        style="@style/TextViewForDetailDeviceWhite"
-                        android:layout_marginBottom="10dp"
-                        android:drawableStart="@drawable/circle_gradient_blue"
-                        android:drawablePadding="10dp"
-                        android:fontFamily="@font/open_sans_regular"
-                        android:text="@string/added_date" />
-
-                    <TextView
-                        style="@style/TextViewForDetailDeviceWhite"
-                        android:drawableStart="@drawable/circle_gradient_red"
-                        android:drawablePadding="10dp"
-                        android:fontFamily="@font/open_sans_regular"
-                        android:text="@string/last_updated" />
+                        android:id="@+id/tvBrand"
+                        style="@style/TextViewForDetailDevice"
+                        android:layout_width="0dp"
+                        android:layout_weight="3"
+                        android:maxLines="2" />
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/tvAddedDate"
-                        style="@style/TextViewForDetailDeviceWhite"
-                        android:layout_marginBottom="10dp"
-                        android:fontFamily="@font/open_sans_regular" />
+                        style="@style/TextViewForDetailDevice"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="@string/model"
+                        android:textColor="@color/light_grey" />
 
                     <TextView
-                        android:id="@+id/tvLastUpdate"
-                        style="@style/TextViewForDetailDeviceWhite"
-                        android:fontFamily="@font/open_sans_regular" />
+                        android:id="@+id/tvModel"
+                        style="@style/TextViewForDetailDevice"
+                        android:layout_width="0dp"
+                        android:layout_weight="3" />
 
                 </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/TextViewForDetailDevice"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="@string/s_n"
+                        android:textColor="@color/light_grey" />
+
+                    <TextView
+                        android:id="@+id/tvSerialNumber"
+                        style="@style/TextViewForDetailDevice"
+                        android:layout_width="0dp"
+                        android:layout_weight="3" />
+
+                </LinearLayout>
+
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layoutCard"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="15dp"
+            android:baselineAligned="false"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="10dp"
                 android:orientation="horizontal">
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btnEdit"
-                    style="@style/RoundedCornerMaterialButton"
+                <TextView
+                    style="@style/TextViewForDetailDeviceWhite"
                     android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_marginEnd="15dp"
-                    android:layout_weight="1"
-                    android:backgroundTint="@color/edit_btn_color"
-                    android:text="@string/edit" />
+                    android:layout_height="match_parent"
+                    android:layout_weight="5"
+                    android:drawableStart="@drawable/circle_gradient_blue"
+                    android:drawablePadding="10dp"
+                    android:fontFamily="@font/open_sans_regular"
+                    android:gravity="center_vertical"
+                    android:text="@string/added_date"
+                    android:textSize="16sp" />
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btnCheck"
-                    style="@style/RoundedCornerMaterialButton"
+                <TextView
+                    android:id="@+id/tvAddedDate"
+                    style="@style/TextViewForDetailDeviceWhite"
                     android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:text="@string/check" />
+                    android:layout_height="match_parent"
+                    android:layout_weight="7"
+                    android:fontFamily="@font/open_sans_regular"
+                    android:gravity="center_vertical"
+                    android:textSize="16sp" />
+
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/TextViewForDetailDeviceWhite"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="5"
+                    android:drawableStart="@drawable/circle_gradient_red"
+                    android:drawablePadding="10dp"
+                    android:fontFamily="@font/open_sans_regular"
+                    android:text="@string/last_updated"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tvLastUpdate"
+                    style="@style/TextViewForDetailDeviceWhite"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="7"
+                    android:fontFamily="@font/open_sans_regular"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="5dp"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnEdit"
+                style="@style/RoundedCornerMaterialButton"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="15dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/edit_btn_color"
+                android:text="@string/edit" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnCheck"
+                style="@style/RoundedCornerMaterialButton"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:text="@string/check" />
         </LinearLayout>
 
         <View

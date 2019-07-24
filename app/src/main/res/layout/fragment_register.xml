@@ -99,7 +99,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:background="@drawable/rec_gradient_blue"
+            android:background="@drawable/selector_rec_gradient_blue"
             android:text="@string/submit"
             android:textColor="@android:color/white" />
 
