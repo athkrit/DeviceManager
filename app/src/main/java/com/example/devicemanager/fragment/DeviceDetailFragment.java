@@ -63,6 +63,7 @@ public class DeviceDetailFragment extends Fragment {
     List<ItemEntity> itemEntity;
     private ItemEntityViewModel itemEntityViewModel;
     private String idKey;
+    private boolean btnClick = true;
 
     public static DeviceDetailFragment newInstances(String barcode) {
         DeviceDetailFragment fragment = new DeviceDetailFragment();
@@ -90,6 +91,7 @@ public class DeviceDetailFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 11111) {
+            btnClick = true;
             if (resultCode == RESULT_OK) {
                 getData(serial);
                 SuccessDialog();
@@ -207,6 +209,7 @@ public class DeviceDetailFragment extends Fragment {
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).setBackgroundColor(getResources().getColor(android.R.color.transparent));
         dialog.getButton(DialogInterface.BUTTON_NEGATIVE)
                 .setBackgroundColor(getResources().getColor(android.R.color.transparent));
+        btnClick = true;
     }
 
     private void checkedDevice() {
@@ -329,6 +332,10 @@ public class DeviceDetailFragment extends Fragment {
     private View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+            if(!btnClick){
+                return;
+            }
+            btnClick = false;
             if (view == btnCheck) {
                 showAlertDialog(R.string.dialog_msg_checked, "check");
             }

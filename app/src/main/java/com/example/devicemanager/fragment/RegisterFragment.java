@@ -49,6 +49,7 @@ public class RegisterFragment extends Fragment {
     private Context context;
     ProgressBar progressBar;
     View progressDialogBackground;
+    private boolean btnClick=true;
 
     public RegisterFragment() {
     }
@@ -114,6 +115,7 @@ public class RegisterFragment extends Fragment {
                         progressBar.setVisibility(View.INVISIBLE);
                         Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.d("isSuccessful", e.getMessage());
+                        btnClick = true;
                     }
                 })
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -124,6 +126,7 @@ public class RegisterFragment extends Fragment {
                             Intent intent = new Intent(context, MainActivity.class);
                             startActivity(intent);
                             getActivity().finish();
+                            btnClick = true;
                         }
                     }
                 });
@@ -189,6 +192,10 @@ public class RegisterFragment extends Fragment {
     private View.OnClickListener onClickSubmit = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+            if(!btnClick){
+                return;
+            }
+            btnClick = false;
             hideKeyboardFrom(context, view);
             progressDialogBackground.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.VISIBLE);
@@ -203,9 +210,14 @@ public class RegisterFragment extends Fragment {
     private View.OnClickListener onClickLogin = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+            if(!btnClick){
+                return;
+            }
+            btnClick = false;
             getActivity().getSupportFragmentManager().beginTransaction()
                     .replace(R.id.contentContainer, LoginFragment.newInstance())
                     .commit();
+            btnClick = true;
         }
     };
 

@@ -19,6 +19,7 @@ public class SummaryAdapter extends RecyclerView.Adapter<SummaryAdapter.Holder> 
     private Context context;
     private int[] available, count, total;
     private String[] brand, type;
+    private boolean btnClick=true;
 
     public SummaryAdapter(Context context) {
         this.context = context;
@@ -64,16 +65,22 @@ public class SummaryAdapter extends RecyclerView.Adapter<SummaryAdapter.Holder> 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(!btnClick){
+                    return;
+                }
+                btnClick=false;
                 if (type.length > 1) {
                     Intent intent = new Intent(context, SummaryListDetailActivity.class);
                     intent.putExtra("Type", type[position]);
                     intent.putExtra("Brand", "-");
                     context.startActivity(intent);
+                    btnClick=true;
                 } else {
                     Intent intent = new Intent(context, SummaryListDetailActivity.class);
                     intent.putExtra("Type", type[0]);
                     intent.putExtra("Brand", brand[position]);
                     context.startActivity(intent);
+                    btnClick=true;
                 }
             }
         });

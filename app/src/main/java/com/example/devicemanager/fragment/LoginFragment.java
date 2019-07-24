@@ -38,6 +38,7 @@ public class LoginFragment extends Fragment {
     private FirebaseAuth.AuthStateListener mAuthListener;
     ProgressBar progressBar;
     View progressDialogBackground;
+    private boolean btnClick = true;
 
     public static LoginFragment newInstance() {
         LoginFragment fragment = new LoginFragment();
@@ -106,12 +107,14 @@ public class LoginFragment extends Fragment {
                                 progressBar.setVisibility(View.INVISIBLE);
                                 Intent intent = new Intent(getActivity(), MainActivity.class);
                                 startActivity(intent);
+                                btnClick = true;
                                 getActivity().finish();
                             } else {
                                 Toast.makeText(Contextor.getInstance().getContext(),
                                         "Failed to Login", Toast.LENGTH_SHORT).show();
                                 progressDialogBackground.setVisibility(View.INVISIBLE);
                                 progressBar.setVisibility(View.INVISIBLE);
+                                btnClick = true;
                             }
                         }
                     });
@@ -148,6 +151,10 @@ public class LoginFragment extends Fragment {
     private View.OnClickListener onClickBtnSubmit = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+            if(!btnClick){
+                return;
+            }
+            btnClick = false;
             hideKeyboardFrom(getContext(), view);
             progressDialogBackground.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.VISIBLE);
@@ -169,9 +176,14 @@ public class LoginFragment extends Fragment {
     private View.OnClickListener onClickRegister = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+            if(!btnClick){
+                return;
+            }
+            btnClick = false;
             getActivity().getSupportFragmentManager().beginTransaction()
                     .replace(R.id.contentContainer, RegisterFragment.newInstance())
                     .commit();
+            btnClick = true;
         }
     };
 

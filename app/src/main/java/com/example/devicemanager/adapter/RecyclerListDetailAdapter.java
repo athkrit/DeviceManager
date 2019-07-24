@@ -32,6 +32,7 @@ public class RecyclerListDetailAdapter extends RecyclerView.Adapter<RecyclerList
     private ArrayList<String> status;
     private ArrayList<String> key;
     private ArrayList<String> lastUpdated;
+    private boolean btnClick = true;
 
     public void setBrand(ArrayList<String> brand) {
         this.brand = brand;
@@ -88,9 +89,14 @@ public class RecyclerListDetailAdapter extends RecyclerView.Adapter<RecyclerList
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(!btnClick){
+                    return;
+                }
+                btnClick=false;
                 Intent intent = new Intent(context, DeviceDetailActivity.class);
                 intent.putExtra("serial", key.get(position));
                 context.startActivity(intent);
+                btnClick=true;
             }
         });
 

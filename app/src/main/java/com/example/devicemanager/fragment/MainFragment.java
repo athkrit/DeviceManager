@@ -86,6 +86,7 @@ public class MainFragment extends Fragment implements ItemListAdapter.Holder.Ite
     private boolean refreshStatus = true;
     private int iii = 0;
     private FloatingActionButton floatingButton;
+    private boolean fabBtnCheck = true;
 
     public MainFragment() {
         super();
@@ -217,8 +218,13 @@ public class MainFragment extends Fragment implements ItemListAdapter.Holder.Ite
     private View.OnClickListener onClickFab = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+            if(!fabBtnCheck){
+                return;
+            }
+            fabBtnCheck = false;
             Intent intent = new Intent(getActivity(), AddDeviceActivity.class);
             startActivityForResult(intent, 11111);
+            fabBtnCheck = true;
         }
     };
 

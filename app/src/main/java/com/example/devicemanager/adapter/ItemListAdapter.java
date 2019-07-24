@@ -32,14 +32,13 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.Holder
     private Context context;
     private Holder.ItemClickListener mClickListener;
     private List<ItemEntity> filteredList = new ArrayList<>();
+    private boolean btnClick = true;
 
     public void setList(List<ItemEntity> list) {
         this.list = list;
         this.source = new ArrayList<>(list);
         notifyDataSetChanged();
     }
-
-    private String itemId;
 
     public ItemListAdapter(Context context) {
         this.context = context;
@@ -62,12 +61,17 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.Holder
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!btnClick){
+                    return;
+                }
+                btnClick = false;
 //                if (mClickListener != null) {
 //                    mClickListener.onItemClick(v, position, list.get(position).getUnnamed2());
 //                }
                 Intent intent = new Intent(context, DeviceDetailActivity.class);
                 intent.putExtra("serial", list.get(position).getUnnamed2());
                 context.startActivity(intent);
+                btnClick = true;
             }
         });
     }
