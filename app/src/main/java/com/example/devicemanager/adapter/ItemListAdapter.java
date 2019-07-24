@@ -33,7 +33,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.Holder
     private Holder.ItemClickListener mClickListener;
     private List<ItemEntity> filteredList = new ArrayList<>();
 
-    public void   setList(List<ItemEntity> list) {
+    public void setList(List<ItemEntity> list) {
         this.list = list;
         this.source = new ArrayList<>(list);
         notifyDataSetChanged();
@@ -74,7 +74,10 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.Holder
 
     @Override
     public int getItemCount() {
-        if(list == null){
+        if (list == null) {
+            return 0;
+        }
+        if (list.size() == 0) {
             return 0;
         }
         return list.size();

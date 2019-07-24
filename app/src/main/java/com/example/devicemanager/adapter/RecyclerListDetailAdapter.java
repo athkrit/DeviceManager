@@ -100,9 +100,12 @@ public class RecyclerListDetailAdapter extends RecyclerView.Adapter<RecyclerList
     public int getItemCount() {
         if (brand == null) {
             return 0;
-        } else {
-            return brand.size();
         }
+        if (brand.size() == 0) {
+            return 0;
+        }
+        return brand.size();
+
     }
 
     @Override
@@ -137,7 +140,7 @@ public class RecyclerListDetailAdapter extends RecyclerView.Adapter<RecyclerList
                 tvDetail.setText(detail.get(position));
             }
 
-            if (owner.get(position).matches("-")){
+            if (owner.get(position).matches("-")) {
                 tvOwner.setText("no owner");
             } else {
                 tvOwner.setText(owner.get(position));
@@ -178,7 +181,7 @@ public class RecyclerListDetailAdapter extends RecyclerView.Adapter<RecyclerList
 
             try {
                 date = inputDateFormat.parse(inputDate);
-                if (date != null){
+                if (date != null) {
                     str = outputDateFormat.format(date);
                     d = outputDFormat.format(date);
                     m = outputMFormat.format(date);
@@ -192,37 +195,32 @@ public class RecyclerListDetailAdapter extends RecyclerView.Adapter<RecyclerList
 
         }
 
-        private String checkLastUpdate(String d, String m, String y){
+        private String checkLastUpdate(String d, String m, String y) {
 
             Calendar calendar = Calendar.getInstance(Locale.getDefault());
             int year = calendar.get(Calendar.YEAR) - Integer.parseInt(y);
 
-            if (year == 1){
-                return " Updated: last year" ;
-            }
-            else if (year > 1){
+            if (year == 1) {
+                return " Updated: last year";
+            } else if (year > 1) {
                 return " Updated: " + year + " years ago";
             }
 
             int month = calendar.get(Calendar.MONTH) - Integer.parseInt(m);
-            if (month == 1){
-                return " Updated: last month" ;
-            }
-            else if (month > 1){
+            if (month == 1) {
+                return " Updated: last month";
+            } else if (month > 1) {
                 return " Updated: " + month + " month ago";
             }
 
             int date = calendar.get(Calendar.DATE) - Integer.parseInt(d);
-            if (date == 1){
-                return " Updated: yesterday" ;
-            }
-            else if (date > 1) {
-                return " Updated: " + date + " days ago" ;
-            }
-            else if (date == 0){
-                return " Updated: today" ;
-            }
-            else {
+            if (date == 1) {
+                return " Updated: yesterday";
+            } else if (date > 1) {
+                return " Updated: " + date + " days ago";
+            } else if (date == 0) {
+                return " Updated: today";
+            } else {
                 return "";
             }
         }

@@ -17,8 +17,8 @@ import com.example.devicemanager.manager.Contextor;
 
 public class SummaryAdapter extends RecyclerView.Adapter<SummaryAdapter.Holder> {
     private Context context;
-    private int[] available,count,total;
-    private String[] brand,type;
+    private int[] available, count, total;
+    private String[] brand, type;
 
     public SummaryAdapter(Context context) {
         this.context = context;
@@ -83,6 +83,9 @@ public class SummaryAdapter extends RecyclerView.Adapter<SummaryAdapter.Holder> 
     public int getItemCount() {
         if (type == null)
             return 0;
+        if (type.length == 0) {
+            return 0;
+        }
         if (type.length == 1) {
             return brand.length;
         }
