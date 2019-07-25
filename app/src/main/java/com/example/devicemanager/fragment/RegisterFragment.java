@@ -1,14 +1,8 @@
 package com.example.devicemanager.fragment;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.inputmethodservice.Keyboard;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +15,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
 import com.example.devicemanager.R;
 import com.example.devicemanager.activity.MainActivity;
 import com.example.devicemanager.manager.Contextor;
@@ -29,8 +26,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthException;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -94,8 +89,8 @@ public class RegisterFragment extends Fragment {
         btnSubmit.setOnClickListener(onClickSubmit);
         tvLogin.setOnClickListener(onClickLogin);
 
-        progressBar = (ProgressBar) view.findViewById(R.id.spin_kit);
-        progressDialogBackground = (View) view.findViewById(R.id.view);
+        progressBar = view.findViewById(R.id.spin_kit);
+        progressDialogBackground = view.findViewById(R.id.view);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -167,11 +162,11 @@ public class RegisterFragment extends Fragment {
             closeLoadingDialog();
             Toast.makeText(context, "Password must contain at least 6 letters", Toast.LENGTH_SHORT).show();
             return false;
-        } else if (code.matches("")){
+        } else if (code.matches("")) {
             closeLoadingDialog();
             Toast.makeText(context, "Connection error, try again later.", Toast.LENGTH_SHORT).show();
             return false;
-        } else if (!strCode.matches(code)){
+        } else if (!strCode.matches(code)) {
             closeLoadingDialog();
             Toast.makeText(context, "Incorrect Invitation Code", Toast.LENGTH_SHORT).show();
             return false;
@@ -181,7 +176,7 @@ public class RegisterFragment extends Fragment {
     }
 
     private static void hideKeyboardFrom(Context context, View view) {
-        InputMethodManager imm = (InputMethodManager) context.getSystemService(context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
@@ -214,12 +209,12 @@ public class RegisterFragment extends Fragment {
         enableClick();
     }
 
-    private void enableClick(){
+    private void enableClick() {
         btnSubmit.setEnabled(true);
         tvLogin.setEnabled(true);
     }
 
-    private void disableClick(){
+    private void disableClick() {
         btnSubmit.setEnabled(false);
         tvLogin.setEnabled(false);
     }

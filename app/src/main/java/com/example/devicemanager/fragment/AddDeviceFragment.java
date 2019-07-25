@@ -198,8 +198,8 @@ public class AddDeviceFragment extends Fragment {
         this.date = onDateSet;
         etDatePicker.setOnClickListener(onClickDate);
 
-        progressBar = (ProgressBar) view.findViewById(R.id.spin_kit);
-        progressDialogBackground = (View) view.findViewById(R.id.view);
+        progressBar = view.findViewById(R.id.spin_kit);
+        progressDialogBackground = view.findViewById(R.id.view);
 
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Data");
 
@@ -228,7 +228,7 @@ public class AddDeviceFragment extends Fragment {
         String[] buildingRef = sp.getString(str, "").split(",");
         String[] setType = new String[buildingRef.length + 1];
 
-        Log.d(TAG, "building Ref: " + buildingRef[0]+ " size: " + buildingRef.length);
+        Log.d(TAG, "building Ref: " + buildingRef[0] + " size: " + buildingRef.length);
 
         for (int i = 0; i < setType.length; i++) {
             if (i == buildingRef.length)
@@ -392,7 +392,7 @@ public class AddDeviceFragment extends Fragment {
                         String form = "DGO" + YY + branch + category;
 
                         for (int i = 0; i < getItemEntity.size(); i++) {
-                            if (getItemEntity.get(i).getUnnamed2().toString().contains(form))
+                            if (getItemEntity.get(i).getUnnamed2().contains(form))
                                 order++;
                         }
                         int count = 0;
@@ -458,7 +458,7 @@ public class AddDeviceFragment extends Fragment {
                 etDepreciationRate.getText().toString(), etDepreciationinYear.getText().toString(),
                 etAccumulateDepreciation.getText().toString(), etForwardedBudget.getText().toString(), "" + YY,
                 getUnnamed2().substring(3), "" + category, "" + branch, "-",
-                "-", "" + dateFormat.format(dateCheck).toString(), "" + order,
+                "-", "" + dateFormat.format(dateCheck), "" + order,
                 "" + abbreviation, "-", "DGO", etWarranty.getText().toString());
 
         databaseReference.child(lastKey).setValue(item).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -498,7 +498,7 @@ public class AddDeviceFragment extends Fragment {
                 etDepreciationRate.getText().toString(), etDepreciationinYear.getText().toString(),
                 etAccumulateDepreciation.getText().toString(), etForwardedBudget.getText().toString(), "" + YY,
                 getUnnamed2().substring(3), "" + category, "" + branch, "-",
-                "-", "" + dateFormat.format(dateCheck).toString(), "" + setOrderFormat(order),
+                "-", "" + dateFormat.format(dateCheck), "" + setOrderFormat(order),
                 "" + abbreviation, "-", "DGO", etWarranty.getText().toString());
 
         itemSave = new ItemEntity(getItemEntity.size(), getUnnamed2(), type, etDeviceDetail.getText().toString(),
@@ -620,19 +620,17 @@ public class AddDeviceFragment extends Fragment {
             inputDate = inputDate.substring(0, inputDate.indexOf("GMT")).trim();
         }
 
-        if (type.matches("date")){
+        if (type.matches("date")) {
             inputFormat = "dd/MM/yyyy";
             inputDateFormat = new SimpleDateFormat(inputFormat, Locale.ENGLISH);
             outputFormat = "EEE MMM dd yyyy HH:mm:ss";
             outputDateFormat = new SimpleDateFormat(outputFormat, Locale.ENGLISH);
-        }
-        else if (type.matches("room")){
+        } else if (type.matches("room")) {
             inputFormat = "yyyy-MM-dd";
             inputDateFormat = new SimpleDateFormat(inputFormat, Locale.ENGLISH);
             outputFormat = "dd/MM/yyyy";
             outputDateFormat = new SimpleDateFormat(outputFormat, Locale.ENGLISH);
-        }
-        else {
+        } else {
             inputFormat = "EEE MMM dd yyyy HH:mm:ss";
             inputDateFormat = new SimpleDateFormat(inputFormat, Locale.ENGLISH);
             outputFormat = "yyyy-MM-dd";
@@ -644,7 +642,7 @@ public class AddDeviceFragment extends Fragment {
 
         try {
             date = inputDateFormat.parse(inputDate);
-            if (date != null){
+            if (date != null) {
                 str = outputDateFormat.format(date);
             }
         } catch (ParseException e) {
@@ -718,7 +716,7 @@ public class AddDeviceFragment extends Fragment {
     }
 
     private static void hideKeyboardFrom(Context context, View view) {
-        InputMethodManager imm = (InputMethodManager) context.getSystemService(context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
@@ -932,11 +930,14 @@ public class AddDeviceFragment extends Fragment {
             } else if (adapterView == spBranch) {
                 switch (i) {
                     case 0:
-                        branch = 1; break;
+                        branch = 1;
+                        break;
                     case 1:
-                        branch = 2; break;
+                        branch = 2;
+                        break;
                     case 2:
-                        branch = 3; break;
+                        branch = 3;
+                        break;
                 }
             }
         }

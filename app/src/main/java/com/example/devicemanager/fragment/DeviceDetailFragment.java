@@ -117,8 +117,8 @@ public class DeviceDetailFragment extends Fragment {
         btnCheck.setOnClickListener(clickListener);
         btnEdit.setOnClickListener(clickListener);
 
-        progressBar = (ProgressBar) view.findViewById(R.id.spin_kit);
-        progressDialogBackground = (View) view.findViewById(R.id.view);
+        progressBar = view.findViewById(R.id.spin_kit);
+        progressDialogBackground = view.findViewById(R.id.view);
 
         getUpdateKey();
 

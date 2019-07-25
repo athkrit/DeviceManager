@@ -21,7 +21,7 @@ public class DeviceDetailActivity extends AppCompatActivity {
 
         initInstances();
 
-        if (savedInstanceState == null){
+        if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.contentContainer, DeviceDetailFragment.newInstances(serial))
                     .commit();

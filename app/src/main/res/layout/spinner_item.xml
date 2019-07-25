@@ -9,4 +9,4 @@
     android:background="@color/colorTheme"
     android:textSize="20sp"
     android:ellipsize="end"
-    android:maxLines="1"/>
+    android:maxLines="1" />

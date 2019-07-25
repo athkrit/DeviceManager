@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,13 +13,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.devicemanager.R;
 import com.example.devicemanager.activity.SummaryListDetailActivity;
-import com.example.devicemanager.manager.Contextor;
 
 public class SummaryAdapter extends RecyclerView.Adapter<SummaryAdapter.Holder> {
     private Context context;
     private int[] available, count, total;
     private String[] brand, type;
-    private boolean btnClick=true;
+    private boolean btnClick = true;
 
     public SummaryAdapter(Context context) {
         this.context = context;
@@ -66,24 +64,24 @@ public class SummaryAdapter extends RecyclerView.Adapter<SummaryAdapter.Holder> 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!btnClick){
+                if (!btnClick) {
                     return;
                 }
-                btnClick=false;
+                btnClick = false;
                 if (type.length > 1) {
                     Intent intent = new Intent(context, SummaryListDetailActivity.class);
                     intent.putExtra("Type", type[position].trim());
                     intent.putExtra("Brand", "-");
                     Log.d("test2407t", type[position]);
                     context.startActivity(intent);
-                    btnClick=true;
+                    btnClick = true;
                 } else {
                     Intent intent = new Intent(context, SummaryListDetailActivity.class);
                     intent.putExtra("Type", type[0].trim());
                     intent.putExtra("Brand", brand[position].trim());
                     Log.d("test2407tb", type[0] + brand[position]);
                     context.startActivity(intent);
-                    btnClick=true;
+                    btnClick = true;
                 }
             }
         });

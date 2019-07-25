@@ -9,4 +9,4 @@
     android:maxLines="1"
     android:padding="13dp"
     android:textColor="@android:color/white"
-    android:textSize="12sp"/>
+    android:textSize="12sp" />

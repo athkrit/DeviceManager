@@ -91,12 +91,12 @@ public class SummaryListDetailFragment extends Fragment {
         spSortBy.setOnItemSelectedListener(onSpinnerSelect);
 
         layoutManager = new LinearLayoutManager(getActivity());
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.rvListDetail);
+        recyclerView = rootView.findViewById(R.id.rvListDetail);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(recyclerListDetailAdapter);
 
-        progressBar = (ProgressBar) rootView.findViewById(R.id.spin_kit);
-        progressDialogBackground = (View) rootView.findViewById(R.id.view);
+        progressBar = rootView.findViewById(R.id.spin_kit);
+        progressDialogBackground = rootView.findViewById(R.id.view);
         progressDialogBackground.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.VISIBLE);
 
@@ -215,7 +215,7 @@ public class SummaryListDetailFragment extends Fragment {
             if (adapterView == spFilter) {
                 filterBy = filter;
                 if (filter.matches("All") || filter.matches("In Use") ||
-                        filter.matches("Available")){
+                        filter.matches("Available")) {
                     DownloadData(sortBy);
                 }
             }

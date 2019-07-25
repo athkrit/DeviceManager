@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -26,7 +25,6 @@ import com.example.devicemanager.manager.LoadData;
 import com.example.devicemanager.model.ItemEntityViewModel;
 import com.example.devicemanager.room.ItemEntity;
 import com.getbase.floatingactionbutton.FloatingActionButton;
-
 
 import java.util.Arrays;
 import java.util.List;
@@ -145,7 +143,7 @@ public class SummaryFragment extends Fragment {
         typeOther = new String[other.length + building.length];
         for (int i = 0; i < typeOther.length; i++) {
             if (i >= other.length)
-                typeOther[i] = building[i-other.length];
+                typeOther[i] = building[i - other.length];
 
             else
                 typeOther[i] = other[i];

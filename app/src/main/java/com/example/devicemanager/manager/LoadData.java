@@ -2,7 +2,6 @@ package com.example.devicemanager.manager;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
@@ -12,11 +11,8 @@ import com.example.devicemanager.room.AppDatabase;
 import com.example.devicemanager.room.ItemDao;
 import com.example.devicemanager.room.ItemEntity;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 public class LoadData {
     private ItemDao itemDao;
@@ -282,7 +278,7 @@ public class LoadData {
 
         @Override
         protected Integer doInBackground(String... strings) {
-            itemDao.updateDataFromAdd(branchCode,lastUpdate, ownedName, ownerId, brand, serial_no, item_detail, model, warrantyDate, purchasedPrice, purchased_date,
+            itemDao.updateDataFromAdd(branchCode, lastUpdate, ownedName, ownerId, brand, serial_no, item_detail, model, warrantyDate, purchasedPrice, purchased_date,
                     price, note, forwardDepreciation, depreciationRate, depreciationYear, accumulatedDepreciation, forwardBudget, id);
             return null;
         }

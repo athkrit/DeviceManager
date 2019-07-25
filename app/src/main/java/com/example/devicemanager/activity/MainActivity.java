@@ -1,9 +1,5 @@
 package com.example.devicemanager.activity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,9 +7,12 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import com.example.devicemanager.R;
 import com.example.devicemanager.fragment.LoginFragment;
@@ -220,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    private void setBottomNavColor(TextView textView, String state){
+    private void setBottomNavColor(TextView textView, String state) {
         int color;
 
         if (state.equals("selected")) {

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,8 +74,8 @@ public class LoginFragment extends Fragment {
     }
 
     private void initInstances(View view) {
-        progressBar = (ProgressBar) view.findViewById(R.id.spin_kit);
-        progressDialogBackground = (View) view.findViewById(R.id.view);
+        progressBar = view.findViewById(R.id.spin_kit);
+        progressDialogBackground = view.findViewById(R.id.view);
 
         etEmail = view.findViewById(R.id.etLoginEmail);
         etPassword = view.findViewById(R.id.etLoginPassword);
@@ -147,16 +146,16 @@ public class LoginFragment extends Fragment {
     }
 
     private static void hideKeyboardFrom(Context context, View view) {
-        InputMethodManager imm = (InputMethodManager) context.getSystemService(context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-    private void enableClick(){
+    private void enableClick() {
         btnSubmit.setEnabled(true);
         tvRegister.setEnabled(true);
     }
 
-    private void disableClick(){
+    private void disableClick() {
         btnSubmit.setEnabled(false);
         tvRegister.setEnabled(false);
     }

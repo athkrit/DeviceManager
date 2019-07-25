@@ -120,11 +120,11 @@ public class RecyclerListDetailAdapter extends RecyclerView.Adapter<RecyclerList
 
         Holder(View itemView) {
             super(itemView);
-            tvBrand = (TextView) itemView.findViewById(R.id.tvBrand);
-            tvDetail = (TextView) itemView.findViewById(R.id.tvDetail);
-            tvOwner = (TextView) itemView.findViewById(R.id.tvOwner);
-            tvAddedDate = (TextView) itemView.findViewById(R.id.tvAddedDate);
-            tvStatus = (TextView) itemView.findViewById(R.id.tvStatus);
+            tvBrand = itemView.findViewById(R.id.tvBrand);
+            tvDetail = itemView.findViewById(R.id.tvDetail);
+            tvOwner = itemView.findViewById(R.id.tvOwner);
+            tvAddedDate = itemView.findViewById(R.id.tvAddedDate);
+            tvStatus = itemView.findViewById(R.id.tvStatus);
             tvLastUpdated = itemView.findViewById(R.id.tvLastUpdate);
         }
 
@@ -150,7 +150,7 @@ public class RecyclerListDetailAdapter extends RecyclerView.Adapter<RecyclerList
             Log.d(TAG, "added date " + addedDate.get(position));
             String[] date = setDate(addedDate.get(position), lastUpdated.get(position)).split(",");
             tvAddedDate.setText(date[0]);
-            tvLastUpdated.setText("(" +  checkLastUpdate(date[1], date[2], date[3]) + ")");
+            tvLastUpdated.setText("(" + checkLastUpdate(date[1], date[2], date[3]) + ")");
             tvStatus.setText(status.get(position));
 
             if (status.get(position).contains("In Use")) {
@@ -162,7 +162,7 @@ public class RecyclerListDetailAdapter extends RecyclerView.Adapter<RecyclerList
 
         private String setDate(String inputDate, String lastUpdatedDate) {
 
-            if (lastUpdatedDate.matches("-")){
+            if (lastUpdatedDate.matches("-")) {
                 lastUpdatedDate = inputDate;
             }
 
@@ -191,7 +191,7 @@ public class RecyclerListDetailAdapter extends RecyclerView.Adapter<RecyclerList
                 if (date != null) {
                     str = outputDateFormat.format(date);
                 }
-                if (updatedDate != null){
+                if (updatedDate != null) {
                     d = outputDFormat.format(updatedDate);
                     m = outputMFormat.format(updatedDate);
                     y = outputYFormat.format(updatedDate);

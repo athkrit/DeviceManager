@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,10 +14,9 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import androidx.annotation.IntegerRes;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -27,18 +25,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-
 import com.example.devicemanager.R;
 import com.example.devicemanager.activity.AddDeviceActivity;
 import com.example.devicemanager.activity.DeviceDetailActivity;
-import com.example.devicemanager.activity.ScanBarcodeActivity;
 import com.example.devicemanager.activity.ScanQrCodeActivity;
 import com.example.devicemanager.adapter.ItemListAdapter;
 import com.example.devicemanager.manager.LoadData;
 import com.example.devicemanager.model.ItemEntityViewModel;
-import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.example.devicemanager.room.AppDatabase;
 import com.example.devicemanager.room.ItemEntity;
+import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -239,7 +235,9 @@ public class MainFragment extends Fragment implements ItemListAdapter.Holder.Ite
     }
 
     private void loadData() {
-        if (!refreshStatus) { return; }
+        if (!refreshStatus) {
+            return;
+        }
         refreshStatus = false;
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Data");
@@ -309,7 +307,7 @@ public class MainFragment extends Fragment implements ItemListAdapter.Holder.Ite
                 .show();
     }
 
-    private void hideLoading(){
+    private void hideLoading() {
         view.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.INVISIBLE);
     }
@@ -329,7 +327,7 @@ public class MainFragment extends Fragment implements ItemListAdapter.Holder.Ite
     private View.OnClickListener onClickFab = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            if(!fabBtnCheck){
+            if (!fabBtnCheck) {
                 return;
             }
             fabBtnCheck = false;

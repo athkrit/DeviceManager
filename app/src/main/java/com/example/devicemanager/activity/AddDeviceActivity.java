@@ -2,14 +2,9 @@ package com.example.devicemanager.activity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.text.Html;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.devicemanager.R;
 import com.example.devicemanager.fragment.AddDeviceFragment;
-import com.example.devicemanager.manager.Contextor;
 
 public class AddDeviceActivity extends AppCompatActivity {
 

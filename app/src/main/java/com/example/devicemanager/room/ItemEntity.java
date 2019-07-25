@@ -57,9 +57,10 @@ public class ItemEntity {
     private String forwardDepreciation;
     private String lastUpdated;
 
-    public ItemEntity(){
+    public ItemEntity() {
 
     }
+
     public ItemEntity(int autoId, String unnamed2, String type, String detail, String serialNo,
                       String placeName, String purchasedDate, String note, String departmentCode,
                       String placeId, String assetId, String price, String model,
@@ -157,6 +158,7 @@ public class ItemEntity {
     public void setDetail(String detail) {
         this.detail = detail;
     }
+
     public String getNote() {
         return note;
     }

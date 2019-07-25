@@ -3,7 +3,6 @@ package com.example.devicemanager.adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,8 +34,8 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.Holder
     private boolean btnClick = true;
 
     public void setList(List<ItemEntity> list) {
-        this.list = list;
-        this.source = new ArrayList<>(list);
+        ItemListAdapter.list = list;
+        source = new ArrayList<>(list);
         notifyDataSetChanged();
     }
 
@@ -61,7 +60,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.Holder
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!btnClick){
+                if (!btnClick) {
                     return;
                 }
                 btnClick = false;

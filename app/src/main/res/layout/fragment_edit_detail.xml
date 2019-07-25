@@ -521,6 +521,7 @@
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
+
     <View
         android:id="@+id/view"
         android:layout_width="match_parent"

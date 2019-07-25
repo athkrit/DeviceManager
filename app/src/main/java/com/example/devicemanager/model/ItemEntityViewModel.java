@@ -7,7 +7,6 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import com.example.devicemanager.manager.LoadData;
-import com.example.devicemanager.room.AppDatabase;
 import com.example.devicemanager.room.ItemEntity;
 
 import java.util.List;
@@ -45,7 +44,7 @@ public class ItemEntityViewModel extends AndroidViewModel {
 
     public LiveData<List<ItemEntity>> selectProductByType(String type, String order) {
         loadData = new LoadData(Application);
-        return loadData.selectProductByType(type,order);
+        return loadData.selectProductByType(type, order);
     }
 
     public void insert(ItemEntity itemEntity) {
@@ -56,11 +55,11 @@ public class ItemEntityViewModel extends AndroidViewModel {
         loadData.updateLastUpdate(lastUpdate, id);
     }
 
-    public void update(String branchCode,String lastUpdate, String ownedName, String ownerId, String brand, String serial_no, String item_detail,
+    public void update(String branchCode, String lastUpdate, String ownedName, String ownerId, String brand, String serial_no, String item_detail,
                        String model, String warrantyDate, String purchasedPrice, String purchased_date, String price, String note,
                        String forwardDepreciation, String depreciationRate, String depreciationYear, String accumulatedDepreciation,
                        String forwardBudget, int id) {
-        loadData.updateItem(branchCode,lastUpdate, ownedName, ownerId, brand, serial_no, item_detail, model, warrantyDate, purchasedPrice,
+        loadData.updateItem(branchCode, lastUpdate, ownedName, ownerId, brand, serial_no, item_detail, model, warrantyDate, purchasedPrice,
                 purchased_date, price, note, forwardDepreciation, depreciationRate, depreciationYear, accumulatedDepreciation,
                 forwardBudget, id);
     }

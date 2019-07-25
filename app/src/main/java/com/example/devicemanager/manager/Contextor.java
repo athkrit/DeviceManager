@@ -18,7 +18,7 @@ public class Contextor {
     private Context mContext;
 
     private Contextor() {
-        
+
     }
 
     public void init(Context context) {

@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layer-list  xmlns:android="http://schemas.android.com/apk/res/android">
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
-        <shape
-            android:shape="rectangle">
+        <shape android:shape="rectangle">
 
             <size
                 android:width="15dp"
-                android:height="15dp"/>
+                android:height="15dp" />
 
             <solid android:color="@android:color/black" />
 
@@ -16,17 +15,19 @@
                 android:type="radial"
                 android:startColor="@android:color/black"
                 android:endColor="@android:color/transparent"
-                android:gradientRadius="50%p"/>
+                android:gradientRadius="50%p" />
 
         </shape>
     </item>
-    <item android:right="1dp" android:left="1dp" android:bottom="2dp">
-        <shape
-            android:shape="rectangle">
+    <item
+        android:right="1dp"
+        android:left="1dp"
+        android:bottom="2dp">
+        <shape android:shape="rectangle">
 
             <size
                 android:width="15dp"
-                android:height="15dp"/>
+                android:height="15dp" />
 
             <solid android:color="@color/blue" />
 

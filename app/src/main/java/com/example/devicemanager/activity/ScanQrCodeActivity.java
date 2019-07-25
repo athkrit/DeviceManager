@@ -1,33 +1,21 @@
 package com.example.devicemanager.activity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-
 import android.Manifest;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
-import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+
 import com.example.devicemanager.R;
-import com.example.devicemanager.manager.Contextor;
-import com.google.android.gms.vision.CameraSource;
-import com.google.android.gms.vision.Detector;
-import com.google.android.gms.vision.text.TextBlock;
-import com.pax.api.BaseSystemException;
-import com.pax.api.BaseSystemManager;
 import com.pax.api.scanner.ScanResult;
 
 import java.io.IOException;
@@ -35,7 +23,7 @@ import java.io.IOException;
 import co.th.digio.sdk.ScanDecoder;
 import co.th.digio.sdk.model.IDecoderCallback;
 
-public class ScanQrCodeActivity extends AppCompatActivity implements SurfaceHolder.Callback{
+public class ScanQrCodeActivity extends AppCompatActivity implements SurfaceHolder.Callback, IDecoderCallback {
 
     final int RequestCameraPermissionID = 1001;
     private static final int MAX_FRAME_COUNT = 10;
@@ -44,6 +32,7 @@ public class ScanQrCodeActivity extends AppCompatActivity implements SurfaceHold
     int cameraId = 0; //?????
     private SurfaceView mSurfaceView;
     private SurfaceHolder mSurfaceHolder;
+    private IDecoderCallback decoderCallback = this;
     private Camera mCamera;
     private TextView tvBarcode;
     private int IMAGE_WIDTH = 1280;//640;
@@ -71,18 +60,7 @@ public class ScanQrCodeActivity extends AppCompatActivity implements SurfaceHold
                 startAutoFocus();
             }
 
-            new ScanDecoder(ScanQrCodeActivity.this, new IDecoderCallback() {
-                @Override
-                public void onSuccess(ScanResult scanResult) {
-                    String result = "Data: " + scanResult.getContent();
-                    tvBarcode.setText(result);
-                }
-
-                @Override
-                public void onFailure(Exception e) {
-                    Toast.makeText(ScanQrCodeActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            }).execute(data);
+            new ScanDecoder(ScanQrCodeActivity.this, decoderCallback).execute(data);
             if (mCamera != null) {
                 Log.d("AAA", "addCallbackBuffer: null");
                 mCamera.addCallbackBuffer(data);
@@ -222,4 +200,14 @@ public class ScanQrCodeActivity extends AppCompatActivity implements SurfaceHold
         Log.d(TAG, "onDestroy end");
     }
 
+    @Override
+    public void onSuccess(ScanResult scanResult) {
+        String result = "CodeType: " + scanResult.getFormat() + " \nData: " + scanResult.getContent();
+        tvBarcode.setText(result);
+    }
+
+    @Override
+    public void onFailure(Exception e) {
+        Toast.makeText(ScanQrCodeActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+    }
 }

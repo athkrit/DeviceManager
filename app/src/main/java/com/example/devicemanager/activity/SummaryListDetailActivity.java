@@ -1,16 +1,13 @@
 package com.example.devicemanager.activity;
 
+import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
+import android.view.MenuItem;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
-
 import com.example.devicemanager.R;
-import com.example.devicemanager.fragment.AddDeviceFragment;
-import com.example.devicemanager.fragment.SummaryFragment;
 import com.example.devicemanager.fragment.SummaryListDetailFragment;
 
 public class SummaryListDetailActivity extends AppCompatActivity {

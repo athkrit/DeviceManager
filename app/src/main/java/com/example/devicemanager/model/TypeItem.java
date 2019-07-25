@@ -6,9 +6,11 @@ import androidx.room.Entity;
 public class TypeItem {
     String type;
     String assetId;
-    public TypeItem(){
+
+    public TypeItem() {
 
     }
+
     public TypeItem(String type, String assetId) {
         this.type = type;
         this.assetId = assetId;
