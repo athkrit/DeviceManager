@@ -2,6 +2,7 @@ package com.example.devicemanager.activity;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.ColorDrawable;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -75,14 +76,14 @@ public class ScanQrCodeActivity extends AppCompatActivity implements SurfaceHold
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-
             ActivityCompat.requestPermissions(ScanQrCodeActivity.this,
                     new String[]{Manifest.permission.CAMERA},
                     RequestCameraPermissionID);
-            return;
         }
         Log.d(TAG, "onCreate start");
         setContentView(R.layout.activity_scan_qr_code);
+        getSupportActionBar()
+                .setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorTheme)));
         initView();
         preivewBuf = new byte[2 * IMAGE_WIDTH * IMAGE_HEIGHT];
         initCamera(cameraId);
@@ -202,7 +203,7 @@ public class ScanQrCodeActivity extends AppCompatActivity implements SurfaceHold
 
     @Override
     public void onSuccess(ScanResult scanResult) {
-        String result = "CodeType: " + scanResult.getFormat() + " \nData: " + scanResult.getContent();
+        String result = "Data: " + scanResult.getContent();
         tvBarcode.setText(result);
     }
 

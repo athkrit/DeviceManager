@@ -9,11 +9,12 @@
         <item name="android:windowEnableSplitTouch">false</item>
         <item name="android:splitMotionEvents">false</item>
         <item name="android:fontFamily">@font/kanit_regular</item>
+        <item name="android:textColorPrimary">@android:color/white</item>
     </style>
 
     <style name="AppTheme.Material" parent="Theme.MaterialComponents">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/light_grey</item>
+        <item name="colorPrimaryDark">@color/colorTheme</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColor">@color/grey</item>
         <item name="android:windowEnableSplitTouch">false</item>

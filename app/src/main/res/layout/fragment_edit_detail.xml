@@ -526,18 +526,19 @@
         android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/transparent_background"
+        android:background="@android:color/transparent"
         android:clickable="true"
+        android:focusable="true"
         android:visibility="invisible" />
 
     <ProgressBar
-        android:layout_centerInParent="true"
         android:id="@+id/spin_kit"
         android:layout_width="200dp"
         android:layout_height="195dp"
+        android:layout_centerInParent="true"
         android:layout_gravity="center"
-        android:indeterminateTintMode="src_atop"
         android:indeterminateTint="@android:color/white"
+        android:indeterminateTintMode="src_atop"
         android:visibility="invisible" />
 
 
