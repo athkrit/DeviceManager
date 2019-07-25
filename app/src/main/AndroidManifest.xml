@@ -57,6 +57,9 @@
             android:name=".activity.ScanBarcodeActivity"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
+            android:name=".activity.ScanQrCodeActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
             android:name=".activity.AddDeviceActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Material"

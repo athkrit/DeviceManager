@@ -32,6 +32,7 @@ import com.example.devicemanager.R;
 import com.example.devicemanager.activity.AddDeviceActivity;
 import com.example.devicemanager.activity.DeviceDetailActivity;
 import com.example.devicemanager.activity.ScanBarcodeActivity;
+import com.example.devicemanager.activity.ScanQrCodeActivity;
 import com.example.devicemanager.adapter.ItemListAdapter;
 import com.example.devicemanager.manager.LoadData;
 import com.example.devicemanager.model.ItemEntityViewModel;
@@ -162,7 +163,7 @@ public class MainFragment extends Fragment implements ItemListAdapter.Holder.Ite
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_scan) {
-            Intent intent = new Intent(getActivity(), ScanBarcodeActivity.class);
+            Intent intent = new Intent(getActivity(), ScanQrCodeActivity.class);
             startActivity(intent);
         }
         return true;
