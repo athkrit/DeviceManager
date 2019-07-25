@@ -192,8 +192,6 @@ public class MainFragment extends Fragment implements ItemListAdapter.Holder.Ite
         progressBar = rootView.findViewById(R.id.spin_kit);
 
         loadData = new LoadData(getContext());
-
-
         layoutManager = new LinearLayoutManager(getContext());
 
         loadData();
@@ -202,12 +200,17 @@ public class MainFragment extends Fragment implements ItemListAdapter.Holder.Ite
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(layoutManager);
 
+        progressBar.setVisibility(View.VISIBLE);
+        view.setVisibility(View.VISIBLE);
+
         itemEntityViewModel = ViewModelProviders.of(this).get(ItemEntityViewModel.class);
         itemEntityViewModel.getOrder().observe(getViewLifecycleOwner(), new Observer<List<ItemEntity>>() {
             @Override
             public void onChanged(@Nullable final List<ItemEntity> itemEntities) {
                 adapter.setList(itemEntities);
                 recyclerView.setAdapter(adapter);
+                progressBar.setVisibility(View.INVISIBLE);
+                view.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -215,19 +218,6 @@ public class MainFragment extends Fragment implements ItemListAdapter.Holder.Ite
         swipeRefreshLayout.setOnRefreshListener(pullToRefresh);
 
     }
-
-    private View.OnClickListener onClickFab = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            if(!fabBtnCheck){
-                return;
-            }
-            fabBtnCheck = false;
-            Intent intent = new Intent(getActivity(), AddDeviceActivity.class);
-            startActivityForResult(intent, 11111);
-            fabBtnCheck = true;
-        }
-    };
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -249,9 +239,9 @@ public class MainFragment extends Fragment implements ItemListAdapter.Holder.Ite
     }
 
     private void loadData() {
-        if (!refreshStatus)
-            return;
+        if (!refreshStatus) { return; }
         refreshStatus = false;
+
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Data");
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -270,16 +260,14 @@ public class MainFragment extends Fragment implements ItemListAdapter.Holder.Ite
                 }
                 swipeRefreshLayout.setRefreshing(false);
                 refreshStatus = true;
-                view.setVisibility(View.INVISIBLE);
-                progressBar.setVisibility(View.INVISIBLE);
+                hideLoading();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 swipeRefreshLayout.setRefreshing(false);
                 refreshStatus = true;
-                view.setVisibility(View.INVISIBLE);
-                progressBar.setVisibility(View.INVISIBLE);
+                hideLoading();
             }
         });
     }
@@ -321,14 +309,33 @@ public class MainFragment extends Fragment implements ItemListAdapter.Holder.Ite
                 .show();
     }
 
-    androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener pullToRefresh = new androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener() {
+    private void hideLoading(){
+        view.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(View.INVISIBLE);
+    }
+
+    private androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener pullToRefresh = new androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener() {
         @Override
         public void onRefresh() {
-
+            view.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.VISIBLE);
             if (loadData.deleteTable() == 1) {
                 loadData();
             }
 
+        }
+    };
+
+    private View.OnClickListener onClickFab = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if(!fabBtnCheck){
+                return;
+            }
+            fabBtnCheck = false;
+            Intent intent = new Intent(getActivity(), AddDeviceActivity.class);
+            startActivityForResult(intent, 11111);
+            fabBtnCheck = true;
         }
     };
 }

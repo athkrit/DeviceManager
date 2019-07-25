@@ -212,7 +212,7 @@
     <string-array name="spinner_filter">
         <item>All</item>
         <item>Available</item>
-        <item>InUse</item>
+        <item>In Use</item>
     </string-array>
 
     <string-array name="spinner_sort_by">

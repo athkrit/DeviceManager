@@ -2,6 +2,7 @@ package com.example.devicemanager.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,14 +72,16 @@ public class SummaryAdapter extends RecyclerView.Adapter<SummaryAdapter.Holder> 
                 btnClick=false;
                 if (type.length > 1) {
                     Intent intent = new Intent(context, SummaryListDetailActivity.class);
-                    intent.putExtra("Type", type[position]);
+                    intent.putExtra("Type", type[position].trim());
                     intent.putExtra("Brand", "-");
+                    Log.d("test2407t", type[position]);
                     context.startActivity(intent);
                     btnClick=true;
                 } else {
                     Intent intent = new Intent(context, SummaryListDetailActivity.class);
-                    intent.putExtra("Type", type[0]);
-                    intent.putExtra("Brand", brand[position]);
+                    intent.putExtra("Type", type[0].trim());
+                    intent.putExtra("Brand", brand[position].trim());
+                    Log.d("test2407tb", type[0] + brand[position]);
                     context.startActivity(intent);
                     btnClick=true;
                 }

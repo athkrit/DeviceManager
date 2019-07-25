@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -35,6 +36,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.devicemanager.R;
 import com.example.devicemanager.activity.ScanBarCodeAddDeviceActivity;
+import com.example.devicemanager.manager.Contextor;
 import com.example.devicemanager.model.DataItem;
 import com.example.devicemanager.model.ItemEntityViewModel;
 import com.example.devicemanager.model.TypeItem;
@@ -63,6 +65,7 @@ import static android.app.Activity.RESULT_OK;
 
 public class AddDeviceFragment extends Fragment {
 
+    private static final String TAG = "LogAddDevice";
     private Spinner spType, spTypeList, spBranch;
     private EditText etOwnerName, etSerialNumber, etDeviceDetail, etDatePicker,
             etOwnerId, etBrand, etDeviceModel, etDevicePrice, etNote, etQuantity,
@@ -71,7 +74,7 @@ public class AddDeviceFragment extends Fragment {
     private Button btnShowMore;
     private Calendar calendar;
     private DatePickerDialog.OnDateSetListener date;
-    private String selected, lastKey, itemId, serial, serialState, abbreviation, type, unnamed2, YY;
+    private String selected, lastKey, itemId, serial, abbreviation, type, unnamed2, YY;
     private int path, category, branch, order, countDevice = 1, quntity = 1, updatedKey = 0;
     private ProgressBar progressBar;
     private View progressDialogBackground;
@@ -80,9 +83,9 @@ public class AddDeviceFragment extends Fragment {
     private ArrayAdapter<CharSequence> spinnerAdapter;
     private LinearLayout moreData;
     private Boolean clickMore = false;
-    List<ItemEntity> itemEntity;
-    SharedPreferences sp;
-    SharedPreferences.Editor editor;
+    private List<ItemEntity> itemEntity;
+    private SharedPreferences sp;
+    private SharedPreferences.Editor editor;
     private ItemEntity itemSave;
     private SimpleDateFormat dateFormat;
     private Date dateCheck;
@@ -152,14 +155,14 @@ public class AddDeviceFragment extends Fragment {
         spType = view.findViewById(R.id.spinnerDeviceType);
         spTypeList = view.findViewById(R.id.spinnerDeviceTypeList);
 
-        sp = getContext().getSharedPreferences("Type", Context.MODE_PRIVATE);
-        editor = sp.edit();
+        sp = Contextor.getInstance().getContext()
+                .getSharedPreferences("Type", Context.MODE_PRIVATE);
 
         building = setStringArray("building");
         deviceAndAccessories = setStringArray("device");
         furniture = setStringArray("furniture");
         other = setStringArray("other");
-        allType = sp.getString("allType", null).split(",");
+        allType = sp.getString("allType", "").split(",");
 
         setSpinnerFromResource(R.array.spinner_branch, spBranch);
         setSpinnerFromResource(R.array.spinner_type_device, spType);
@@ -208,7 +211,6 @@ public class AddDeviceFragment extends Fragment {
                 Toast.makeText(getContext(), "Something went wrong.", Toast.LENGTH_SHORT).show();
                 getActivity().finish();
             } else {
-                //tvQuantity.setText(getResources().getString(R.string.quantity) + ":1");
                 etQuantity.setVisibility(View.INVISIBLE);
                 setData();
             }
@@ -222,9 +224,11 @@ public class AddDeviceFragment extends Fragment {
 
     }
 
-    private String[] setStringArray(String Sp) {
-        String[] buildingRef = sp.getString(Sp, null).split(",");
+    private String[] setStringArray(String str) {
+        String[] buildingRef = sp.getString(str, "").split(",");
         String[] setType = new String[buildingRef.length + 1];
+
+        Log.d(TAG, "building Ref: " + buildingRef[0]+ " size: " + buildingRef.length);
 
         for (int i = 0; i < setType.length; i++) {
             if (i == buildingRef.length)
@@ -280,7 +284,7 @@ public class AddDeviceFragment extends Fragment {
                 etDeviceModel.setText(itemEntity.get(0).getModel());
                 etDevicePrice.setText(itemEntity.get(0).getPrice());
                 etPurchasePrice.setText(itemEntity.get(0).getPurchasedPrice());
-                etDatePicker.setText(setDateFromRoom(itemEntity.get(0).getPurchasedDate()));
+                etDatePicker.setText(setDate(itemEntity.get(0).getPurchasedDate(), "date"));
                 etNote.setText(itemEntity.get(0).getNote());
                 etForwardDepreciation.setText(itemEntity.get(0).getForwardDepreciation());
                 etDepreciationRate.setText(itemEntity.get(0).getDepreciationRate());
@@ -290,7 +294,6 @@ public class AddDeviceFragment extends Fragment {
                 etWarranty.setText(itemEntity.get(0).getWarrantyDate());
             }
         });
-
     }
 
     private void setSpinnerFromSp(String[] spinnerlist, Spinner spinner) {
@@ -451,7 +454,7 @@ public class AddDeviceFragment extends Fragment {
         DataItem item = new DataItem("ID", etOwnerId.getText().toString(), etOwnerName.getText().toString(),
                 etBrand.getText().toString(), etSerialNumber.getText().toString(), etDeviceModel.getText().toString(),
                 etDeviceDetail.getText().toString(), etDevicePrice.getText().toString(), etPurchasePrice.getText().toString(),
-                setDate(date), etNote.getText().toString(), type, tvItemId.getText().toString(), etForwardDepreciation.getText().toString(),
+                setDate(date, "date"), etNote.getText().toString(), type, tvItemId.getText().toString(), etForwardDepreciation.getText().toString(),
                 etDepreciationRate.getText().toString(), etDepreciationinYear.getText().toString(),
                 etAccumulateDepreciation.getText().toString(), etForwardedBudget.getText().toString(), "" + YY,
                 getUnnamed2().substring(3), "" + category, "" + branch, "-",
@@ -463,10 +466,10 @@ public class AddDeviceFragment extends Fragment {
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
                     setUpdatedId(lastKey);
-                    itemEntityViewModel.update(branch+"",dateFormat.format(dateCheck), etOwnerName.getText().toString(), etOwnerId.getText().toString(),
+                    itemEntityViewModel.update(branch + "", dateFormat.format(dateCheck), etOwnerName.getText().toString(), etOwnerId.getText().toString(),
                             etBrand.getText().toString(), etSerialNumber.getText().toString(), etDeviceDetail.getText().toString(),
                             etDeviceModel.getText().toString(), etWarranty.getText().toString(), etPurchasePrice.getText().toString(),
-                            saveDateToDB(etDatePicker.getText().toString()), etDevicePrice.getText().toString(), etNote.getText().toString(),
+                            setDate(etDatePicker.getText().toString(), "db"), etDevicePrice.getText().toString(), etNote.getText().toString(),
                             etForwardDepreciation.getText().toString(), etDepreciationRate.getText().toString(),
                             etDepreciationinYear.getText().toString(), etAccumulateDepreciation.getText().toString(),
                             etForwardedBudget.getText().toString(), autoId);
@@ -486,13 +489,12 @@ public class AddDeviceFragment extends Fragment {
     private void saveData() {
         progressDialogBackground.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.VISIBLE);
-        String date = setDate(etDatePicker.getText().toString());
-        // TODO: Add more item data
+        String date = setDate(etDatePicker.getText().toString(), "date");
         //TODO:รหัสทรัพสิน ID
         DataItem item = new DataItem("ID", etOwnerId.getText().toString(), etOwnerName.getText().toString(),
                 etBrand.getText().toString(), etSerialNumber.getText().toString(), etDeviceModel.getText().toString(),
                 etDeviceDetail.getText().toString(), etDevicePrice.getText().toString(), etPurchasePrice.getText().toString(),
-                setDate(date), etNote.getText().toString(), type, getUnnamed2(), etForwardDepreciation.getText().toString(),
+                setDate(date, "date"), etNote.getText().toString(), type, getUnnamed2(), etForwardDepreciation.getText().toString(),
                 etDepreciationRate.getText().toString(), etDepreciationinYear.getText().toString(),
                 etAccumulateDepreciation.getText().toString(), etForwardedBudget.getText().toString(), "" + YY,
                 getUnnamed2().substring(3), "" + category, "" + branch, "-",
@@ -500,7 +502,7 @@ public class AddDeviceFragment extends Fragment {
                 "" + abbreviation, "-", "DGO", etWarranty.getText().toString());
 
         itemSave = new ItemEntity(getItemEntity.size(), getUnnamed2(), type, etDeviceDetail.getText().toString(),
-                etSerialNumber.getText().toString(), etOwnerName.getText().toString(), saveDateToDB(date), etNote.getText().toString(),
+                etSerialNumber.getText().toString(), etOwnerName.getText().toString(), setDate(date, "db"), etNote.getText().toString(),
                 "-", etOwnerId.getText().toString(), getUnnamed2().substring(3), etDevicePrice.getText().toString(),
                 etDeviceModel.getText().toString(), etDepreciationRate.getText().toString(), "ID", etBrand.getText().toString(),
                 abbreviation, setOrderFormat(order) + "", "-", YY + "", "DGO", "-",
@@ -550,8 +552,9 @@ public class AddDeviceFragment extends Fragment {
 
                     }
                 }
-                typeKey[0] = key+1;
+                typeKey[0] = key + 1;
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -560,7 +563,7 @@ public class AddDeviceFragment extends Fragment {
         TypeItem typeItem = new TypeItem();
         typeItem.setType(type);
         typeItem.setAssetId(category + "");
-        databaseReference2.child(""+typeKey[0]).setValue(typeItem);
+        databaseReference2.child("" + typeKey[0]).setValue(typeItem);
     }
 
     private void getUpdateKey() {
@@ -609,73 +612,41 @@ public class AddDeviceFragment extends Fragment {
         updatedKey++;
     }
 
-    private String setDate(String inputDate) {
+    private String setDate(String inputDate, String type) {
+        String inputFormat, outputFormat;
+        SimpleDateFormat inputDateFormat, outputDateFormat;
+
         if (inputDate.contains("GMT")) {
             inputDate = inputDate.substring(0, inputDate.indexOf("GMT")).trim();
         }
-        String inputFormat = "dd/MM/yyyy";
-        SimpleDateFormat inputDateFormat = new SimpleDateFormat(
-                inputFormat, Locale.ENGLISH);
-        String outputFormat = "EEE MMM dd yyyy HH:mm:ss";
-        SimpleDateFormat outputDateFormat = new SimpleDateFormat(
-                outputFormat, Locale.ENGLISH);
+
+        if (type.matches("date")){
+            inputFormat = "dd/MM/yyyy";
+            inputDateFormat = new SimpleDateFormat(inputFormat, Locale.ENGLISH);
+            outputFormat = "EEE MMM dd yyyy HH:mm:ss";
+            outputDateFormat = new SimpleDateFormat(outputFormat, Locale.ENGLISH);
+        }
+        else if (type.matches("room")){
+            inputFormat = "yyyy-MM-dd";
+            inputDateFormat = new SimpleDateFormat(inputFormat, Locale.ENGLISH);
+            outputFormat = "dd/MM/yyyy";
+            outputDateFormat = new SimpleDateFormat(outputFormat, Locale.ENGLISH);
+        }
+        else {
+            inputFormat = "EEE MMM dd yyyy HH:mm:ss";
+            inputDateFormat = new SimpleDateFormat(inputFormat, Locale.ENGLISH);
+            outputFormat = "yyyy-MM-dd";
+            outputDateFormat = new SimpleDateFormat(outputFormat, Locale.ENGLISH);
+        }
 
         Date date;
         String str = inputDate;
 
         try {
             date = inputDateFormat.parse(inputDate);
-            str = outputDateFormat.format(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        return str;
-
-    }
-
-    private String setDateFromRoom(String inputDate) {
-        if (inputDate.contains("GMT")) {
-            inputDate = inputDate.substring(0, inputDate.indexOf("GMT")).trim();
-        }
-        String inputFormat = "yyyy-MM-dd";
-        SimpleDateFormat inputDateFormat = new SimpleDateFormat(
-                inputFormat, Locale.ENGLISH);
-        String outputFormat = "dd/MM/yyyy";
-        SimpleDateFormat outputDateFormat = new SimpleDateFormat(
-                outputFormat, Locale.ENGLISH);
-
-        Date date;
-        String str = inputDate;
-
-        try {
-            date = inputDateFormat.parse(inputDate);
-            str = outputDateFormat.format(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        return str;
-
-    }
-
-    private String saveDateToDB(String inputDate) {
-        if (inputDate.contains("GMT")) {
-            inputDate = inputDate.substring(0, inputDate.indexOf("GMT")).trim();
-        }
-        String inputFormat = "EEE MMM dd yyyy HH:mm:ss";
-        SimpleDateFormat inputDateFormat = new SimpleDateFormat(
-                inputFormat, Locale.ENGLISH);
-        String outputFormat = "yyyy-MM-dd";
-        SimpleDateFormat outputDateFormat = new SimpleDateFormat(
-                outputFormat, Locale.ENGLISH);
-
-        Date date;
-        String str = inputDate;
-
-        try {
-            date = inputDateFormat.parse(inputDate);
-            str = outputDateFormat.format(date);
+            if (date != null){
+                str = outputDateFormat.format(date);
+            }
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -755,8 +726,8 @@ public class AddDeviceFragment extends Fragment {
         if (spTypeList.getSelectedItem().toString().matches("OTHER")) {
             if (!TextUtils.isEmpty(etOtherType.getText())) {
                 String other = etOtherType.getText().toString().toUpperCase();
-                for (int i = 0; i < allType.length; i++) {
-                    if (other.matches(allType[i])) {
+                for (String s : allType) {
+                    if (other.matches(s)) {
                         Toast.makeText(getActivity(), "Type already created", Toast.LENGTH_SHORT).show();
                         hasOtherType = false;
                         return false;
@@ -961,14 +932,11 @@ public class AddDeviceFragment extends Fragment {
             } else if (adapterView == spBranch) {
                 switch (i) {
                     case 0:
-                        branch = 1;
-                        break;
+                        branch = 1; break;
                     case 1:
-                        branch = 2;
-                        break;
+                        branch = 2; break;
                     case 2:
-                        branch = 3;
-                        break;
+                        branch = 3; break;
                 }
             }
         }

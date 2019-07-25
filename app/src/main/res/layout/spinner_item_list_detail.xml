@@ -7,6 +7,6 @@
     android:ellipsize="end"
     android:gravity="start"
     android:maxLines="1"
-    android:padding="12dp"
+    android:padding="13dp"
     android:textColor="@android:color/white"
-    android:textSize="@dimen/text_14_sp" />
+    android:textSize="12sp"/>

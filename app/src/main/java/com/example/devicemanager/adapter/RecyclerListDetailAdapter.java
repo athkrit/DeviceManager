@@ -21,9 +21,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.TimeZone;
 
 public class RecyclerListDetailAdapter extends RecyclerView.Adapter<RecyclerListDetailAdapter.Holder> {
+    private static final String TAG = "RecyclerListAdapter";
     private Context context;
     private ArrayList<String> brand;
     private ArrayList<String> detail;
@@ -32,7 +32,52 @@ public class RecyclerListDetailAdapter extends RecyclerView.Adapter<RecyclerList
     private ArrayList<String> status;
     private ArrayList<String> key;
     private ArrayList<String> lastUpdated;
-    private boolean btnClick = true;
+
+    public RecyclerListDetailAdapter(Context context) {
+        this.context = context;
+        notifyDataSetChanged();
+    }
+
+    @NonNull
+    @Override
+    public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_detail_item, parent, false);
+        Holder holder = new Holder(view);
+        return holder;
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull final Holder holder, final int position) {
+        holder.setItem(position);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                holder.itemView.setEnabled(false);
+                Intent intent = new Intent(context, DeviceDetailActivity.class);
+                intent.putExtra("serial", key.get(position));
+                context.startActivity(intent);
+                holder.itemView.setEnabled(true);
+            }
+        });
+
+    }
+
+    @Override
+    public int getItemCount() {
+        if (brand == null) {
+            return 0;
+        }
+        if (brand.size() == 0) {
+            return 0;
+        }
+        return brand.size();
+
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
 
     public void setBrand(ArrayList<String> brand) {
         this.brand = brand;
@@ -69,59 +114,9 @@ public class RecyclerListDetailAdapter extends RecyclerView.Adapter<RecyclerList
         notifyDataSetChanged();
     }
 
-
-    public RecyclerListDetailAdapter(Context context) {
-        this.context = context;
-        notifyDataSetChanged();
-    }
-
-    @NonNull
-    @Override
-    public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_detail_item, parent, false);
-        Holder holder = new Holder(view);
-        return holder;
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull Holder holder, final int position) {
-        holder.setItem(position);
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(!btnClick){
-                    return;
-                }
-                btnClick=false;
-                Intent intent = new Intent(context, DeviceDetailActivity.class);
-                intent.putExtra("serial", key.get(position));
-                context.startActivity(intent);
-                btnClick=true;
-            }
-        });
-
-    }
-
-    @Override
-    public int getItemCount() {
-        if (brand == null) {
-            return 0;
-        }
-        if (brand.size() == 0) {
-            return 0;
-        }
-        return brand.size();
-
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        return position;
-    }
-
-    private TextView tvBrand, tvDetail, tvOwner, tvAddedDate, tvStatus, tvLastUpdated;
-
     class Holder extends RecyclerView.ViewHolder {
+
+        private TextView tvBrand, tvDetail, tvOwner, tvAddedDate, tvStatus, tvLastUpdated;
 
         Holder(View itemView) {
             super(itemView);
@@ -152,12 +147,13 @@ public class RecyclerListDetailAdapter extends RecyclerView.Adapter<RecyclerList
                 tvOwner.setText(owner.get(position));
             }
 
+            Log.d(TAG, "added date " + addedDate.get(position));
             String[] date = setDate(addedDate.get(position), lastUpdated.get(position)).split(",");
             tvAddedDate.setText(date[0]);
-            tvLastUpdated.setText(checkLastUpdate(date[1], date[2], date[3]));
-            tvStatus.setText(" Updated: " +  status.get(position));
+            tvLastUpdated.setText("(" +  checkLastUpdate(date[1], date[2], date[3]) + ")");
+            tvStatus.setText(status.get(position));
 
-            if (status.get(position).matches("InUse")) {
+            if (status.get(position).contains("In Use")) {
                 tvStatus.setTextColor(context.getResources().getColor(R.color.red));
             } else {
                 tvStatus.setTextColor(context.getResources().getColor(R.color.green));
@@ -237,7 +233,5 @@ public class RecyclerListDetailAdapter extends RecyclerView.Adapter<RecyclerList
                 return "";
             }
         }
-
     }
-
 }
