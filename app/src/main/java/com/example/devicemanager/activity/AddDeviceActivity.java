@@ -60,7 +60,7 @@ public class AddDeviceActivity extends AppCompatActivity {
 
     private void showAlertDialog(final String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(message).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        builder.setMessage(message).setPositiveButton("Discard", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Toast.makeText(AddDeviceActivity.this, "Discard", Toast.LENGTH_SHORT).show();
