@@ -1,18 +1,23 @@
 package com.example.devicemanager.activity;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -28,6 +33,7 @@ public class ScanQrCodeActivity extends AppCompatActivity implements SurfaceHold
 
     final int RequestCameraPermissionID = 1001;
     private static final int MAX_FRAME_COUNT = 10;
+    private static final int PERMISSION_REQUEST_CODE = 100;
     private final String TAG = "paxscanlitetest";
     // 0:500?? 1:200??
     int cameraId = 0; //?????
@@ -73,13 +79,8 @@ public class ScanQrCodeActivity extends AppCompatActivity implements SurfaceHold
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
-        if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(ScanQrCodeActivity.this,
-                    new String[]{Manifest.permission.CAMERA},
-                    RequestCameraPermissionID);
-        }
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         Log.d(TAG, "onCreate start");
         setContentView(R.layout.activity_scan_qr_code);
         getSupportActionBar()
@@ -90,6 +91,25 @@ public class ScanQrCodeActivity extends AppCompatActivity implements SurfaceHold
         Log.d(TAG, "onCreate end");
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu_scan, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_scan){
+            Intent intent = new Intent(getApplicationContext(), ScanBarcodeActivity.class);
+            closeCamera();
+            stopPreview();
+            startActivity(intent);
+            finish();
+        }
+        return true;
+    }
+
     private void initView() {
         mSurfaceView = findViewById(R.id.surfaceView);
         mSurfaceHolder = mSurfaceView.getHolder();
@@ -97,7 +117,6 @@ public class ScanQrCodeActivity extends AppCompatActivity implements SurfaceHold
         mSurfaceHolder.addCallback(this);
 
         tvBarcode = findViewById(R.id.text_view);
-
 
     }
 
@@ -183,13 +202,13 @@ public class ScanQrCodeActivity extends AppCompatActivity implements SurfaceHold
     @Override
     protected void onPause() {
         super.onPause();
-
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         stopPreview();
+        finish();
     }
 
     @Override
@@ -210,5 +229,18 @@ public class ScanQrCodeActivity extends AppCompatActivity implements SurfaceHold
     @Override
     public void onFailure(Exception e) {
         Toast.makeText(ScanQrCodeActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == RequestCameraPermissionID) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "camera permission granted", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "camera permission denied", Toast.LENGTH_LONG).show();
+            }
+
+        }
     }
 }

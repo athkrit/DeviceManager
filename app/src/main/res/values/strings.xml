@@ -295,4 +295,6 @@
     <string name="last_updated">Last Updated:</string>
     <string name="s_n">S/N</string>
     <string name="other_type">other type</string>
+    <string name="scan_id">Scan Id</string>
+    <string name="scan">Scan</string>
 </resources>

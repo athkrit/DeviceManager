@@ -190,14 +190,13 @@ public class MainFragment extends Fragment implements ItemListAdapter.Holder.Ite
         loadData = new LoadData(getContext());
         layoutManager = new LinearLayoutManager(getContext());
 
+        progressBar.setVisibility(View.VISIBLE);
+        view.setVisibility(View.VISIBLE);
         loadData();
 
         adapter = new ItemListAdapter(getContext());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(layoutManager);
-
-        progressBar.setVisibility(View.VISIBLE);
-        view.setVisibility(View.VISIBLE);
 
         itemEntityViewModel = ViewModelProviders.of(this).get(ItemEntityViewModel.class);
         itemEntityViewModel.getOrder().observe(getViewLifecycleOwner(), new Observer<List<ItemEntity>>() {
