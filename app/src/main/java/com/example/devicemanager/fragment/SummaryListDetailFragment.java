@@ -220,7 +220,6 @@ public class SummaryListDetailFragment extends Fragment {
                 }
             }
             if (adapterView == spSortBy) {
-                Log.d("test2407", filterBy);
                 switch (filter) {
                     case "Date ▲":
                         sortBy = "DateAsc";
@@ -241,7 +240,6 @@ public class SummaryListDetailFragment extends Fragment {
                 }
             }
         }
-
 
         @Override
         public void onNothingSelected(AdapterView<?> adapterView) {
