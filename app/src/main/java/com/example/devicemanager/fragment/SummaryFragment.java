@@ -4,9 +4,11 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -41,9 +43,11 @@ public class SummaryFragment extends Fragment {
     private View hidedView;
     private ItemEntityViewModel itemEntityViewModel;
     private LoadData loadData;
-    String[] typeDevice, typeFurniture, typeOther, typeAll;
+    private String[] typeDevice, typeFurniture, typeOther, typeAll;
     private SharedPreferences sp;
     private SharedPreferences.Editor editor;
+    private ProgressBar progressBar;
+    private View view;
 
     public static SummaryFragment newInstance() {
         SummaryFragment fragment = new SummaryFragment();
@@ -72,6 +76,9 @@ public class SummaryFragment extends Fragment {
 
         sp = getContext().getSharedPreferences("Type", Context.MODE_PRIVATE);
         editor = sp.edit();
+
+        progressBar = rootView.findViewById(R.id.spin_kit);
+        view = rootView.findViewById(R.id.view);
 
         layoutAll = rootView.findViewById(R.id.layoutAll);
         layoutDevice = rootView.findViewById(R.id.layoutDevice);
@@ -155,6 +162,9 @@ public class SummaryFragment extends Fragment {
     }
 
     private void getDataByType(final String[] type) {
+        progressBar.setVisibility(View.VISIBLE);
+        view.setVisibility(View.INVISIBLE);
+
         if (type == null || type.length == 0) {
             Toast.makeText(getActivity(), "Error to get ", Toast.LENGTH_SHORT).show();
             return;
@@ -187,6 +197,9 @@ public class SummaryFragment extends Fragment {
                 summaryAdapter.notifyDataSetChanged();
                 rvSummary.setLayoutManager(layoutManager);
                 rvSummary.setAdapter(summaryAdapter);
+
+                progressBar.setVisibility(View.INVISIBLE);
+                view.setVisibility(View.INVISIBLE);
             }
         });
     }
@@ -252,8 +265,7 @@ public class SummaryFragment extends Fragment {
     }
 
     private void delayCloseFab() {
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
                 layoutAll.setVisibility(View.INVISIBLE);
@@ -266,8 +278,7 @@ public class SummaryFragment extends Fragment {
     }
 
     private void delayOpenFab() {
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
                 layoutAll.setVisibility(View.VISIBLE);
@@ -289,20 +300,20 @@ public class SummaryFragment extends Fragment {
                     closeFABMenu();
                 }
             } else if (view == layoutAll || view == fabAll) {
+                closeFABMenu();
                 getDataByType(typeAll);
-                closeFABMenu();
             } else if (view == layoutDevice || view == fabDevice) {
+                closeFABMenu();
                 getDataByType(typeDevice);
-                closeFABMenu();
             } else if (view == layoutLaptop || view == fabLaptop) {
+                closeFABMenu();
                 getLaptop();
-                closeFABMenu();
             } else if (view == layoutFurniture || view == fabFurniture) {
+                closeFABMenu();
                 getDataByType(typeFurniture);
-                closeFABMenu();
             } else if (view == layoutOther || view == fabOther) {
-                getDataByType(typeOther);
                 closeFABMenu();
+                getDataByType(typeOther);
             }
         }
     };

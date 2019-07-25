@@ -30,10 +30,11 @@ import java.util.List;
 
 @SuppressWarnings("unused")
 public class SummaryListDetailFragment extends Fragment {
+    private static final String TAG = "SummaryListDetail";
     private RecyclerView recyclerView;
     private RecyclerListDetailAdapter recyclerListDetailAdapter, newRecyclerListDetailAdapter;
     private RecyclerView.LayoutManager layoutManager;
-    private String type, brandType;
+    private String type, brandType, filterBy, sortBy;
     private ArrayList<String> brand = new ArrayList<String>();
     private ArrayList<String> detail = new ArrayList<String>();
     private ArrayList<String> owner = new ArrayList<String>();
@@ -79,42 +80,36 @@ public class SummaryListDetailFragment extends Fragment {
     private void initInstances(View rootView, Bundle savedInstanceState) {
         type = getArguments().getString("Type").trim();
         brandType = getArguments().getString("Brand").trim().toLowerCase();
-
         loadData = new LoadData(getContext());
+
         spFilter = rootView.findViewById(R.id.spinnerFilter);
         spSortBy = rootView.findViewById(R.id.spinnerSortBy);
 
-//        ArrayAdapter<String> adapter=new ArrayAdapter<String>(this,R.layout.spinner_item_list_detail,R.id.text, countries);
-        ArrayAdapter<CharSequence> spinnerFilterAdapter = ArrayAdapter.createFromResource(
-                Contextor.getInstance().getContext(),
-                R.array.spinner_filter,
-                R.layout.spinner_item_list_detail);
-        spinnerFilterAdapter.setDropDownViewResource(R.layout.spinner_item_list_detail);
-
-        ArrayAdapter<CharSequence> spinnerSortByAdapter = ArrayAdapter.createFromResource(
-                Contextor.getInstance().getContext(),
-                R.array.spinner_sort_by,
-                R.layout.spinner_item_list_detail);
-        spinnerSortByAdapter.setDropDownViewResource(R.layout.spinner_item_list_detail);
-
-        spFilter.setAdapter(spinnerFilterAdapter);
-        spSortBy.setAdapter(spinnerSortByAdapter);
-
+        spFilter.setAdapter(setSpinnerAdapter(R.array.spinner_filter));
+        spSortBy.setAdapter(setSpinnerAdapter(R.array.spinner_sort_by));
         spFilter.setOnItemSelectedListener(onSpinnerSelect);
         spSortBy.setOnItemSelectedListener(onSpinnerSelect);
 
         layoutManager = new LinearLayoutManager(getActivity());
-
-        progressBar = (ProgressBar) rootView.findViewById(R.id.spin_kit);
-        progressDialogBackground = (View) rootView.findViewById(R.id.view);
-
-        progressDialogBackground.setVisibility(View.VISIBLE);
-        progressBar.setVisibility(View.VISIBLE);
-
         recyclerView = (RecyclerView) rootView.findViewById(R.id.rvListDetail);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(recyclerListDetailAdapter);
 
+        progressBar = (ProgressBar) rootView.findViewById(R.id.spin_kit);
+        progressDialogBackground = (View) rootView.findViewById(R.id.view);
+        progressDialogBackground.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
+
+        sortBy = "DateAsc";
+    }
+
+    private ArrayAdapter<CharSequence> setSpinnerAdapter(int array) {
+        ArrayAdapter<CharSequence> spinnerFilterAdapter = ArrayAdapter.createFromResource(
+                Contextor.getInstance().getContext(),
+                array,
+                R.layout.spinner_item_list_detail);
+        spinnerFilterAdapter.setDropDownViewResource(R.layout.spinner_item_list_detail);
+        return spinnerFilterAdapter;
     }
 
     @Override
@@ -137,16 +132,6 @@ public class SummaryListDetailFragment extends Fragment {
         // Restore Instance State here
     }
 
-    private void setSpinnerDefault(ArrayAdapter<CharSequence> spinnerFilterAdapter, Spinner spinner) {
-        if (spinner == spFilter) {
-            int spinnerPosition = spinnerFilterAdapter.getPosition("All");
-            spinner.setSelection(spinnerPosition);
-        } else if (spinner == spSortBy) {
-            int spinnerPosition = spinnerFilterAdapter.getPosition("Date");
-            spinner.setSelection(spinnerPosition);
-        }
-    }
-
     private void DownloadData(String order) {
         brand.clear();
         detail.clear();
@@ -160,36 +145,50 @@ public class SummaryListDetailFragment extends Fragment {
         recyclerListDetailAdapter = new RecyclerListDetailAdapter(getContext());
 
         itemEntityViewModel = ViewModelProviders.of(this).get(ItemEntityViewModel.class);
-
         itemEntityViewModel.selectProductByType(type, order).observe(getViewLifecycleOwner(), new Observer<List<ItemEntity>>() {
             @Override
             public void onChanged(@Nullable final List<ItemEntity> itemEntities) {
                 if (itemEntities != null) {
+                    label:
                     for (int i = 0; i < itemEntities.size(); i++) {
-                        if (brandType.matches("-") || brandType.matches(itemEntities.get(i).getBrand().trim().toLowerCase())) {
+
+                        if (brandType.matches("-") ||
+                                brandType.contains(itemEntities.get(i).getBrand().trim().toLowerCase())) {
+
+                            Log.d(TAG, "Type: " + brandType);
                             String productType = itemEntities.get(i).getType().trim();
                             String productBrand = itemEntities.get(i).getBrand().trim();
                             String productDetail = itemEntities.get(i).getDetail().trim();
                             String productAddedDate = itemEntities.get(i).getPurchasedDate().trim();
                             String productOwner = itemEntities.get(i).getPlaceName().trim();
                             String productLastUpdated = itemEntities.get(i).getLastUpdated().trim();
+                            String productKey = itemEntities.get(i).getUnnamed2().trim();
                             String productStatus;
+
                             if (productOwner.matches("-")) {
                                 productStatus = "Available";
                             } else {
-                                productStatus = "InUse";
+                                productStatus = "In Use";
                             }
-                            String productKey = itemEntities.get(i).getUnnamed2().trim();
-                            Log.d("date", "" + productAddedDate);
-                            brand.add(productBrand);
-                            detail.add(productDetail);
-                            owner.add(productOwner);
-                            addedDate.add(productAddedDate);
-                            status.add(productStatus);
-                            key.add(productKey);
-                            lastUpdated.add(productLastUpdated);
+
+                            if (!productOwner.matches("-") &&
+                                    filterBy.matches("Available")) {
+                                continue label;
+                            } else if (filterBy.matches("In Use")
+                                    && productOwner.matches("-")) {
+                                continue label;
+                            } else {
+                                brand.add(productBrand);
+                                detail.add(productDetail);
+                                owner.add(productOwner);
+                                addedDate.add(productAddedDate);
+                                status.add(productStatus);
+                                key.add(productKey);
+                                lastUpdated.add(productLastUpdated);
+                            }
                         }
                     }
+                    Log.d(TAG, "Loaded item size: " + itemEntities.size());
                 }
                 recyclerListDetailAdapter.setBrand(brand);
                 recyclerListDetailAdapter.setDetail(detail);
@@ -198,6 +197,8 @@ public class SummaryListDetailFragment extends Fragment {
                 recyclerListDetailAdapter.setStatus(status);
                 recyclerListDetailAdapter.setKey(key);
                 recyclerListDetailAdapter.setLastUpdated(lastUpdated);
+
+                recyclerView.setAdapter(recyclerListDetailAdapter);
                 recyclerListDetailAdapter.notifyDataSetChanged();
 
                 progressDialogBackground.setVisibility(View.INVISIBLE);
@@ -210,38 +211,32 @@ public class SummaryListDetailFragment extends Fragment {
     private AdapterView.OnItemSelectedListener onSpinnerSelect = new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+            String filter = adapterView.getItemAtPosition(i).toString();
             if (adapterView == spFilter) {
-                String filter = adapterView.getItemAtPosition(i).toString();
-                switch (filter) {
-                    case "All":
-                        recyclerView.setAdapter(recyclerListDetailAdapter);
-                        break;
-                    case "Available":
-                        spinnerSetRecyclerview(filter);
-                        break;
-                    case "InUse":
-                        spinnerSetRecyclerview(filter);
-                        break;
+                filterBy = filter;
+                if (filter.matches("All") || filter.matches("In Use") ||
+                        filter.matches("Available")){
+                    DownloadData(sortBy);
                 }
             }
             if (adapterView == spSortBy) {
-                String sortBy = adapterView.getItemAtPosition(i).toString();
-                switch (sortBy) {
+                Log.d("test2407", filterBy);
+                switch (filter) {
                     case "Date ▲":
+                        sortBy = "DateAsc";
                         DownloadData("DateAsc");
-                        checkSpType();
                         break;
                     case "Date ▼":
+                        sortBy = "DateDesc";
                         DownloadData("DateDesc");
-                        checkSpType();
                         break;
                     case "Brand ▲":
+                        sortBy = "BrandAsc";
                         DownloadData("BrandAsc");
-                        checkSpType();
                         break;
                     case "Brand ▼":
+                        sortBy = "BrandDesc";
                         DownloadData("BrandDesc");
-                        checkSpType();
                         break;
                 }
             }
@@ -253,43 +248,4 @@ public class SummaryListDetailFragment extends Fragment {
 
         }
     };
-
-    private void checkSpType() {
-        String filter = spFilter.getSelectedItem().toString();
-        if (!filter.matches("All")) {
-            spinnerSetRecyclerview(filter);
-        } else {
-            recyclerView.setLayoutManager(layoutManager);
-            recyclerView.setAdapter(recyclerListDetailAdapter);
-        }
-    }
-
-    private void spinnerSetRecyclerview(String spinnerStatus) {
-
-        ArrayList<String> filterStatus = new ArrayList<String>();
-        ArrayList<String> filterBrand = new ArrayList<String>();
-        ArrayList<String> filterDetail = new ArrayList<String>();
-        ArrayList<String> filterOwner = new ArrayList<String>();
-        ArrayList<String> filterAddedDate = new ArrayList<String>();
-        ArrayList<String> filterKey = new ArrayList<String>();
-        for (int position = 0; position < status.size(); position++) {
-            if (status.get(position).matches(spinnerStatus)) {
-                filterStatus.add(status.get(position));
-                filterBrand.add(brand.get(position));
-                filterDetail.add(detail.get(position));
-                filterOwner.add(owner.get(position));
-                filterAddedDate.add(addedDate.get(position));
-                filterKey.add(key.get(position));
-            }
-        }
-        newRecyclerListDetailAdapter = new RecyclerListDetailAdapter(getContext());
-        newRecyclerListDetailAdapter.setBrand(filterBrand);
-        newRecyclerListDetailAdapter.setDetail(filterDetail);
-        newRecyclerListDetailAdapter.setOwner(filterOwner);
-        newRecyclerListDetailAdapter.setAddedDate(filterAddedDate);
-        newRecyclerListDetailAdapter.setStatus(filterStatus);
-        newRecyclerListDetailAdapter.setKey(filterKey);
-        newRecyclerListDetailAdapter.notifyDataSetChanged();
-        recyclerView.setAdapter(newRecyclerListDetailAdapter);
-    }
 }

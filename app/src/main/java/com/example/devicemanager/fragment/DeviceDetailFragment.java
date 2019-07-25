@@ -23,7 +23,6 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.devicemanager.R;
 import com.example.devicemanager.activity.AddDeviceActivity;
-import com.example.devicemanager.manager.LoadData;
 import com.example.devicemanager.model.ItemEntityViewModel;
 import com.example.devicemanager.room.ItemEntity;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -60,7 +59,7 @@ public class DeviceDetailFragment extends Fragment {
     private View progressDialogBackground;
     private int updatedKey;
     private String lastKey;
-    List<ItemEntity> itemEntity;
+    private List<ItemEntity> itemEntity;
     private ItemEntityViewModel itemEntityViewModel;
     private String idKey;
     private boolean btnClick = true;
@@ -150,8 +149,8 @@ public class DeviceDetailFragment extends Fragment {
                     tvType.setText(itemEntity.get(0).getType());
                     tvModel.setText(checkNoneData(itemEntity.get(0).getModel(), "N/A"));
                     tvSerialNumber.setText(checkNoneData(itemEntity.get(0).getSerialNo(), "No Serial"));
-                    tvLastUpdate.setText(setDateForm2(itemEntity.get(0).getLastUpdated()));
-                    tvAddedDate.setText(setDate(itemEntity.get(0).getPurchasedDate()));
+                    tvLastUpdate.setText(setDate(itemEntity.get(0).getLastUpdated(), "update"));
+                    tvAddedDate.setText(setDate(itemEntity.get(0).getPurchasedDate(), "date"));
 
                     hideDialog();
                 } else {
@@ -275,45 +274,30 @@ public class DeviceDetailFragment extends Fragment {
                 });
     }
 
-    private String setDate(String inputDate) {
-        String inputFormat = "yyyy-MM-dd";
-        SimpleDateFormat inputDateFormat = new SimpleDateFormat(
-                inputFormat, Locale.ENGLISH);
-        String outputFormat = "dd MMMM yyyy";
-        SimpleDateFormat outputDateFormat = new SimpleDateFormat(
-                outputFormat, Locale.ENGLISH);
+    private String setDate(String inputDate, String type) {
+        String inputFormat, outputFormat;
+        SimpleDateFormat inputDateFormat, outputDateFormat;
+
+        if (type.matches("date")) {
+            inputFormat = "yyyy-MM-dd";
+            inputDateFormat = new SimpleDateFormat(inputFormat, Locale.ENGLISH);
+            outputFormat = "dd MMMM yyyy";
+            outputDateFormat = new SimpleDateFormat(outputFormat, Locale.ENGLISH);
+        } else {
+            inputFormat = "dd/MM/yyyy";
+            inputDateFormat = new SimpleDateFormat(inputFormat, Locale.ENGLISH);
+            outputFormat = "dd MMMM yyyy";
+            outputDateFormat = new SimpleDateFormat(outputFormat, Locale.ENGLISH);
+        }
 
         Date date;
         String str = inputDate;
 
         try {
             date = inputDateFormat.parse(inputDate);
-            str = outputDateFormat.format(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        return str;
-
-    }
-
-    private String setDateForm2(String inputDate) {
-        if (inputDate.contains("GMT")) {
-            inputDate = inputDate.substring(0, inputDate.indexOf("GMT")).trim();
-        }
-        String inputFormat = "dd/MM/yyyy";
-        SimpleDateFormat inputDateFormat = new SimpleDateFormat(
-                inputFormat, Locale.ENGLISH);
-        String outputFormat = "dd MMMM yyyy";
-        SimpleDateFormat outputDateFormat = new SimpleDateFormat(
-                outputFormat, Locale.ENGLISH);
-
-        Date date;
-        String str = inputDate;
-
-        try {
-            date = inputDateFormat.parse(inputDate);
-            str = outputDateFormat.format(date);
+            if (date != null) {
+                str = outputDateFormat.format(date);
+            }
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -337,15 +321,14 @@ public class DeviceDetailFragment extends Fragment {
     private View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            if(!btnClick){
+            if (!btnClick) {
                 return;
             }
             btnClick = false;
             if (view == btnCheck) {
                 showAlertDialog(R.string.dialog_msg_checked, "check");
-            }
-            else if (view == btnEdit){
-                if(serial.length() < 14){
+            } else if (view == btnEdit) {
+                if (serial.length() < 14) {
                     Toast.makeText(getContext(), "This is not asset", Toast.LENGTH_SHORT).show();
                     return;
                 }
